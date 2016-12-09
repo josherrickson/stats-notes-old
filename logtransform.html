@@ -216,7 +216,6 @@ div.tocify {
 
 <h1 class="title toc-ignore">Log Transform Interpretation</h1>
 <h4 class="author"><em>Josh Errickson</em></h4>
-<h4 class="date"><em>12/9/2016</em></h4>
 
 </div>
 
@@ -266,18 +265,18 @@ data(Hitters)</code></pre>
                     Years = sample(1:10, 1),
                     League = c(&quot;A&quot;, &quot;N&quot;)))</code></pre>
 <pre><code>##   AtBat Hits HmRun Years League
-## 1    32    1     4     1      A
-## 2    32    1     4     1      N</code></pre>
+## 1     5   13     4     6      A
+## 2     5   13     4     6      N</code></pre>
 <p>Get the predicted values, and exponentiate them to put them on the scale of <code>Salary</code> rather than <code>log(Salary)</code>.</p>
 <pre class="r"><code>(p &lt;- exp(predict(mod1, newdata = newH)))</code></pre>
 <pre><code>##        1        2 
-## 79.69483 94.07063</code></pre>
+## 158.2024 186.7399</code></pre>
 <pre class="r"><code>exp(mod1$coef[&quot;LeagueN&quot;])</code></pre>
 <pre><code>##  LeagueN 
 ## 1.180386</code></pre>
 <pre class="r"><code>p[1]*exp(mod1$coef[&quot;LeagueN&quot;])</code></pre>
 <pre><code>##        1 
-## 94.07063</code></pre>
+## 186.7399</code></pre>
 <p>Therefore the interpretation is</p>
 <blockquote>
 <p>The predicted average salary is 18.04% higher for a National League hitter than an American League hitter (with other predictors held constant).&quot;</p>
@@ -292,17 +291,17 @@ data(Hitters)</code></pre>
                     Years = sample(1:10, 1),
                     League = &quot;A&quot;))</code></pre>
 <pre><code>##   AtBat Hits HmRun Years League
-## 1    43    2    40     3      A
-## 2    43    2    41     3      A</code></pre>
+## 1     8   10    40     3      A
+## 2     8   10    41     3      A</code></pre>
 <pre class="r"><code>(p &lt;- exp(predict(mod1, newdata = newH)))</code></pre>
 <pre><code>##        1        2 
-## 139.1909 140.6288</code></pre>
+## 164.0076 165.7018</code></pre>
 <pre class="r"><code>exp(mod1$coef[&quot;HmRun&quot;])</code></pre>
 <pre><code>##   HmRun 
 ## 1.01033</code></pre>
 <pre class="r"><code>p[1]*exp(mod1$coef[&quot;HmRun&quot;])</code></pre>
 <pre><code>##        1 
-## 140.6288</code></pre>
+## 165.7018</code></pre>
 <p>The interpretation is similar to the binary case,</p>
 <blockquote>
 <p>The predicted average salary will increase by 1.03% for each additional home run a hitter has (with other predictors held constant).&quot;</p>
@@ -344,17 +343,17 @@ data(Hitters)</code></pre>
                     Years = sample(1:10, 1),
                     League = &quot;A&quot;))</code></pre>
 <pre><code>##   AtBat Hits HmRun Years League
-## 1    31 14.0    10     2      A
-## 2    31 15.4    10     2      A</code></pre>
+## 1    42 14.0    10     9      A
+## 2    42 15.4    10     9      A</code></pre>
 <pre class="r"><code>(p &lt;- predict(mod2, newdata = newH))</code></pre>
 <pre><code>##        1        2 
-## 211.4835 168.4393</code></pre>
+## 513.2308 470.1866</code></pre>
 <pre class="r"><code>log(1.1)*mod2$coef[&quot;log(Hits)&quot;]</code></pre>
 <pre><code>## log(Hits) 
 ## -43.04421</code></pre>
 <pre class="r"><code>p[1] + log(1.1)*mod2$coef[&quot;log(Hits)&quot;]</code></pre>
 <pre><code>##        1 
-## 168.4393</code></pre>
+## 470.1866</code></pre>
 <p>Interpreted as</p>
 <blockquote>
 <p>The predicted average salary decreases by $82.34 when the number of hits increases by 20% (when all other predictors are constant).</p>
@@ -395,18 +394,18 @@ data(Hitters)</code></pre>
                     Years = sample(1:10, 1),
                     League = &quot;A&quot;))</code></pre>
 <pre><code>##   AtBat Hits HmRun Years League
-## 1    36   15     5     4      A
-## 2    36   18     5     4      A</code></pre>
+## 1    47   15     4     9      A
+## 2    47   18     4     9      A</code></pre>
 <p>Exponentiate the predicted values to get back on the scale of <code>Salary</code>.</p>
 <pre class="r"><code>(p &lt;- exp(predict(mod3, newdata = newH)))</code></pre>
 <pre><code>##        1        2 
-## 154.4003 137.1560</code></pre>
+## 267.3558 237.4959</code></pre>
 <pre class="r"><code>1.2^mod3$coef[&quot;log(Hits)&quot;]</code></pre>
 <pre><code>## log(Hits) 
 ## 0.8883139</code></pre>
 <pre class="r"><code>p[1]*(1.2^mod3$coef[&quot;log(Hits)&quot;])</code></pre>
-<pre><code>##       1 
-## 137.156</code></pre>
+<pre><code>##        1 
+## 237.4959</code></pre>
 <blockquote>
 <p>The predicted average salary will decrease by 11.17% when a hitter’s number of hits increases by 20% (with other predictors held constant).</p>
 </blockquote>

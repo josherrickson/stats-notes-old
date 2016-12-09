@@ -1,7 +1,6 @@
 ---
 title: "Log Transform Interpretation"
 author: "Josh Errickson"
-date: "12/9/2016"
 output:
   html_document:
     toc: yes
