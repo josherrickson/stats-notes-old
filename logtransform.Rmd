@@ -1,0 +1,139 @@
+---
+title: "Log Transform Interpretation"
+author: "Josh Errickson"
+date: "12/9/2016"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+This document discusses interpreting OLS regression coefficients when the response and/or the predictor is log transformed. 
+
+## Data
+
+```{r}
+#install.packages("ISLR")
+library(ISLR)
+data(Hitters)
+```
+
+Dataset is the `Hitters` dataset from the `ISLR` package, which contains batting statistics for players in the '86 and '87 seasons.
+
+The two variables we'll be log transforming are `Salary` and `Hits`.
+
+## Log transforming the response
+
+```{r}
+summary(mod1 <- lm(log(Salary) ~ AtBat + Hits + HmRun + Years + League, data = Hitters))
+```
+
+### Binary predictor
+
+Let's create two new observations with the same value of all covariates, but different values of the binary predictor `League`.
+```{r}
+(newH <- data.frame(AtBat = sample(1:50, 1),
+                    Hits = sample(1:30, 1),
+                    HmRun = sample(1:10, 1),
+                    Years = sample(1:10, 1),
+                    League = c("A", "N")))
+```
+
+Get the predicted values, and exponentiate them to put them on the scale of `Salary` rather than `log(Salary)`
+
+```{r}
+(p <- exp(predict(mod1, newdata = newH)))
+```
+
+```{r}
+exp(mod1$coef["LeagueN"])
+p[1]*exp(mod1$coef["LeagueN"])
+```
+
+Therefore the interpretation is 
+
+> The predicted average salary is `r round(100*(exp(mod1$coef["LeagueN"]) - 1), 2)`\% higher for a National League hitter than an American League hitter (with other predictors held constant)."
+
+### Continuous predictor
+
+Generate new observations with one more `HmRun`, and obtain predicted values on `Salary` scale.
+
+```{r}
+(newH <- data.frame(AtBat = sample(1:50, 1),
+                    Hits = sample(1:30, 1),
+                    HmRun = c(40,41),
+                    Years = sample(1:10, 1),
+                    League = "A"))
+(p <- exp(predict(mod1, newdata = newH)))
+```
+
+```{r}
+exp(mod1$coef["HmRun"])
+p[1]*exp(mod1$coef["HmRun"])
+```
+
+The interpretation is similar to the binary case,
+
+> The predicted average salary will increase by `r round(100*(exp(mod1$coef["HmRun"]) - 1), 2)`\%  for each additional home run a hitter has (with other predictors held constant)."
+
+
+## Log transforming a predictor
+
+Obviously we don't need to be concerned with the binary predictor here.
+```{r}
+summary(mod2 <- lm(Salary ~ AtBat + log(Hits) + HmRun + Years + League, data = Hitters))
+```
+
+Generate the two hitters, with one having a 10\% higher number of hits than the other.
+```{r}
+(newH <- data.frame(AtBat = sample(1:50, 1),
+                    Hits = c(14, 14*1.1),
+                    HmRun = sample(1:10, 1),
+                    Years = sample(1:10, 1),
+                    League = "A"))
+(p <- predict(mod2, newdata = newH))
+log(1.1)*mod2$coef["log(Hits)"]
+p[1] + log(1.1)*mod2$coef["log(Hits)"]
+```
+Interpreted as
+
+> The predicted average salary decreases by $`r abs(round(log(1.2)*mod2$coef["log(Hits)"], 2))` when the number of hits increases by 20\% (when all other predictors are constant).
+
+## Log transforming both
+
+
+```{r}
+summary(mod3 <- lm(log(Salary) ~ AtBat + log(Hits) + HmRun + Years + League, data = Hitters))
+```
+
+Obviously, unlogged coefficients (such as `League` or `HmRun`) have the same interpretation as before, though with the assumption of the new model. (`mod3` is different from `mod1` because the relationship is linear with `Hits` on different scales.)
+
+Generate the two data points with a 20\% higher number of hits for one.
+```{r}
+(newH <- data.frame(AtBat = sample(30:50, 1),
+                    Hits = c(15, 15*1.2),
+                    HmRun = sample(1:10, 1),
+                    Years = sample(1:10, 1),
+                    League = "A"))
+```
+
+Exponentiate the predicted values to get back on the scale of `Salary`.
+
+```{r}
+(p <- exp(predict(mod3, newdata = newH)))
+1.2^mod3$coef["log(Hits)"]
+p[1]*(1.2^mod3$coef["log(Hits)"])
+```
+
+> The predicted average salary will decrease by `r round(100*(1 - 1.2^mod3$coef["log(Hits)"]), 2)`\% when a hitter's number of hits increases by 20\% (with other predictors held constant).
+
+The  `r round(100*(1 - 1.2^mod3$coef["log(Hits)"]), 2)` value comes from 1.0 -  `r round( 1.2^mod3$coef["log(Hits)"], 3)`.
+
+## Summary
+
+With a log-transformed response, a linear change in the predictor leads to a percentage change in the response.
+
+With a log-transformed predictor, a percentage change in the predictor leads to a linear change in the response.
+
+With both a log-transformed response and a log-transformed predictor, a percentage change in the predictor leads to a percentage change in the response.
