@@ -40,7 +40,7 @@ Let's create two new observations with the same value of all covariates, but dif
                     League = c("A", "N")))
 ```
 
-Get the predicted values, and exponentiate them to put them on the scale of `Salary` rather than `log(Salary)`
+Get the predicted values, and exponentiate them to put them on the scale of `Salary` rather than `log(Salary)`.
 
 ```{r}
 (p <- exp(predict(mod1, newdata = newH)))
