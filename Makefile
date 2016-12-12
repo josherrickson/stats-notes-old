@@ -15,5 +15,7 @@ TARGETS=$(SOURCES:%.Rmd=%.html)
 default: $(TARGETS)
 
 clean:
-	@rm -rf $(TARGETS)
 	@rm -rf ratpup*
+
+clean-all: clean
+	@rm -rf $(TARGETS)
