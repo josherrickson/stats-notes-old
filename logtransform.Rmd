@@ -8,7 +8,7 @@ output:
     toc_float: yes
 ---
 
-This document discusses interpreting OLS regression coefficients when the response and/or the predictor is log transformed. 
+This document discusses interpreting OLS regression coefficients when the response and/or the predictor is log transformed.
 
 ## Data
 
@@ -16,6 +16,7 @@ This document discusses interpreting OLS regression coefficients when the respon
 #install.packages("ISLR")
 library(ISLR)
 data(Hitters)
+set.seed(1) # random seed for reproducibility
 ```
 
 Dataset is the `Hitters` dataset from the `ISLR` package, which contains batting statistics for players in the '86 and '87 seasons.
@@ -50,7 +51,7 @@ exp(mod1$coef["LeagueN"])
 p[1]*exp(mod1$coef["LeagueN"])
 ```
 
-Therefore the interpretation is 
+Therefore the interpretation is
 
 > The predicted average salary is `r round(100*(exp(mod1$coef["LeagueN"]) - 1), 2)`\% higher for a National League hitter than an American League hitter (with other predictors held constant)."
 
