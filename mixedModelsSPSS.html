@@ -228,10 +228,10 @@ div.tocify {
 <pre class="r"><code>library(tidyverse)
 ratpup &lt;- readr::read_delim(&quot;http://www-personal.umich.edu/~bwest/rat_pup.dat&quot;, &quot;\t&quot;)</code></pre>
 <p>Make the treatment binary, and convert both it and sex to numeric.</p>
-<pre class="r"><code>ratpup &lt;- ratpup %&gt;% 
+<pre class="r"><code>ratpup &lt;- ratpup %&gt;%
   mutate(treat = (treatment != &quot;Control&quot;) + 0) %&gt;%
-  mutate(female = (sex == &quot;Female&quot;) + 0) %&gt;% 
-  select(-c(treatment, sex)) %&gt;% 
+  mutate(female = (sex == &quot;Female&quot;) + 0) %&gt;%
+  select(-c(treatment, sex)) %&gt;%
   as.data.frame()</code></pre>
 <p>Write the data into SPSS</p>
 <pre class="r"><code>library(foreign)
@@ -247,20 +247,17 @@ lmer(weight ~ treat*female + litsize + (1 | litter), data = ratpup, REML = TRUE)
 <p>First, ignore the first screen. Place <code>weight</code> in Dependent variable; <code>treat</code>, <code>female</code> and <code>litter</code> into Factors, and <code>litsize</code> into Covariates. In the Fixed subdialogue, enter the main effect for litsize and the main and interaction of <code>treat</code> and <code>female</code>. In the Random subdialogue, place <code>litter</code> into the Model. Do <strong>not</strong> check the box “Include intercept”.</p>
 <p>This dialogue should produce the following syntax:</p>
 <pre><code>MIXED weight BY female litter treat WITH litsize
-  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0, 
+  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0,
     ABSOLUTE) LCONVERGE(0, ABSOLUTE) PCONVERGE(0.000001, ABSOLUTE)
   /FIXED=female treat female*treat litsize | SSTYPE(3)
   /METHOD=REML
   /PRINT=SOLUTION
   /RANDOM=litter | COVTYPE(VC).</code></pre>
-<ul>
-<li>In this model, <code>litter</code> was chosen as “subject” in the first screen. Random Intercept was included</li>
-<li>but not <code>litter</code>, and <code>litter</code> was included in “Subject groupings”</li>
-</ul>
+<p>In this model, <code>litter</code> was chosen as “subject” in the first screen. Random Intercept was included but not <code>litter</code>, and <code>litter</code> was included in “Subject groupings”</p>
 <p>Next, we’ll make use of the first screen. In the first screen, place <code>little</code> into Subjects. Enter the variables as described above.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> In the Random subdialogue, check “Include intercept”. Do <strong>not</strong> enter <code>litter</code> into Model, but at the bottom under Subject Groups, enter it into Combinations.</p>
 <p>The syntax is:</p>
 <pre><code>MIXED weight BY female treat WITH litsize
-  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0, 
+  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0,
     ABSOLUTE) LCONVERGE(0, ABSOLUTE) PCONVERGE(0.000001, ABSOLUTE)
   /FIXED=female treat female*treat litsize | SSTYPE(3)
   /METHOD=REML
