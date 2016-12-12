@@ -23,10 +23,10 @@ ratpup <- readr::read_delim("http://www-personal.umich.edu/~bwest/rat_pup.dat", 
 
 Make the treatment binary, and convert both it and sex to numeric.
 ```{r}
-ratpup <- ratpup %>% 
+ratpup <- ratpup %>%
   mutate(treat = (treatment != "Control") + 0) %>%
-  mutate(female = (sex == "Female") + 0) %>% 
-  select(-c(treatment, sex)) %>% 
+  mutate(female = (sex == "Female") + 0) %>%
+  select(-c(treatment, sex)) %>%
   as.data.frame()
 ```
 
@@ -54,7 +54,7 @@ This dialogue should produce the following syntax:
 
 ```
 MIXED weight BY female litter treat WITH litsize
-  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0, 
+  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0,
     ABSOLUTE) LCONVERGE(0, ABSOLUTE) PCONVERGE(0.000001, ABSOLUTE)
   /FIXED=female treat female*treat litsize | SSTYPE(3)
   /METHOD=REML
@@ -63,8 +63,7 @@ MIXED weight BY female litter treat WITH litsize
 ```
 
 
-* In this model, `litter` was chosen as "subject" in the first screen. Random Intercept was included
-*  but not `litter`, and `litter` was included in "Subject groupings"
+In this model, `litter` was chosen as "subject" in the first screen. Random Intercept was included but not `litter`, and `litter` was included in "Subject groupings"
 
 
 Next, we'll make use of the first screen. In the first screen, place `little` into Subjects. Enter the variables as described above.^[`litter` does not have to be placed in Factors anymore, but it will not affect anything if it is.] In the Random subdialogue, check "Include intercept". Do **not** enter `litter` into Model, but at the bottom under Subject Groups, enter it into Combinations.
@@ -73,7 +72,7 @@ The syntax is:
 
 ```
 MIXED weight BY female treat WITH litsize
-  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0, 
+  /CRITERIA=CIN(95) MXITER(100) MXSTEP(10) SCORING(1) SINGULAR(0.000000000001) HCONVERGE(0,
     ABSOLUTE) LCONVERGE(0, ABSOLUTE) PCONVERGE(0.000001, ABSOLUTE)
   /FIXED=female treat female*treat litsize | SSTYPE(3)
   /METHOD=REML
@@ -81,7 +80,7 @@ MIXED weight BY female treat WITH litsize
   /RANDOM=INTERCEPT | SUBJECT(litter) COVTYPE(VC).
 ```
 
-The difference is 
+The difference is
 
 ```
   /RANDOM=litter | COVTYPE(VC).
