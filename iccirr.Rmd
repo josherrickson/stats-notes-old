@@ -1,0 +1,103 @@
+---
+title: "Inter-rater Reliability"
+author: "Josh Errickson"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+A few notes on agreement between raters.
+
+## Cohen's \(\kappa\)
+
+Cohen's \(\kappa\) can be used for agreement between two raters on categorical data. The basic calculation is
+
+\[
+  \kappa = \frac{p_a - p_e}{1 - p_e},
+\]
+
+where \(p_a\) is the percentage observed agreement and \(p_e\) is the percentage expected agreement by chance. Therefore \(\kappa\) is what percentage
+of the agreement over chance is observed.
+
+Fleiss' \(\kappa\) is an extension to more than two raters and has a similar form.
+
+A major flaw in either \(\kappa\) is that for ordinal data, any disagreement is treated equal. E.g. on a Likert scale, ratings of 4 and 5 are just as
+disagreeable as ratings of 1 and 5. Weighted \(\kappa\) addresses this by including a weight matrix which can be used to provide levels of
+disagreement.
+
+### Sources
+
+https://en.wikipedia.org/wiki/Cohen%27s_kappa
+
+http://john-uebersax.com/stat/kappa.htm
+
+http://www.stata.com/manuals14/rkappa.pdf
+
+## Intra-class correlation
+
+ICC is used for continuous measurements. It can be used in place of weighted \(\kappa\) with ordinal variables of course. The basic calculation is
+
+\[
+  ICC = \frac{\sigma^2_w}{\sigma^2_w + \sigma^2_b},
+\]
+
+where \(\sigma^2_w\) and \(\sigma^2_b\) represent within- and between- rater variability respectively. Since the denominator is the total variance of
+all ratings regardless of rater, this fraction represents the percent of total variation accounted for by within-variation.
+
+The modern way to estimate the ICC is by a mixed model, extracting the \(\sigma\)'s that are needed.
+
+### ICC in R
+
+Use the `Orthodont` data from `nlme` as our example. Look at `distance` measurements and look at correlation by `Subject`.
+
+```{r, message=FALSE}
+library(nlme)
+library(lme4)
+data(Orthodont)
+```
+
+#### With `nlme`
+
+Using the `nlme` package, we fit the model:
+
+```{r}
+fm1 <- lme(distance ~ 1, random = ~ 1 | Subject, data = Orthodont)
+summary(fm1)
+```
+
+The between-effect standard deviation is reported as the `Residual StdDev`. To obtain the ICC, we compute each \(\sigma\):
+
+
+```{r}
+s2w <- getVarCov(fm1)[[1]]
+s2b <- fm1$s^2
+c(sigma2_w = s2w, sigma2_b = s2b, icc = s2w/(s2w + s2b))
+```
+
+#### With `lme4`
+
+
+Using the `lme4` package, we fit the model:
+
+```{r}
+fm2 <- lmer(distance ~ (1 | Subject), data = Orthodont)
+summary(fm2)
+```
+
+The Variance column of the Random Effects table gives the within-subject (Subject) and between-subject (Residual) variances.
+
+```{r}
+s2w <- summary(fm2)$varcor$Subject[1]
+s2b <- summary(fm2)$sigma^2
+c(sigma2_w = s2w, sigma2_b = s2b, icc = s2w/(s2w + s2b))
+```
+
+### Sources
+
+https://en.wikipedia.org/wiki/Intraclass_correlation
+
+http://stats.stackexchange.com/questions/14976/intraclass-correlation-coefficients-icc-with-multiple-variables
+
+http://john-uebersax.com/stat/icc.htm
