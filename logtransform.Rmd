@@ -98,7 +98,7 @@ p[1] + log(1.1)*mod2$coef["log(Hits)"]
 ```
 Interpreted as
 
-> The predicted average salary decreases by $`r abs(round(log(1.2)*mod2$coef["log(Hits)"], 2))` when the number of hits increases by 20\% (when all other predictors are constant).
+> The predicted average salary decreases by $`r abs(round(log(1.1)*mod2$coef["log(Hits)"], 2))` when the number of hits increases by 10\% (when all other predictors are constant).
 
 ## Log transforming both
 
