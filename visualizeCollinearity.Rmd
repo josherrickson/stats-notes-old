@@ -1,0 +1,99 @@
+---
+title: "Visualizing the issue with Collinear Predictors"
+author: "Josh Errickson"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+While there are many resources out there to describe the issues arising with multicollinearity in independent variables, there's a visualization for the problem that I came across in a book once and haven't found replicated online. This replicates the visualization.
+
+# Set-up
+
+Let \(Y\) be a response and \(X_1\) and \(X_2\) be the predictors, such that
+
+\[
+  Y_i = \beta_0 + \beta_1X_{1i} + \beta_2X_{2i} + \epsilon_i
+\]
+
+for individual \(i\).
+
+For simplicity, let's say that
+
+\[
+\beta_0 = 0,\\
+\beta_1 = 1,\\
+\beta_2 = 1.
+\]
+
+# No Collinearity
+
+Here's a simulation. We generate data with no correlation between \(X_1\) and \(X_2\)
+
+```{r}
+reps <- 1000
+n <- 100
+save <- matrix(nrow = reps, ncol = 3)
+
+for (i in 1:reps) {
+  x1 <- rnorm(n)
+  x2 <- rnorm(n)
+  y <- x1 + x2 + rnorm(n)
+  
+  mod <- lm(y ~ x1 + x2)
+  save[i,] <- c(coef(mod)[-1], cor(x1, x2))
+}
+```
+
+Now, we have an average correlation between \(X_1\) and \(X_2\) of `r round(mean(save[,3]), 3)`. When we plot \(b_1\) and \(b_2\) (the estimates of \(\beta_1\) and \(\beta_2\)) against each other,
+
+```{r, echo = FALSE, fig.height = 7, fig.width = 7}
+plot(save[,1:2], xlab = expression(italic(b)[1]), ylab = expression(italic(b)[2]))
+points(1,1,col = 'red', pch = 16, cex = 2)
+```
+
+The red dot represents the true coefficients. We see no relationship between the estimated coefficients, and each are well centered around the truth.
+
+# High Collinearity
+
+Now, let's re-do this with high collinearity between \(X_1\) and \(X_2\).
+
+```{r}
+reps <- 1000
+n <- 100
+save <- matrix(nrow = reps, ncol = 3)
+
+for (i in 1:reps) {
+  x1 <- rnorm(n)
+  x2 <- x1 + rnorm(n, sd = .1)
+  y <- x1 + x2 + rnorm(n)
+  
+  mod <- lm(y ~ x1 + x2)
+  save[i,] <- c(coef(mod)[-1], cor(x1, x2))
+}
+```
+
+In this case, the average correlation between \(X_1\) and \(X_2\) is `r round(mean(save[,3]), 3)`. Plotting \(b_1\) and \(b_2\) against each other,
+
+```{r, echo = FALSE, fig.height = 7, fig.width = 7}
+plot(save[,1:2], xlab = expression(italic(b)[1]), ylab = expression(italic(b)[2]))
+points(1,1,col = 'red', pch = 16, cex = 2)
+abline(a = 2, b = -1, col = 'red')
+```
+
+We now see a very strong relationship between the coefficients. Think of it this way: With such high correlation, essentially \(X_1 = X_2\). We can approximate our model:
+
+\begin{aligned}
+  Y_i &= \beta_0 + \beta_1X_{1i} + \beta_2X_{2i} + \epsilon_i\\
+  &\approx \beta_0 + (\beta_1 + \beta_2)X_{1i} + \epsilon_i\\
+  &\approx \beta_0 + (\beta_1 + \beta_2)X_{2i} + \epsilon_i
+\end{aligned}
+
+In other words, the model has that \(\beta_1 + \beta_2 = 2\). The red line in the above plot is all values which agree with that (e.g., \(\beta_1 = 1\) and \(\beta_2 = 1\) or \(\beta_1 = 3\) and \(\beta_2 = -1\)). So while all of those models would have the same predictive power for \(Y\), they would have drastically different interpretations depending on where along that red line they fall.
