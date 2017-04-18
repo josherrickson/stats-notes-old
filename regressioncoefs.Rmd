@@ -1,18 +1,21 @@
 ---
 title: "Interpreting Regression Coefficients"
 author: "Josh Errickson"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# For all of "predicts" really means "predicts on average".
+**For all intepretations, "predicts" really means "predicts on average".**
 
 # Linear Regression
 
-\[\mathbb{E}(Y) = \beta_0 + \beta_1X\]
+\[\mathbb{E}(Y|X) = \beta_0 + \beta_1X\]
 
 - \(\beta_0\) is the average value of \(Y\) when \(X = 0\). 
 - \(\beta_1\): A 1 increase in \(X\) predicts a change of \(\beta_1\) in \(Y\).
@@ -32,7 +35,7 @@ Let \(p = \mathbb{P}(Y = 1)\).
 - \(\beta_0\) is the log odds when \(X = 0\).
 - \(\beta_1\): A 1 increase in \(X\) predicts a change of \(\beta_1\) in the log odds 
 - \(\exp(\beta_0)\) is the odds ratio when \(X = 0\).
-- \(\exp(\beta_1)\): A 1 increae in \(X\) predicts a change of \(\exp(\beta_1)\) in the odds ratio.
+- \(\exp(\beta_1)\): A 1 increase in \(X\) predicts a change of \(\exp(\beta_1)\) in the odds ratio.
 
 
 ## Odds ratio and log odds
@@ -50,10 +53,14 @@ The log odds is
 
 and should not be interpreted, other than that the coefficients are linear.
 
-# Log-binomial model
+# Poisson Regression
 
-A rarely used variation of logistic regression, using a log link function. This model often has convergence issues.
+\[\log(\mathbb{E}(Y|X)) = \beta_0 + \beta_1X\]
 
-Let \(p = \mathbb{P}(Y = 1)\).
+where \(Y\) is a count.
 
-\[\log(p) = \beta_0 + \beta_1X\]
+- Interpretations are similar to a log transformed \(Y\) in linear regression. A 1 increase in \(X\) predicts a \(\exp(\beta_1)\)% change in \(Y\).
+
+## Negative Binomial Regression
+
+Same interpretation as Poisson.
