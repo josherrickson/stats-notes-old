@@ -1,0 +1,37 @@
+margins
+---------
+
+Average predicted value in data.
+
+margins <cat>
+---------
+
+Average predicted value in data if everyone in the data had the same
+level of <cat>. (Functionally equivalent to <cat> <- 1; predict(),
+etc)
+
+margins, atmeans
+---------
+
+Predicted value for an observation with the mean value of each
+predictor.
+
+margins <cat>, atmeans
+---------
+
+Predicted value for an observation having each level of the
+categorical, and the mean value for every other predictor. (Same
+results as `margins, at(<cat> = (<levels of cat>)) atmeans`.)
+
+margins, at(<cont> = <numlist>)
+---------
+
+Average predicte value in data if everyone in the data had the same
+value of <cont>. (Functionally equivalent to <cont> <- <numlist>;
+predict(), etc)
+
+margins <cat1>#<cat2>
+---------
+
+Same as `margins <cat>` except at every combination between <cat1> and
+<cat2>.
