@@ -232,7 +232,7 @@ div.tocify {
 <ul>
 <li>If <span class="math inline">\(Y\)</span> is log-transformed, a 1 increase in <span class="math inline">\(X\)</span> predicts a <span class="math inline">\(\exp(\beta_1)\)</span>% change in <span class="math inline">\(Y\)</span>.</li>
 <li>If <span class="math inline">\(X\)</span> is log-transformed, a <span class="math inline">\(r\)</span>% increase in <span class="math inline">\(X\)</span> predicts a <span class="math inline">\(\log(1 + r/100)\beta_1\)</span> change in <span class="math inline">\(Y\)</span>.</li>
-<li>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are log-transformed, a <span class="math inline">\(r\)</span>% increase in <span class="math inline">\(X\)</span> predicts a <span class="math inline">\(1 + r/100)^{\beta_1}\)</span> change in <span class="math inline">\(Y\)</span>.</li>
+<li>If <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are log-transformed, a <span class="math inline">\(r\)</span>% increase in <span class="math inline">\(X\)</span> predicts a <span class="math inline">\((1 + r/100)^{\beta_1}\)</span> change in <span class="math inline">\(Y\)</span>.</li>
 </ul>
 </div>
 <div id="logistic-regression" class="section level1">
@@ -251,7 +251,7 @@ div.tocify {
 <p><span class="math display">\[\frac{p}{1-p}\]</span></p>
 <ul>
 <li>The ratio of successes to failures.</li>
-<li>The number of successes we expect per failure. (E.g. if <span class="math inline">\(p = .6\)</span>, then the odds ratio is 1.5, so we except 1.5 successes for every failure.)</li>
+<li>The number of successes we expect per failure. (E.g. if <span class="math inline">\(p = .6\)</span>, then the odds ratio is 1.5, so we expect 1.5 successes for every failure.)</li>
 </ul>
 <p>The log odds is</p>
 <p><span class="math display">\[\log\left(\frac{p}{1-p}\right)\]</span></p>
@@ -296,7 +296,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

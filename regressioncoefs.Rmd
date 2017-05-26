@@ -24,7 +24,7 @@ For log-transforms, see [Log Transform Interpretation](http://errickson.net/stat
 
 - If \(Y\) is log-transformed, a 1 increase in \(X\) predicts a \(\exp(\beta_1)\)% change in \(Y\).
 - If \(X\) is log-transformed, a \(r\)% increase in \(X\) predicts a \(\log(1 + r/100)\beta_1\) change in \(Y\).
-- If \(X\) and \(Y\) are log-transformed, a \(r\)% increase in \(X\) predicts a \(1 + r/100)^{\beta_1}\) change in \(Y\).
+- If \(X\) and \(Y\) are log-transformed, a \(r\)% increase in \(X\) predicts a \((1 + r/100)^{\beta_1}\) change in \(Y\).
 
 # Logistic Regression
 
@@ -45,7 +45,7 @@ The odds ratio is
 \[\frac{p}{1-p}\]
 
 - The ratio of successes to failures.
-- The number of successes we expect per failure. (E.g. if \(p = .6\), then the odds ratio is 1.5, so we except 1.5 successes for every failure.)
+- The number of successes we expect per failure. (E.g. if \(p = .6\), then the odds ratio is 1.5, so we expect 1.5 successes for every failure.)
 
 The log odds is 
 
