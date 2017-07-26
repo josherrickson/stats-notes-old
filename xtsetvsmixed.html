@@ -85,7 +85,7 @@ xtreg &lt;model&gt;, re
 <p>Since we have that both models are equivalent, if we difference them, we remain equivalent:</p>
 <p>\[ (y_{it} - \overline{y}_i) = (x_{it} - \overline{x}_i)\beta + (\epsilon_{it} - \overline{\epsilon}_i). \]</p>
 <p>Again, we have just a linear model.</p>
-<p>Finally, the random effects model doesn&rsquo;t add much clarity, but it essentially is a weighted combination of the other two, with the weight being a function of the variance of \(\nu_i\) and \(\epsilon_i\). If the variance of \(\nu_i\) is 0, then there&rsquo;s no individual level effect and the first model can be fit linearlly (because \(\nu_i\) is constant and folds into the intercept).</p>
+<p>Finally, the random effects model doesn&rsquo;t add much clarity, but it essentially is a weighted combination of the other two, with the weight being a function of the variance of \(\nu_i\) and \(\epsilon_i\). If the variance of \(\nu_i\) is 0, then there&rsquo;s no individual level effect and the first model can be fit lineally (because \(\nu_i\) is constant and folds into the intercept).</p>
 <h2><a href="#assumptions" id="assumptions">Assumptions</a></h2>
 <p>There is one key different assumption between the models:</p>
 <p>The random effects model assumes that unobservable variables are uncorrelated with other covariates. The other models don&rsquo;t.</p>
@@ -221,6 +221,7 @@ not_smsa_cen |  -.0921456   .0088222   -10.44   0.000    -.1094376   -.0748537
 
 </code></pre>
 <p>As I stated earlier, we do get slightly different results. However, the coefficients agree to three decimals.</p>
+<p><code>grade</code> is not estimated because it is time-invarying; within each individual it is constant.</p>
 <p><code>xtreg</code> reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared).</p>
 <h2><a href="#between-effect-model-between-variance" id="between-effect-model-between-variance"><code>xtreg, be</code>: Between Effect model (Between variance)</a></h2>
 <p>The between effects results are</p>
@@ -279,7 +280,8 @@ sd(u_i + avg(e_i.))=  .3068161                  Prob &gt; F          =     0.000
 . restore
 
 </code></pre>
-<p>Again, the cofficients agree to three decimals and the between R-square agrees.</p>
+<p>Again, the coefficients agree to three decimals and the between R-square agrees.</p>
+<p>All predictors here are estimated; if we had any time-variant by individual-invariant predictors (e.g. time), they would not be estimable here.</p>
 <h2><a href="#random-effect-model-both-variances" id="random-effect-model-both-variances"><code>xtreg, re</code>: Random Effect model (Both variances)</a></h2>
 <p>The random effects results are</p>
 <pre><code>. xtreg ln_wage grade age ttl_exp tenure not_smsa south, re

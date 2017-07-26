@@ -83,7 +83,7 @@ Again, we have just a linear model.
 
 Finally, the random effects model doesn't add much clarity, but it essentially is a weighted combination of the other two, with the weight being a
 function of the variance of \\(\nu\_i\\) and \\(\epsilon\_i\\). If the variance of \\(\nu\_i\\) is 0, then there's no individual level effect and the
-first model can be fit linearlly (because \\(\nu\_i\\) is constant and folds into the intercept).
+first model can be fit lineally (because \\(\nu\_i\\) is constant and folds into the intercept).
 
 ## Assumptions
 
@@ -191,6 +191,8 @@ reg ln_wage_cen grade_cen age_cen ttl_exp_cen tenure_cen not_smsa_cen south_cen,
 
 As I stated earlier, we do get slightly different results. However, the coefficients agree to three decimals.
 
+`grade` is not estimated because it is time-invarying; within each individual it is constant.
+
 `xtreg` reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared).
 
 ## `xtreg, be`: Between Effect model (Between variance)
@@ -214,7 +216,9 @@ restore
 <</dd_do>>
 ~~~~
 
-Again, the cofficients agree to three decimals and the between R-square agrees.
+Again, the coefficients agree to three decimals and the between R-square agrees.
+
+All predictors here are estimated; if we had any time-variant by individual-invariant predictors (e.g. time), they would not be estimable here.
 
 ## `xtreg, re`: Random Effect model (Both variances)
 
