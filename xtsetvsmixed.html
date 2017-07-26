@@ -11,7 +11,7 @@
 <p>In Stata, panel data (repeated measures) can be modeled using <code>mixed</code> (and its siblings e.g. <code>melogit</code>, <code>mepoisson</code>) or using the <code>xt</code> toolkit, including <code>xtset</code> and <code>xtreg</code>.</p>
 <p>This document is an attempt to show the equivalency of the models between the two commands. There will be slight differences due to the algorithms used in the backend but the results should generally be equivalent.</p>
 <h1><a href="#data" id="data">Data</a></h1>
-<p>We&rsquo;ll use the &ldquo;nlswork&rdquo; data</p>
+<p>We&rsquo;ll use the &ldquo;nlswork&rdquo; data:</p>
 <pre><code>. webuse nlswork, clear
 (National Longitudinal Survey.  Young Women 14-26 years of age in 1968)
 
@@ -52,3 +52,41 @@ ln_wage         float   %9.0g                 ln(wage/GNP deflator)
 Sorted by: idcode  year
 
 </code></pre>
+<p><code>idcode</code> represents each individual, data is measured over the years. Lets set it up using <code>xtset</code>:</p>
+<pre><code>. xtset idcode
+       panel variable:  idcode (unbalanced)
+
+</code></pre>
+<h1><a href="#theory" id="theory">Theory</a></h1>
+<p>Within the panel/<code>xt</code> framework, there are three separate models:</p>
+<ul>
+<li><code>fe</code> or &ldquo;fixed effects&rdquo;. This is modeling the within variation - Ignoring differences between individuals, is there a difference per values of time-varying variables?</li>
+<li><code>be</code> or &ldquo;between effects&rdquo;. This is modeling the between variation - Averaging across individuals (collapsing over time), is there a difference per values of subject-varying variables?</li>
+<li><code>re</code> or &ldquo;random effects&rdquo;. This generates a weighted average of the above two models.</li>
+</ul>
+<p>Each is fitted via</p>
+<pre><code>xtreg &lt;model&gt;, fe
+xtreg &lt;model&gt;, be
+xtreg &lt;model&gt;, re
+</code></pre>
+<p>The short version of how to fit each model using <code>mixed</code> is:</p>
+<ul>
+<li><code>fe</code>: By individual, center each \(y\) and \(x\) (hence each individual has an average value of 0, so the between variance is 0) and run a linear model with <code>reg</code>.</li>
+<li><code>be</code>: Collapse over individual, and run a linear model with <code>reg</code>.</li>
+<li><code>re</code>: A traditional mixed model with a random effect (this is random effect in the sense of a mixed model, not in the <code>xt</code> setting) for individual.</li>
+</ul>
+<h2><a href="#the-math" id="the-math">The Math</a></h2>
+<p>Picture a typical mixed model setup:</p>
+<p>\[ y_{it} = \alpha + x_{it}\beta + \nu_i + \epsilon_{it}. \]</p>
+<p>Here \(i\) is an index for individuals, \(t\) is an index for time. \(y_{it}\) and \(x_{it}\) are some outcome and predictor which are both time and individual varying. \(\nu_{i}\) is an error associated with each individual and \(\epsilon_{it}\) is an additional error per observation.</p>
+<p>If this model is true, then the following must be true:</p>
+<p>\[ \overline{y}_i = \alpha + \overline{x}_i\beta + \nu_i + \overline{\epsilon_i}. \]</p>
+<p>Each bar&rsquo;d variable is average over each individual. In this model, \(\nu_i\) and \(\overline{\epsilon}_i\) are indistinguishable, so this is just a linear model.</p>
+<p>Since we have that both models are equivalent, if we difference them, we remain equivalent:</p>
+<p>\[ (y_{it} - \overline{y}_i) = (x_{it} - \overline{x}_i)\beta + (\epsilon_{it} - \overline{\epsilon}_i). \]</p>
+<p>Again, we have just a linear model.</p>
+<p>Finally, the random effects model doesn&rsquo;t add much clarity, but it essentially is a weighted combination of the other two, with the weight being a function of the variance of \(\nu_i\) and \(\epsilon_i\). If the variance of \(\nu_i\) is 0, then there&rsquo;s no individual level effect and the first model can be fit linearlly (because \(\nu_i\) is constant and folds into the intercept).</p>
+<h2><a href="#assumptions" id="assumptions">Assumptions</a></h2>
+<p>There is one key different assumption between the models:</p>
+<p>The random effects model assumes that unobservable variables are uncorrelated with other covariates. The other models don&rsquo;t.</p>
+<p>The between effects and random effects models assume that \(\nu_i\) and \(\overline{x}_i\) are uncorrelated (individual intercepts are independent of predictors).</p>
