@@ -5,12 +5,18 @@
 
 # Added '' around *.Rmd to expand properly.
 # https://forums.freebsd.org/threads/29885/
-SOURCES=$(shell find . -name '*.Rmd')
-TARGETS=$(SOURCES:%.Rmd=%.html)
+SOURCES=$(shell find . -name '*.*md')
+TARGETStmp=$(SOURCES:.md=.html)
+TARGETS=$(TARGETStmp:.Rmd=.html)
 
 %.html: %.Rmd
 	@echo "$< -> $@"
 	@Rscript -e "rmarkdown::render('$<')"
+
+# State MD file
+%.html: %.md
+	@echo "$< -> $@"
+	/Applications/Stata/StataSE.app/Contents/MacOS/stata-se -b dyndoc '$<', replace nostop
 
 default: $(TARGETS)
 
