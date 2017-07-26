@@ -224,8 +224,12 @@ div.tocify {
 <p>The mixed model is often described as the conditional model whereas the GEE is often described as the marginal model.</p>
 <p>Let’s consider the following model:</p>
 <p><span class="math display">\[
-  mpg ~ \beta_0 + \beta_1weight + \beta_2horsepowr
+  mpg ~ \beta_0 + \beta_1weight
 \]</span></p>
+<p>Say this data is collected experimentally; we take a collection of cars with a measured weight, drive them <span class="math inline">\(X\)</span> miles and say they use <span class="math inline">\(Y\)</span> gallons of gas, their mileage per gallon is <span class="math inline">\(X/Y\)</span>. To address variability between cars, we use several of each type, e.g. 5 Ford Escapes, 3 Chevrolet Cruzes, etc.</p>
+<p>Let’s interpret the coefficient <span class="math inline">\(\beta_1\)</span> associated with weight (weight measured in pounds).</p>
+<p>In the mixed model: Two cars, of the same model, will differ by <span class="math inline">\(\beta_1\)</span> if their weight differs by 1 pound.</p>
+<p>In the GEE: <span class="math inline">\(\beta_1\)</span> is the change in mpg when we see a 1 pound increase of weight, averaged across all models.</p>
 
 
 
