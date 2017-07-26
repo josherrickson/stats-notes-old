@@ -90,3 +90,315 @@ xtreg &lt;model&gt;, re
 <p>There is one key different assumption between the models:</p>
 <p>The random effects model assumes that unobservable variables are uncorrelated with other covariates. The other models don&rsquo;t.</p>
 <p>The between effects and random effects models assume that \(\nu_i\) and \(\overline{x}_i\) are uncorrelated (individual intercepts are independent of predictors).</p>
+<h1><a href="#estimating-betweenwithinoverall-variance" id="estimating-betweenwithinoverall-variance"><code>xtsum</code>: Estimating between/within/overall variance</a></h1>
+<p>The <code>xtsum</code> command can be used to estimate the variance of a variable within versus between.</p>
+<pre><code>. xtsum ln_wage
+
+Variable         |      Mean   Std. Dev.       Min        Max |    Observations
+-----------------+--------------------------------------------+----------------
+ln_wage  overall |  1.674907   .4780935          0   5.263916 |     N =   28534
+         between |              .424569          0   3.912023 |     n =    4711
+         within  |               .29266  -.4077221    4.78367 | T-bar = 6.05689
+
+</code></pre>
+<p>It&rsquo;s an odd design choice to display the min/max for the between and within rows, but not the mean. In either case, we can obtain all these values without <code>xt</code>. As a sidenote, &ldquo;T-bar&rdquo; represents the average number of measures per individual, or <code>N/n</code>.</p>
+<h2><a href="#overall-variation" id="overall-variation">Overall variation</a></h2>
+<p>Easy:</p>
+<pre><code>. summ ln_wage
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     ln_wage |     28,534    1.674907    .4780935          0   5.263916
+
+</code></pre>
+<h2><a href="#within-variation" id="within-variation">Within variation</a></h2>
+<p>Taking our cue from the notes in <a href="#the-theory">the theory</a>, to obtain within variation we will center the variable by individual.</p>
+<pre><code>. egen meanln_wage = mean(ln_wage), by(idcode)
+
+. gen cln_wage = ln_wage - meanln_wage
+
+. summ cln_wage
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+    cln_wage |     28,534   -2.83e-10      .29266  -2.082629   3.108763
+
+</code></pre>
+<p>Note that the mean is 0 (within rounding error), as we&rsquo;d expect. To get the mean/min/max back into the same scale as the raw data we can re-add the overall mean to</p>
+<pre><code>. egen overallmean = mean(ln_wage)
+
+. gen cln_wage2 = cln_wage + overallmean
+
+. summ cln_wage2
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   cln_wage2 |     28,534    1.674907      .29266  -.4077221   4.783669
+
+</code></pre>
+<p>This works because each individual has mean of 0 or in the second case, <code>overallmean</code>, in either case, since the means are constant, we&rsquo;ve removed any between variance and isolated the within variance.</p>
+<h2><a href="#between-variation" id="between-variation">Between variation</a></h2>
+<p>We simply collapse by id.</p>
+<pre><code>. preserve
+
+. collapse (mean) ln_wage, by(idcode)
+
+. summ ln_wage
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     ln_wage |      4,711    1.650605     .424569          0   3.912023
+
+. restore
+
+</code></pre>
+<p>Doing this works because each subject now has a single observation, hence the within variance is identically 0, so the remaining variance is between-variance.</p>
+<h1><a href="#fitting-the-models" id="fitting-the-models">Fitting the models</a></h1>
+<p>Let&rsquo;s use the following as our model</p>
+<pre><code>ln_wage ~ grade + age + ttl_exp + tenure + not_smsa + south
+</code></pre>
+<h2><a href="#fixed-effect-model-within-variance" id="fixed-effect-model-within-variance"><code>xtreg, fe</code>: Fixed Effect model (Within variance)</a></h2>
+<p>The fixed effects results are</p>
+<pre><code>. xtreg ln_wage grade age ttl_exp tenure not_smsa south, fe
+note: grade omitted because of collinearity
+
+Fixed-effects (within) regression               Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+R-sq:                                           Obs per group:
+     within  = 0.1491                                         min =          1
+     between = 0.3526                                         avg =        6.0
+     overall = 0.2517                                         max =         15
+
+                                                F(5,23389)        =     819.94
+corr(u_i, Xb)  = 0.2348                         Prob &gt; F          =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       grade |          0  (omitted)
+         age |  -.0026787    .000863    -3.10   0.002    -.0043703   -.0009871
+     ttl_exp |   .0287709   .0014474    19.88   0.000     .0259339    .0316079
+      tenure |   .0114355   .0009229    12.39   0.000     .0096265    .0132445
+    not_smsa |  -.0921689   .0096641    -9.54   0.000    -.1111112   -.0732266
+       south |  -.0633396   .0110819    -5.72   0.000    -.0850608   -.0416184
+       _cons |   1.591678   .0186849    85.19   0.000     1.555054    1.628302
+-------------+----------------------------------------------------------------
+     sigma_u |  .36167618
+     sigma_e |  .29477563
+         rho |  .60086475   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(4696, 23389) = 6.63                 Prob &gt; F = 0.0000
+
+</code></pre>
+<p>To replicate, let&rsquo;s center each variable by individual and fit a linear model</p>
+<pre><code>. foreach v of varlist ln_wage grade age ttl_exp tenure not_smsa south {
+  2.         qui egen `v'_mean = mean(`v'), by(idcode)
+  3.         qui gen `v'_cen = `v' - `v'_mean
+  4. }
+
+. reg ln_wage_cen grade_cen age_cen ttl_exp_cen tenure_cen not_smsa_cen south_c
+&gt; en, noconstant
+note: grade_cen omitted because of collinearity
+
+      Source |       SS           df       MS      Number of obs   =    28,091
+-------------+----------------------------------   F(5, 28086)     =    981.75
+       Model |  356.713644         5  71.3427288   Prob &gt; F        =    0.0000
+    Residual |  2040.97068    28,086  .072668614   R-squared       =    0.1488
+-------------+----------------------------------   Adj R-squared   =    0.1486
+       Total |  2397.68433    28,091  .085354182   Root MSE        =    .26957
+
+------------------------------------------------------------------------------
+ ln_wage_cen |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   grade_cen |          0  (omitted)
+     age_cen |  -.0026813   .0007867    -3.41   0.001    -.0042233   -.0011394
+ ttl_exp_cen |   .0287907   .0013198    21.81   0.000     .0262038    .0313775
+  tenure_cen |   .0114211   .0008433    13.54   0.000     .0097683     .013074
+not_smsa_cen |  -.0921456   .0088222   -10.44   0.000    -.1094376   -.0748537
+   south_cen |  -.0625644   .0101172    -6.18   0.000    -.0823946   -.0427342
+------------------------------------------------------------------------------
+
+</code></pre>
+<p>As I stated earlier, we do get slightly different results. However, the coefficients agree to three decimals.</p>
+<p><code>xtreg</code> reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared).</p>
+<h2><a href="#between-effect-model-between-variance" id="between-effect-model-between-variance"><code>xtreg, be</code>: Between Effect model (Between variance)</a></h2>
+<p>The between effects results are</p>
+<pre><code>. xtreg ln_wage grade age ttl_exp tenure not_smsa south, be
+
+Between regression (regression on group means)  Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+R-sq:                                           Obs per group:
+     within  = 0.1427                                         min =          1
+     between = 0.4787                                         avg =        6.0
+     overall = 0.3562                                         max =         15
+
+                                                F(6,4690)         =     717.89
+sd(u_i + avg(e_i.))=  .3068161                  Prob &gt; F          =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       grade |    .064188   .0019539    32.85   0.000     .0603575    .0680185
+         age |  -.0041071   .0010618    -3.87   0.000    -.0061886   -.0020255
+     ttl_exp |   .0287514    .002033    14.14   0.000     .0247658    .0327369
+      tenure |   .0286782   .0022174    12.93   0.000      .024331    .0330254
+    not_smsa |   -.175568   .0111952   -15.68   0.000    -.1975159   -.1536202
+       south |  -.1086271   .0098438   -11.04   0.000    -.1279256   -.0893287
+       _cons |   .8066724   .0329873    24.45   0.000     .7420017     .871343
+------------------------------------------------------------------------------
+
+</code></pre>
+<p>To replicate, collapse over <code>idcode</code> and run a regression:</p>
+<pre><code>. preserve
+
+. collapse (mean) ln_wage grade age ttl_exp tenure not_smsa south, by(idcode)
+
+. reg ln_wage grade age ttl_exp tenure not_smsa south
+
+      Source |       SS           df       MS      Number of obs   =     4,697
+-------------+----------------------------------   F(6, 4690)      =    724.96
+       Model |  406.076398         6  67.6793996   Prob &gt; F        =    0.0000
+    Residual |  437.838178     4,690  .093355688   R-squared       =    0.4812
+-------------+----------------------------------   Adj R-squared   =    0.4805
+       Total |  843.914575     4,696  .179709237   Root MSE        =    .30554
+
+------------------------------------------------------------------------------
+     ln_wage |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       grade |   .0642015   .0019467    32.98   0.000     .0603849     .068018
+         age |  -.0039009   .0010611    -3.68   0.000    -.0059812   -.0018206
+     ttl_exp |   .0285569   .0020267    14.09   0.000     .0245836    .0325301
+      tenure |   .0288392   .0022077    13.06   0.000      .024511    .0331673
+    not_smsa |  -.1758847   .0111494   -15.78   0.000    -.1977428   -.1540266
+       south |  -.1080377   .0098055   -11.02   0.000    -.1272611   -.0888142
+       _cons |   .8000955   .0328792    24.33   0.000     .7356368    .8645542
+------------------------------------------------------------------------------
+
+. restore
+
+</code></pre>
+<p>Again, the cofficients agree to three decimals and the between R-square agrees.</p>
+<h2><a href="#random-effect-model-both-variances" id="random-effect-model-both-variances"><code>xtreg, re</code>: Random Effect model (Both variances)</a></h2>
+<p>The random effects results are</p>
+<pre><code>. xtreg ln_wage grade age ttl_exp tenure not_smsa south, re
+
+Random-effects GLS regression                   Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+R-sq:                                           Obs per group:
+     within  = 0.1483                                         min =          1
+     between = 0.4701                                         avg =        6.0
+     overall = 0.3569                                         max =         15
+
+                                                Wald chi2(6)      =    8304.62
+corr(u_i, X)   = 0 (assumed)                    Prob &gt; chi2       =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage |      Coef.   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       grade |   .0691836   .0017689    39.11   0.000     .0657166    .0726506
+         age |  -.0038386   .0006544    -5.87   0.000    -.0051212   -.0025559
+     ttl_exp |   .0301313   .0011215    26.87   0.000     .0279331    .0323294
+      tenure |   .0134656   .0008442    15.95   0.000      .011811    .0151202
+    not_smsa |   -.128591   .0072246   -17.80   0.000     -.142751    -.114431
+       south |  -.0932646    .007231   -12.90   0.000     -.107437   -.0790921
+       _cons |   .7544109   .0273445    27.59   0.000     .7008168    .8080051
+-------------+----------------------------------------------------------------
+     sigma_u |  .26027808
+     sigma_e |  .29477563
+         rho |  .43808743   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+</code></pre>
+<p>Just fit a regular mixed model:</p>
+<pre><code>. mixed ln_wage grade age ttl_exp tenure not_smsa south || idcode:
+
+Performing EM optimization: 
+
+Performing gradient-based optimization: 
+
+Iteration 0:   log likelihood = -9218.9773  
+Iteration 1:   log likelihood = -9218.9773  
+
+Computing standard errors:
+
+Mixed-effects ML regression                     Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+                                                Obs per group:
+                                                              min =          1
+                                                              avg =        6.0
+                                                              max =         15
+
+                                                Wald chi2(6)      =    8496.81
+Log likelihood = -9218.9773                     Prob &gt; chi2       =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage |      Coef.   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       grade |   .0691186   .0017231    40.11   0.000     .0657414    .0724959
+         age |   -.003869   .0006491    -5.96   0.000    -.0051411   -.0025969
+     ttl_exp |    .030151   .0011135    27.08   0.000     .0279687    .0323334
+      tenure |    .013591   .0008441    16.10   0.000     .0119365    .0152454
+    not_smsa |  -.1299789    .007154   -18.17   0.000    -.1440004   -.1159575
+       south |  -.0941264   .0071291   -13.20   0.000    -.1080991   -.0801537
+       _cons |   .7566548   .0267655    28.27   0.000     .7041954    .8091142
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects Parameters  |   Estimate   Std. Err.     [95% Conf. Interval]
+-----------------------------+------------------------------------------------
+idcode: Identity             |
+                  var(_cons) |   .0626522   .0017678      .0592815    .0662147
+-----------------------------+------------------------------------------------
+               var(Residual) |    .087569    .000811      .0859938    .0891732
+------------------------------------------------------------------------------
+LR test vs. linear model: chibar2(01) = 7277.75       Prob &gt;= chibar2 = 0.0000
+
+</code></pre>
+<p>The results are very close; we can get even closer by fitting the <code>xtreg</code> model with the <code>mle</code> option, which uses a different estimation strategy.</p>
+<pre><code>. xtreg ln_wage grade age ttl_exp tenure not_smsa south, re mle
+
+Fitting constant-only model:
+Iteration 0:   log likelihood = -12663.954
+Iteration 1:   log likelihood = -12649.756
+Iteration 2:   log likelihood = -12649.614
+Iteration 3:   log likelihood = -12649.614
+
+Fitting full model:
+Iteration 0:   log likelihood = -9271.8615
+Iteration 1:   log likelihood = -9219.1214
+Iteration 2:   log likelihood = -9218.9773
+Iteration 3:   log likelihood = -9218.9773
+
+Random-effects ML regression                    Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+Random effects u_i ~ Gaussian                   Obs per group:
+                                                              min =          1
+                                                              avg =        6.0
+                                                              max =         15
+
+                                                LR chi2(6)        =    6861.27
+Log likelihood  = -9218.9773                    Prob &gt; chi2       =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage |      Coef.   Std. Err.      z    P&gt;|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       grade |   .0691186   .0017233    40.11   0.000     .0657411    .0724962
+         age |   -.003869   .0006491    -5.96   0.000    -.0051413   -.0025967
+     ttl_exp |    .030151   .0011135    27.08   0.000     .0279687    .0323334
+      tenure |    .013591   .0008454    16.08   0.000     .0119341    .0152478
+    not_smsa |  -.1299789   .0071711   -18.13   0.000     -.144034   -.1159239
+       south |  -.0941264   .0071356   -13.19   0.000    -.1081119   -.0801409
+       _cons |   .7566548   .0267773    28.26   0.000     .7041722    .8091374
+-------------+----------------------------------------------------------------
+    /sigma_u |   .2503043   .0035313                      .2434779    .2573221
+    /sigma_e |   .2959207   .0013704                       .293247    .2986188
+         rho |   .4170663   .0074745                      .4024774    .4317704
+------------------------------------------------------------------------------
+LR test of sigma_u=0: chibar2(01) = 7277.75            Prob &gt;= chibar2 = 0.000
+
+</code></pre>

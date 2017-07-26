@@ -93,3 +93,151 @@ The random effects model assumes that unobservable variables are uncorrelated wi
 
 The between effects and random effects models assume that \\(\nu\_i\\) and \\(\overline{x}\_i\\) are uncorrelated (individual intercepts are
 independent of predictors).
+
+# `xtsum`: Estimating between/within/overall variance
+
+The `xtsum` command can be used to estimate the variance of a variable within versus between.
+
+~~~~
+<<dd_do>>
+xtsum ln_wage
+<</dd_do>>
+~~~~
+
+It's an odd design choice to display the min/max for the between and within rows, but not the mean. In either case, we can obtain all these values
+without `xt`. As a sidenote, "T-bar" represents the average number of measures per individual, or `N/n`.
+
+## Overall variation
+
+Easy:
+
+~~~~
+<<dd_do>>
+summ ln_wage
+<</dd_do>>
+~~~~
+
+## Within variation
+
+Taking our cue from the notes in [the theory](#the-theory), to obtain within variation we will center the variable by individual.
+
+~~~~
+<<dd_do>>
+egen meanln_wage = mean(ln_wage), by(idcode)
+gen cln_wage = ln_wage - meanln_wage
+summ cln_wage
+<</dd_do>>
+~~~~
+
+Note that the mean is 0 (within rounding error), as we'd expect. To get the mean/min/max back into the same scale as the raw data we can re-add the
+overall mean to
+
+~~~~
+<<dd_do>>
+egen overallmean = mean(ln_wage)
+gen cln_wage2 = cln_wage + overallmean
+summ cln_wage2
+<</dd_do>>
+~~~~
+
+This works because each individual has mean of 0 or in the second case, `overallmean`, in either case, since the means are constant, we've removed any
+between variance and isolated the within variance.
+
+## Between variation
+
+We simply collapse by id.
+
+~~~~
+<<dd_do>>
+preserve
+collapse (mean) ln_wage, by(idcode)
+summ ln_wage
+restore
+<</dd_do>>
+~~~~
+
+Doing this works because each subject now has a single observation, hence the within variance is identically 0, so the remaining variance is
+between-variance.
+
+# Fitting the models
+
+Let's use the following as our model
+
+```
+ln_wage ~ grade + age + ttl_exp + tenure + not_smsa + south
+```
+
+## `xtreg, fe`: Fixed Effect model (Within variance)
+
+The fixed effects results are
+
+~~~~
+<<dd_do>>
+xtreg ln_wage grade age ttl_exp tenure not_smsa south, fe
+<</dd_do>>
+~~~~
+
+To replicate, let's center each variable by individual and fit a linear model
+
+~~~~
+<<dd_do>>
+foreach v of varlist ln_wage grade age ttl_exp tenure not_smsa south {
+	qui egen `v'_mean = mean(`v'), by(idcode)
+	qui gen `v'_cen = `v' - `v'_mean
+}
+reg ln_wage_cen grade_cen age_cen ttl_exp_cen tenure_cen not_smsa_cen south_cen, noconstant
+<</dd_do>>
+~~~~
+
+As I stated earlier, we do get slightly different results. However, the coefficients agree to three decimals.
+
+`xtreg` reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared).
+
+## `xtreg, be`: Between Effect model (Between variance)
+
+The between effects results are
+
+~~~~
+<<dd_do>>
+xtreg ln_wage grade age ttl_exp tenure not_smsa south, be
+<</dd_do>>
+~~~~
+
+To replicate, collapse over `idcode` and run a regression:
+
+~~~~
+<<dd_do>>
+preserve
+collapse (mean) ln_wage grade age ttl_exp tenure not_smsa south, by(idcode)
+reg ln_wage grade age ttl_exp tenure not_smsa south
+restore
+<</dd_do>>
+~~~~
+
+Again, the cofficients agree to three decimals and the between R-square agrees.
+
+## `xtreg, re`: Random Effect model (Both variances)
+
+The random effects results are
+
+~~~~
+<<dd_do>>
+xtreg ln_wage grade age ttl_exp tenure not_smsa south, re
+<</dd_do>>
+~~~~
+
+Just fit a regular mixed model:
+
+~~~~
+<<dd_do>>
+mixed ln_wage grade age ttl_exp tenure not_smsa south || idcode:
+<</dd_do>>
+~~~~
+
+The results are very close; we can get even closer by fitting the `xtreg` model with the `mle` option, which uses a different estimation strategy.
+
+~~~~
+<<dd_do>>
+xtreg ln_wage grade age ttl_exp tenure not_smsa south, re mle
+<</dd_do>>
+~~~~
