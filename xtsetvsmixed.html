@@ -1,0 +1,54 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="stmarkdown.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+</head>
+<h1><a href="#versus-" id="versus-"><code>mixed</code> versus <code>xtreg</code></a></h1>
+<p>In Stata, panel data (repeated measures) can be modeled using <code>mixed</code> (and its siblings e.g. <code>melogit</code>, <code>mepoisson</code>) or using the <code>xt</code> toolkit, including <code>xtset</code> and <code>xtreg</code>.</p>
+<p>This document is an attempt to show the equivalency of the models between the two commands. There will be slight differences due to the algorithms used in the backend but the results should generally be equivalent.</p>
+<h1><a href="#data" id="data">Data</a></h1>
+<p>We&rsquo;ll use the &ldquo;nlswork&rdquo; data</p>
+<pre><code>. webuse nlswork, clear
+(National Longitudinal Survey.  Young Women 14-26 years of age in 1968)
+
+. desc
+
+Contains data from http://www.stata-press.com/data/r15/nlswork.dta
+  obs:        28,534                          National Longitudinal Survey.
+                                                Young Women 14-26 years of age
+                                                in 1968
+ vars:            21                          27 Nov 2016 08:14
+ size:       941,622                          
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+idcode          int     %8.0g                 NLS ID
+year            byte    %8.0g                 interview year
+birth_yr        byte    %8.0g                 birth year
+age             byte    %8.0g                 age in current year
+race            byte    %8.0g      racelbl    race
+msp             byte    %8.0g                 1 if married, spouse present
+nev_mar         byte    %8.0g                 1 if never married
+grade           byte    %8.0g                 current grade completed
+collgrad        byte    %8.0g                 1 if college graduate
+not_smsa        byte    %8.0g                 1 if not SMSA
+c_city          byte    %8.0g                 1 if central city
+south           byte    %8.0g                 1 if south
+ind_code        byte    %8.0g                 industry of employment
+occ_code        byte    %8.0g                 occupation
+union           byte    %8.0g                 1 if union
+wks_ue          byte    %8.0g                 weeks unemployed last year
+ttl_exp         float   %9.0g                 total work experience
+tenure          float   %9.0g                 job tenure, in years
+hours           int     %8.0g                 usual hours worked
+wks_work        int     %8.0g                 weeks worked last year
+ln_wage         float   %9.0g                 ln(wage/GNP deflator)
+-------------------------------------------------------------------------------
+Sorted by: idcode  year
+
+</code></pre>
