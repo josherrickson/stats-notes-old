@@ -1593,7 +1593,7 @@ image(rc3b)</code></pre>
 </div>
 <div id="equivalency-of-cross-and-nested-random-effects" class="section level1">
 <h1>Equivalency of cross and nested random effects</h1>
-<p>As mentioned above, nested effects are an attribute of the data, not the model. We can include nested random effects using the cross effects syntax. In other words, for a nested structure, there is an equivalent crossed structure. (The reverse is <strong>not</strong> true.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>)</p>
+<p>As mentioned above, nested effects are an attribute of the data, not the model. We can include nested random effects using the cross effects syntax. In other words, for a nested structure, there is an equivalent crossed structure. (The reverse is <strong>not</strong> true.)</p>
 <p>The key is that the Wafer levels must be unique <em>in the data</em>, not just within each lot. Let’s generate a unique version of wafer.</p>
 <pre class="r"><code>Oxide &lt;- mutate(Oxide, Wafer2 = as.numeric(paste0(Lot, Wafer)))
 head(Oxide, 12)</code></pre>
@@ -1693,7 +1693,6 @@ image(rc4b)</code></pre>
 <hr />
 <ol>
 <li id="fn1"><p>“Crossed” simply means non-nested.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>I think. Double check this.<a href="#fnref2" class="footnote-back">↩</a></p></li>
 </ol>
 </div>
 
