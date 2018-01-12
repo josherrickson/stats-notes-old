@@ -22,21 +22,22 @@ Stata_HTML=$(html:.md=.html)
 # Stata MD file
 Stata/%.Rmd: Stata/%.md
 	@echo "$< -> $@"
-	/Applications/Stata/StataSE.app/Contents/MacOS/stata-se -b 'dyndoc "$<", saving("$@") replace nostop'
+	@/Applications/Stata/StataSE.app/Contents/MacOS/stata-se -b 'dyndoc "$<", saving("$@") replace nostop'
 
 %.html: Stata/%.Rmd
 	@echo "$< -> $@"
-	Rscript --vanilla fixRmd.R $<
-	Rscript -e "rmarkdown::render('$<')"
-	mv Stata/$@ $@
+	@Rscript --vanilla fixRmd.R $<
+	@Rscript -e "rmarkdown::render('$<')"
+	@mv Stata/$@ $@
+	@rm -f Stata/*.svg
 
 
 default: $(R_HTML) $(Stata_Rmd) $(Stata_HTML)
 
 clean:
-	@rm -rf R/ratpup* Stata/*.svg
+	@rm -f R/ratpup* Stata/*.svg
 
 clean-all: clean
-	@rm -rf $(R_HTML) $(Stata_Rmd) $(Stata_HTML)
+	@rm -f $(R_HTML) $(Stata_Rmd) $(Stata_HTML)
 
 print-%  : ; @echo $* = $($*)

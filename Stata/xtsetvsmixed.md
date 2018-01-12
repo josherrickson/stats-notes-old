@@ -1,6 +1,16 @@
-<<dd_include: stata-header.txt >>
-
-# `mixed` versus `xtreg`
+~~~~
+<<dd_ignore>>
+---
+title: Stata's mixed versus xtreg
+author: Josh Errickson
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+<</dd_ignore>>
+~~~~
 
 In Stata, panel data (repeated measures) can be modeled using `mixed` (and its siblings e.g. `melogit`, `mepoisson`) or using the `xt` toolkit,
 including `xtset` and `xtreg`.
@@ -8,7 +18,7 @@ including `xtset` and `xtreg`.
 This document is an attempt to show the equivalency of the models between the two commands. There will be slight differences due to the algorithms
 used in the backend but the results should generally be equivalent.
 
-# Data
+^#^ Data
 
 We'll use the "nlswork" data:
 
@@ -27,7 +37,7 @@ xtset idcode
 <</dd_do>>
 ~~~~
 
-# Theory
+^#^ Theory
 
 Within the panel/`xt` framework, there are three separate models:
 
@@ -52,7 +62,7 @@ The short version of how to fit each model using `mixed` is:
 - `be`: Collapse over individual, and run a linear model with `reg`.
 - `re`: A traditional mixed model with a random effect (this is random effect in the sense of a mixed model, not in the `xt` setting) for individual.
 
-## The Math
+^#^^#^ The Math
 
 Picture a typical mixed model setup:
 
@@ -85,7 +95,7 @@ Finally, the random effects model doesn't add much clarity, but it essentially i
 function of the variance of \\(\nu\_i\\) and \\(\epsilon\_i\\). If the variance of \\(\nu\_i\\) is 0, then there's no individual level effect and the
 first model can be fit lineally (because \\(\nu\_i\\) is constant and folds into the intercept).
 
-## Assumptions
+^#^^#^ Assumptions
 
 There is one key different assumption between the models:
 
@@ -94,7 +104,7 @@ The random effects model assumes that unobservable variables are uncorrelated wi
 The between effects and random effects models assume that \\(\nu\_i\\) and \\(\overline{x}\_i\\) are uncorrelated (individual intercepts are
 independent of predictors).
 
-# `xtsum`: Estimating between/within/overall variance
+^#^ `xtsum`: Estimating between/within/overall variance
 
 The `xtsum` command can be used to estimate the variance of a variable within versus between.
 
@@ -107,7 +117,7 @@ xtsum ln_wage
 It's an odd design choice to display the min/max for the between and within rows, but not the mean. In either case, we can obtain all these values
 without `xt`. As a sidenote, "T-bar" represents the average number of measures per individual, or `N/n`.
 
-## Overall variation
+^#^^#^ Overall variation
 
 Easy:
 
@@ -117,7 +127,7 @@ summ ln_wage
 <</dd_do>>
 ~~~~
 
-## Within variation
+^#^^#^ Within variation
 
 Taking our cue from the notes in [the theory](#the-theory), to obtain within variation we will center the variable by individual.
 
@@ -143,7 +153,7 @@ summ cln_wage2
 This works because each individual has mean of 0 or in the second case, `overallmean`, in either case, since the means are constant, we've removed any
 between variance and isolated the within variance.
 
-## Between variation
+^#^^#^ Between variation
 
 We simply collapse by id.
 
@@ -159,7 +169,7 @@ restore
 Doing this works because each subject now has a single observation, hence the within variance is identically 0, so the remaining variance is
 between-variance.
 
-# Fitting the models
+^#^ Fitting the models
 
 Let's use the following as our model
 
@@ -167,7 +177,7 @@ Let's use the following as our model
 ln_wage ~ grade + age + ttl_exp + tenure + not_smsa + south
 ```
 
-## `xtreg, fe`: Fixed Effect model (Within variance)
+^#^^#^ `xtreg, fe`: Fixed Effect model (Within variance)
 
 The fixed effects results are
 
@@ -195,7 +205,7 @@ As I stated earlier, we do get slightly different results. However, the coeffici
 
 `xtreg` reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared).
 
-## `xtreg, be`: Between Effect model (Between variance)
+^#^^#^ `xtreg, be`: Between Effect model (Between variance)
 
 The between effects results are
 
@@ -220,7 +230,7 @@ Again, the coefficients agree to three decimals and the between R-square agrees.
 
 All predictors here are estimated; if we had any time-variant by individual-invariant predictors (e.g. time), they would not be estimable here.
 
-## `xtreg, re`: Random Effect model (Both variances)
+^#^^#^ `xtreg, re`: Random Effect model (Both variances)
 
 The random effects results are
 

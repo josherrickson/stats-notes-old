@@ -31,9 +31,12 @@ text[sections] <- str_replace_all(text[sections], fixed(inline_regexp), "$")
 
 # fix Rmarkdown header
 text[1] <- "---"
-text <- text[-(str_which(text, "^#")[1] - 1)]
+text <- text[-(str_which(text, "^</code></pre>$")[1])]
 
 # Remove "empty" code (leftover when using dd_do:quietly)
-text <- text[-(str_which(text, "<pre><code></code></pre>"))]
+emptycodelines <- str_which(text, "^<pre><code></code></pre>$")
+if (length(emptycodelines) > 0) {
+  text <- text[-(emptycodelines)]
+}
 
 write.table(text, file, row.names = FALSE, col.names = FALSE, quote = FALSE)

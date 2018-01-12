@@ -1475,8 +1475,6 @@ div.tocify {
 </div>
 
 
-</code>
-</pre>
 <p>
 Linear splines are sometimes used when looking at interrupted time series models. For example, consider the scatter plot below.
 </p>
@@ -1486,6 +1484,9 @@ The slope amongst the red points (<code>x &lt; 5</code>) is clearly different fr
 </p>
 <p>
 Imagine that <code>x</code> is time, and at <code>x = 5</code>, some intervention took place. The goal is to capture the change in slope that occurs after the intervention. One easy approach would be to fit separate pre and post models, and test for equality of coefficients. However, we can also address this with a single model.
+</p>
+<p>
+A linear spline model (as fit by Stata’s <a href="https://www.stata.com/manuals/rmkspline.pdf"><code>mkspline</code></a>) can capture that change in trend. Including an indicator for pre/post even allows a discontinuity at <code>x = 5</code> instead of the typical continuous spline. However, splines can be harder to interpret and more complicated to work with. This document will demonstrate that an interaction model is equivalent to the linear spline model, and with a simple re-scaling, easier to interpret.
 </p>
 <div id="data-generation" class="section level2">
 <h2>Data generation</h2>
