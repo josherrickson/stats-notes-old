@@ -1,6 +1,16 @@
-<<dd_include: stata-header.txt >>
-
-# Splines vs Interaction models
+~~~~
+<<dd_ignore>>
+---
+title: Splines vs Interaction models
+author: Josh Errickson
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+<</dd_ignore>>
+~~~~
 
 Linear splines are sometimes used when looking at interrupted time series models. For example, consider the scatter plot below.
 
@@ -29,7 +39,7 @@ indicator for pre/post even allows a discontinuity at `x = 5` instead of the typ
 and more complicated to work with. This document will demonstrate that an interaction model is equivalent to the linear spline model, and with a
 simple re-scaling, easier to interpret.
 
-## Data generation
+^#^^#^ Data generation
 
 Let's create a slightly more general data set where there is a "jump" (discontinuity) at intervention in addition to the change in trend.
 
@@ -47,7 +57,9 @@ twoway (scatter y x if z == 1) (scatter y x if z == 0), legend(off)
 
 <<dd_graph: saving(graph2.svg) replace >>
 
-# Obtain pre and post slopes
+Now there's a drop of around 4 at the intervention addition to a flattening of the slope.
+
+^#^ Obtain pre and post slopes
 
 For comparison purposes, let's obtain the slopes in each time period.
 
@@ -63,7 +75,7 @@ local postslope = _b[x]
 So the pre slope is <<dd_display: %9.3f `preslope'>> and the post slope is <<dd_display: %9.3f `postslope'>>. Their difference is
 <<dd_display: %9.3f `postslope' - `preslope'>>.
 
-# Spline version
+^#^ Spline version
 
 The "intervention" takes place at `x = 5`, so let's create the spline with a knot there.
 
@@ -77,7 +89,7 @@ With the `marginal` option, `x0`'s coefficient will represent the pre-interventi
 post-intervention slopes (similar to an interaction). Without `marginal`, `x1`'s coefficient is the post-intervention slope. Note that this will not
 change the model, but is a simple reparameterization.
 
-## Spline Model 1 - Continuity at intervention
+^#^^#^ Spline Model 1 - Continuous at intervention
 
 First, we'll predict `y` using only the splines. This forces a continuity at intervention.
 
@@ -95,8 +107,11 @@ twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
 
 <<dd_graph: saving(graph3.svg) replace >>
 
-The continuity^[The visual discontinity is due the way the plot is generated and is not real.] at `x = 5` makes this a poor fit. Simply adding `z` to
-the model will allow a discontinuity.
+The continuity^[The visual discontinity is due the way the plot is generated and is not real.] at `x = 5` makes this a poor fit.
+
+^#^^#^ Spline Model 2 - Discontinuous at intervention
+
+Simply adding `z` to the model will allow a discontinuity.
 
 ~~~~
 <<dd_do>>
@@ -119,7 +134,7 @@ Additionally (and one of the major benefits that linear spline proponents point 
 captures the drop that occurs at `x = 5` - in the pre-period, the best fit line is approaching ~5, and in the post-period, the best fit line is
 approaching ~1.
 
-## Without `marginal`
+^#^^#^ Without `marginal`
 
 Let's generate the splines without the `marginal` option to show the results are the same.
 
@@ -145,7 +160,7 @@ twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
 
 The model is identical, but the coefficient on `x1a` is now the slope in the post period.
 
-# Interaction model
+^#^ Interaction model
 
 If we fit a simple interaction model here, we obtain the same model.
 
@@ -164,6 +179,8 @@ twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
 
 The coefficient for `x` and the interaction capture the pre-slope and the change in slope after intervention, but the coefficent on `z` is capturing
 the difference in y-intercepts at `x = 0` - a meaningless value. This greatly harms the interpretability of this model.
+
+^#^^#^ Interaction model 1 - Continuity at intervention
 
 If we use a version of `x` which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead
 obtain a coefficient on `z` that's interpretable.
@@ -200,6 +217,8 @@ est table spline1 int1
 As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when `x = 0`; in the interaction
 model, it is the value estimated when `x` approaches 5 from the left.0
 
+^#^^#^ Interaction Model 2 - Discontinuous at intervention
+
 Now, relax the continuity assumption.
 
 ~~~~
@@ -223,7 +242,7 @@ est table spline2 int2
 ~~~~
 Again, we get the same results.
 
-## Obtaining both slopes
+^#^^#^ Obtaining both slopes
 
 As mentioned before, the one downside of the interaction model is that we don't directly get the post-slope, instead obtaining the pre-slope and and
 the difference in slopes. This is easily remedied:

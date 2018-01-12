@@ -7,9 +7,12 @@
 # https://forums.freebsd.org/threads/29885/
 Rmd=$(shell find R -name *.Rmd | sed 's.R/..')
 R_HTML=$(Rmd:.Rmd=.html)
-md=$(shell find Stata -name *.md | sed 's.Stata/..')
+
+md=$(shell find Stata -name *.md)
 Stata_Rmd=$(md:.md=.Rmd)
-Stata_HTML=$(md:.md=.html)
+
+html=$(shell find Stata -name *.md | sed 's.Stata/..')
+Stata_HTML=$(html:.md=.html)
 
 %.html: R/%.Rmd
 	@echo "$< -> $@"
@@ -17,9 +20,9 @@ Stata_HTML=$(md:.md=.html)
 	@mv R/$@ $@
 
 # Stata MD file
-%.Rmd: Stata/%.md
+Stata/%.Rmd: Stata/%.md
 	@echo "$< -> $@"
-	/Applications/Stata/StataSE.app/Contents/MacOS/stata-se -b 'dyndoc "$<", saving("Stata/$@") replace nostop'
+	/Applications/Stata/StataSE.app/Contents/MacOS/stata-se -b 'dyndoc "$<", saving("$@") replace nostop'
 
 %.html: Stata/%.Rmd
 	@echo "$< -> $@"
@@ -31,9 +34,9 @@ Stata_HTML=$(md:.md=.html)
 default: $(R_HTML) $(Stata_Rmd) $(Stata_HTML)
 
 clean:
-	@rm -rf ratpup*
+	@rm -rf R/ratpup* Stata/*.svg
 
 clean-all: clean
-	@rm -rf $(TARGETS)
+	@rm -rf $(R_HTML) $(Stata_Rmd) $(Stata_HTML)
 
 print-%  : ; @echo $* = $($*)
