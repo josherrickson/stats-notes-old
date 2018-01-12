@@ -1,0 +1,345 @@
+<head>
+  <link rel="stylesheet" type="text/css" href="stmarkdown.css">
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+</script>
+</head>
+<h1><a href="#splines-vs-interaction-models" id="splines-vs-interaction-models">Splines vs Interaction models</a></h1>
+<p>Linear splines are sometimes used when looking at interrupted time series models. For example, consider the scatter plot below.</p>
+<pre><code></code></pre>
+<img src="graph1.svg" >
+<p>The slope amongst the red points (<code>x &lt; 5</code>) is clearly different from the slope amongst the blue points (<code>x &gt; 5</code>). The best fit line fails to capture this at all.</p>
+<p>Imagine that <code>x</code> is time, and at <code>x = 5</code>, some intervention took place. The goal is to capture the change in slope that occurs after the intervention. One easy approach would be to fit separate pre and post models, and test for equality of coefficients. However, we can also address this with a single model.</p>
+<p>A linear spline model (as fit by Stata&rsquo;s <a href="https://www.stata.com/manuals/rmkspline.pdf"><code>mkspline</code></a>) can capture that change in trend. Including an indicator for pre/post even allows a discontinuity at <code>x = 5</code> instead of the typical continuous spline. However, splines can be harder to interpret and more complicated to work with. This document will demonstrate that an interaction model is equivalent to the linear spline model, and with a simple re-scaling, easier to interpret.</p>
+<h2><a href="#data-generation" id="data-generation">Data generation</a></h2>
+<p>Let&rsquo;s create a slightly more general data set where there is a &ldquo;jump&rdquo; (discontinuity) at intervention in addition to the change in trend.</p>
+<pre><code>. clear
+
+. set obs 100
+number of observations (_N) was 0, now 100
+
+. gen x = runiform(0, 10)
+
+. sort x // To ease plotting later
+
+. gen z = x &gt; 5
+
+. gen y = x + z - x*z + rnormal()
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0), legend(off)
+
+</code></pre>
+<img src="graph2.svg" >
+<h1><a href="#obtain-pre-and-post-slopes" id="obtain-pre-and-post-slopes">Obtain pre and post slopes</a></h1>
+<p>For comparison purposes, let&rsquo;s obtain the slopes in each time period.</p>
+<pre><code>. reg y x if z == 0
+
+      Source |       SS           df       MS      Number of obs   =        52
+-------------+----------------------------------   F(1, 50)        =     89.11
+       Model |  125.414733         1  125.414733   Prob &gt; F        =    0.0000
+    Residual |  70.3714084        50  1.40742817   R-squared       =    0.6406
+-------------+----------------------------------   Adj R-squared   =    0.6334
+       Total |  195.786141        51  3.83894395   Root MSE        =    1.1864
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+           x |   .9983998   .1057653     9.44   0.000     .7859639    1.210836
+       _cons |  -.1003115   .2979778    -0.34   0.738    -.6988175    .4981945
+------------------------------------------------------------------------------
+
+. local preslope = _b[x]
+
+. reg y x if z == 1
+
+      Source |       SS           df       MS      Number of obs   =        48
+-------------+----------------------------------   F(1, 46)        =      1.18
+       Model |  1.54812546         1  1.54812546   Prob &gt; F        =    0.2832
+    Residual |  60.4075857        46  1.31320838   R-squared       =    0.0250
+-------------+----------------------------------   Adj R-squared   =    0.0038
+       Total |  61.9557112        47  1.31820662   Root MSE        =     1.146
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+           x |   .1214053   .1118153     1.09   0.283    -.1036673    .3464779
+       _cons |   .2272667   .8366968     0.27   0.787    -1.456917     1.91145
+------------------------------------------------------------------------------
+
+. local postslope = _b[x]
+
+</code></pre>
+<p>So the pre slope is     0.998 and the post slope is     0.121. Their difference is -0.877.</p>
+<h1><a href="#spline-version" id="spline-version">Spline version</a></h1>
+<p>The &ldquo;intervention&rdquo; takes place at <code>x = 5</code>, so let&rsquo;s create the spline with a knot there.</p>
+<pre><code>. mkspline x0 5 x1 = x, marginal
+
+</code></pre>
+<p>With the <code>marginal</code> option, <code>x0</code>&rsquo;s coefficient will represent the pre-intervention slop and <code>x1</code>&rsquo;s coefficient the difference between the pre- and post-intervention slopes (similar to an interaction). Without <code>marginal</code>, <code>x1</code>&rsquo;s coefficient is the post-intervention slope. Note that this will not change the model, but is a simple reparameterization.</p>
+<h2><a href="#spline-model-1-continuity-at-intervention" id="spline-model-1-continuity-at-intervention">Spline Model 1 - Continuity at intervention</a></h2>
+<p>First, we&rsquo;ll predict <code>y</code> using only the splines. This forces a continuity at intervention.</p>
+<pre><code>. reg y x0 x1
+
+      Source |       SS           df       MS      Number of obs   =       100
+-------------+----------------------------------   F(2, 97)        =      9.48
+       Model |  47.3187332         2  23.6593666   Prob &gt; F        =    0.0002
+    Residual |  242.134186        97  2.49622872   R-squared       =    0.1635
+-------------+----------------------------------   Adj R-squared   =    0.1462
+       Total |  289.452919        99  2.92376686   Root MSE        =    1.5799
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+          x0 |   .4201304   .1111038     3.78   0.000     .1996201    .6406408
+          x1 |  -.9088959   .2087659    -4.35   0.000    -1.323238   -.4945534
+       _cons |   .7302661   .3768498     1.94   0.056    -.0176763    1.478209
+------------------------------------------------------------------------------
+
+. est store spline1
+
+. predict y_spline1
+(option xb assumed; fitted values)
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+&gt;        (line y_spline1 x if z == 1, lcolor(navy)) ///
+&gt;        (line y_spline1 x if z == 0, lcolor(maroon)), ///
+&gt;          legend(off)
+
+</code></pre>
+<img src="graph3.svg" >
+<p>The continuity^[The visual discontinity is due the way the plot is generated and is not real.] at <code>x = 5</code> makes this a poor fit. Simply adding <code>z</code> to the model will allow a discontinuity.</p>
+<pre><code>. reg y x0 x1 z
+
+      Source |       SS           df       MS      Number of obs   =       100
+-------------+----------------------------------   F(3, 96)        =     38.83
+       Model |  158.673925         3  52.8913084   Prob &gt; F        =    0.0000
+    Residual |  130.778994        96  1.36228119   R-squared       =    0.5482
+-------------+----------------------------------   Adj R-squared   =    0.5341
+       Total |  289.452919        99  2.92376686   Root MSE        =    1.1672
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+          x0 |   .9983998   .1040552     9.59   0.000      .791852    1.204948
+          x1 |  -.8769945   .1542639    -5.69   0.000    -1.183206   -.5707831
+           z |  -4.057394   .4487716    -9.04   0.000    -4.948199    -3.16659
+       _cons |  -.1003115   .2931596    -0.34   0.733    -.6822287    .4816058
+------------------------------------------------------------------------------
+
+. est store spline2
+
+. predict y_spline2
+(option xb assumed; fitted values)
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+&gt;        (line y_spline2 x if z == 1, lcolor(navy)) ///
+&gt;        (line y_spline2 x if z == 0, lcolor(maroon)), ///
+&gt;          legend(off)
+
+</code></pre>
+<img src="graph4.svg" >
+<p>We capture the model much better here. Note that the coefficient on <code>x0</code> is the marginal slope we obtained <a href="#obtain-pre-and-post-slopes">before</a> and <code>x1</code> is the difference between the slopes.</p>
+<p>Additionally (and one of the major benefits that linear spline proponents point to) is that the coefficient on <code>z</code>,     -4.06, captures the drop that occurs at <code>x = 5</code> - in the pre-period, the best fit line is approaching ~5, and in the post-period, the best fit line is approaching ~1.</p>
+<h2><a href="#without-" id="without-">Without <code>marginal</code></a></h2>
+<p>Let&rsquo;s generate the splines without the <code>marginal</code> option to show the results are the same.</p>
+<pre><code>. mkspline x0a 5 x1a = x
+
+</code></pre>
+<pre><code>. reg y x0a x1a z
+
+      Source |       SS           df       MS      Number of obs   =       100
+-------------+----------------------------------   F(3, 96)        =     38.83
+       Model |  158.673925         3  52.8913084   Prob &gt; F        =    0.0000
+    Residual |  130.778994        96  1.36228119   R-squared       =    0.5482
+-------------+----------------------------------   Adj R-squared   =    0.5341
+       Total |  289.452919        99  2.92376686   Root MSE        =    1.1672
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         x0a |   .9983998   .1040552     9.59   0.000      .791852    1.204948
+         x1a |   .1214053   .1138854     1.07   0.289    -.1046554    .3474659
+           z |  -4.057394   .4487716    -9.04   0.000    -4.948199    -3.16659
+       _cons |  -.1003115   .2931596    -0.34   0.733    -.6822287    .4816058
+------------------------------------------------------------------------------
+
+. est store spline3
+
+. predict y_spline3
+(option xb assumed; fitted values)
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+&gt;        (line y_spline3 x if z == 1, lcolor(navy)) ///
+&gt;        (line y_spline3 x if z == 0, lcolor(maroon)), ///
+&gt;          legend(off)
+
+</code></pre>
+<img src="graph5.svg" >
+<p>The model is identical, but the coefficient on <code>x1a</code> is now the slope in the post period.</p>
+<h1><a href="#interaction-model" id="interaction-model">Interaction model</a></h1>
+<p>If we fit a simple interaction model here, we obtain the same model.</p>
+<pre><code>. reg y c.x##c.z
+
+      Source |       SS           df       MS      Number of obs   =       100
+-------------+----------------------------------   F(3, 96)        =     38.83
+       Model |  158.673925         3  52.8913084   Prob &gt; F        =    0.0000
+    Residual |  130.778994        96  1.36228119   R-squared       =    0.5482
+-------------+----------------------------------   Adj R-squared   =    0.5341
+       Total |  289.452919        99  2.92376686   Root MSE        =    1.1672
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+           x |   .9983998   .1040552     9.59   0.000      .791852    1.204948
+           z |   .3275782   .9012017     0.36   0.717    -1.461293    2.116449
+             |
+     c.x#c.z |  -.8769945   .1542639    -5.69   0.000    -1.183206   -.5707831
+             |
+       _cons |  -.1003115   .2931596    -0.34   0.733    -.6822287    .4816058
+------------------------------------------------------------------------------
+
+. predict y_naive
+(option xb assumed; fitted values)
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+&gt;        (line y_naive x if z == 1, lcolor(navy)) ///
+&gt;        (line y_naive x if z == 0, lcolor(maroon)), ///
+&gt;          legend(off)
+
+</code></pre>
+<img src="graph6.svg" >
+<p>The coefficient for <code>x</code> and the interaction capture the pre-slope and the change in slope after intervention, but the coefficent on <code>z</code> is capturing the difference in y-intercepts at <code>x = 0</code> - a meaningless value. This greatly harms the interpretability of this model.</p>
+<p>If we use a version of <code>x</code> which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead obtain a coefficient on <code>z</code> that&rsquo;s interpretable.</p>
+<pre><code>. gen xc = x - 5
+
+</code></pre>
+<p>First we&rsquo;ll fit the model forcing continuity at the intervention. We fit this model by including a main effect for <code>xc</code>, the interaction of <code>xc</code> and <code>z</code>, but crucially, <em>not</em> a main effect for <code>z</code>.</p>
+<pre><code>. reg y c.xc c.xc#i.z
+
+      Source |       SS           df       MS      Number of obs   =       100
+-------------+----------------------------------   F(2, 97)        =      9.48
+       Model |  47.3187335         2  23.6593667   Prob &gt; F        =    0.0002
+    Residual |  242.134186        97  2.49622872   R-squared       =    0.1635
+-------------+----------------------------------   Adj R-squared   =    0.1462
+       Total |  289.452919        99  2.92376686   Root MSE        =    1.5799
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+          xc |   .4201304   .1111038     3.78   0.000     .1996201    .6406408
+             |
+      z#c.xc |
+          1  |  -.9088959   .2087659    -4.35   0.000    -1.323238   -.4945535
+             |
+       _cons |   2.830918   .3037036     9.32   0.000     2.228151    3.433686
+------------------------------------------------------------------------------
+
+. est store int1
+
+. predict y_int1
+(option xb assumed; fitted values)
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+&gt;        (line y_int1 x if z == 1, lcolor(navy)) ///
+&gt;        (line y_int1 x if z == 0, lcolor(maroon)), ///
+&gt;          legend(off)
+
+</code></pre>
+<img src="graph7.svg" >
+<pre><code>. est table spline1 int1
+
+----------------------------------------
+    Variable |  spline1        int1     
+-------------+--------------------------
+          x0 |  .42013044               
+          x1 | -.90889588               
+          xc |               .42013044  
+             |
+      z#c.xc |
+          1  |              -.90889589  
+             |
+       _cons |   .7302661    2.8309183  
+----------------------------------------
+
+</code></pre>
+<p>As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when <code>x = 0</code>; in the interaction model, it is the value estimated when <code>x</code> approaches 5 from the left.0</p>
+<p>Now, relax the continuity assumption.</p>
+<pre><code>. reg y c.xc##i.z
+
+      Source |       SS           df       MS      Number of obs   =       100
+-------------+----------------------------------   F(3, 96)        =     38.83
+       Model |  158.673926         3  52.8913088   Prob &gt; F        =    0.0000
+    Residual |  130.778993        96  1.36228118   R-squared       =    0.5482
+-------------+----------------------------------   Adj R-squared   =    0.5341
+       Total |  289.452919        99  2.92376686   Root MSE        =    1.1672
+
+------------------------------------------------------------------------------
+           y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+          xc |   .9983998   .1040552     9.59   0.000      .791852    1.204948
+         1.z |  -4.057394   .4487716    -9.04   0.000    -4.948199    -3.16659
+             |
+      z#c.xc |
+          1  |  -.8769945   .1542639    -5.69   0.000    -1.183206   -.5707831
+             |
+       _cons |   4.891688    .319828    15.29   0.000     4.256834    5.526541
+------------------------------------------------------------------------------
+
+. est store int2
+
+. predict y_int2
+(option xb assumed; fitted values)
+
+. twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+&gt;        (line y_int2 x if z == 1, lcolor(navy)) ///
+&gt;        (line y_int2 x if z == 0, lcolor(maroon)), ///
+&gt;          legend(off)
+
+</code></pre>
+<img src="graph8.svg" >
+<pre><code>. est table spline2 int2
+
+----------------------------------------
+    Variable |  spline2        int2     
+-------------+--------------------------
+          x0 |  .99839981               
+          x1 | -.87699452               
+           z | -4.0573944               
+          xc |               .99839982  
+             |
+           z |
+          1  |              -4.0573945  
+             |
+      z#c.xc |
+          1  |              -.87699454  
+             |
+       _cons | -.10031147    4.8916876  
+----------------------------------------
+
+</code></pre>
+<p>Again, we get the same results.</p>
+<h2><a href="#obtaining-both-slopes" id="obtaining-both-slopes">Obtaining both slopes</a></h2>
+<p>As mentioned before, the one downside of the interaction model is that we don&rsquo;t directly get the post-slope, instead obtaining the pre-slope and and the difference in slopes. This is easily remedied:</p>
+<pre><code>. margins z, dydx(xc)
+
+Average marginal effects                        Number of obs     =        100
+Model VCE    : OLS
+
+Expression   : Linear prediction, predict()
+dy/dx w.r.t. : xc
+
+------------------------------------------------------------------------------
+             |            Delta-method
+             |      dy/dx   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+xc           |
+           z |
+          0  |   .9983998   .1040552     9.59   0.000      .791852    1.204948
+          1  |   .1214053   .1138854     1.07   0.289    -.1046554    .3474659
+------------------------------------------------------------------------------
+
+</code></pre>
+<p>Once again, agreeing with the slopes obtained <a href="#obtain-pre-and-post-slopes">before</a> of     0.998 and 0.121.</p>

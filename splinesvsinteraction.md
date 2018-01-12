@@ -1,0 +1,238 @@
+<<dd_include: stata-header.txt >>
+
+# Splines vs Interaction models
+
+Linear splines are sometimes used when looking at interrupted time series models. For example, consider the scatter plot below.
+
+~~~~
+<<dd_do:quietly>>
+clear
+set obs 100
+gen x = runiform(0, 10)
+gen z = x > 5
+gen y = x - 2*x*z + 10*z + rnormal()
+twoway (scatter y x if z == 1) (scatter y x if z == 0) (lfit y x), legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph1.svg) replace >>
+
+The slope amongst the red points (`x < 5`) is clearly different from the slope amongst the blue points (`x > 5`). The best fit line fails to capture
+this at all.
+
+Imagine that `x` is time, and at `x = 5`, some intervention took place. The goal is to capture the change in slope that occurs after the
+intervention. One easy approach would be to fit separate pre and post models, and test for equality of coefficients. However, we can also address this
+with a single model.
+
+A linear spline model (as fit by Stata's [`mkspline`](https://www.stata.com/manuals/rmkspline.pdf)) can capture that change in trend. Including an
+indicator for pre/post even allows a discontinuity at `x = 5` instead of the typical continuous spline. However, splines can be harder to interpret
+and more complicated to work with. This document will demonstrate that an interaction model is equivalent to the linear spline model, and with a
+simple re-scaling, easier to interpret.
+
+## Data generation
+
+Let's create a slightly more general data set where there is a "jump" (discontinuity) at intervention in addition to the change in trend.
+
+~~~~
+<<dd_do>>
+clear
+set obs 100
+gen x = runiform(0, 10)
+sort x // To ease plotting later
+gen z = x > 5
+gen y = x + z - x*z + rnormal()
+twoway (scatter y x if z == 1) (scatter y x if z == 0), legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph2.svg) replace >>
+
+# Obtain pre and post slopes
+
+For comparison purposes, let's obtain the slopes in each time period.
+
+~~~~
+<<dd_do>>
+reg y x if z == 0
+local preslope = _b[x]
+reg y x if z == 1
+local postslope = _b[x]
+<</dd_do>>
+~~~~
+
+So the pre slope is <<dd_display: %9.3f `preslope'>> and the post slope is <<dd_display: %9.3f `postslope'>>. Their difference is
+<<dd_display: %9.3f `postslope' - `preslope'>>.
+
+# Spline version
+
+The "intervention" takes place at `x = 5`, so let's create the spline with a knot there.
+
+~~~~
+<<dd_do>>
+mkspline x0 5 x1 = x, marginal
+<</dd_do>>
+~~~~
+
+With the `marginal` option, `x0`'s coefficient will represent the pre-intervention slop and `x1`'s coefficient the difference between the pre- and
+post-intervention slopes (similar to an interaction). Without `marginal`, `x1`'s coefficient is the post-intervention slope. Note that this will not
+change the model, but is a simple reparameterization.
+
+## Spline Model 1 - Continuity at intervention
+
+First, we'll predict `y` using only the splines. This forces a continuity at intervention.
+
+~~~~
+<<dd_do>>
+reg y x0 x1
+est store spline1
+predict y_spline1
+twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+       (line y_spline1 x if z == 1, lcolor(navy)) ///
+       (line y_spline1 x if z == 0, lcolor(maroon)), ///
+         legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph3.svg) replace >>
+
+The continuity^[The visual discontinity is due the way the plot is generated and is not real.] at `x = 5` makes this a poor fit. Simply adding `z` to
+the model will allow a discontinuity.
+
+~~~~
+<<dd_do>>
+reg y x0 x1 z
+est store spline2
+predict y_spline2
+twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+       (line y_spline2 x if z == 1, lcolor(navy)) ///
+       (line y_spline2 x if z == 0, lcolor(maroon)), ///
+         legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph4.svg) replace >>
+
+We capture the model much better here. Note that the coefficient on `x0` is the marginal slope we obtained [before](#obtain-pre-and-post-slopes) and
+`x1` is the difference between the slopes.
+
+Additionally (and one of the major benefits that linear spline proponents point to) is that the coefficient on `z`, <<dd_display: %9.2f _b[z]>>,
+captures the drop that occurs at `x = 5` - in the pre-period, the best fit line is approaching ~5, and in the post-period, the best fit line is
+approaching ~1.
+
+## Without `marginal`
+
+Let's generate the splines without the `marginal` option to show the results are the same.
+
+~~~~
+<<dd_do>>
+mkspline x0a 5 x1a = x
+<</dd_do>>
+~~~~
+
+~~~~
+<<dd_do>>
+reg y x0a x1a z
+est store spline3
+predict y_spline3
+twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+       (line y_spline3 x if z == 1, lcolor(navy)) ///
+       (line y_spline3 x if z == 0, lcolor(maroon)), ///
+         legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph5.svg) replace >>
+
+The model is identical, but the coefficient on `x1a` is now the slope in the post period.
+
+# Interaction model
+
+If we fit a simple interaction model here, we obtain the same model.
+
+~~~~
+<<dd_do>>
+reg y c.x##c.z
+predict y_naive
+twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+       (line y_naive x if z == 1, lcolor(navy)) ///
+       (line y_naive x if z == 0, lcolor(maroon)), ///
+         legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph6.svg) replace >>
+
+The coefficient for `x` and the interaction capture the pre-slope and the change in slope after intervention, but the coefficent on `z` is capturing
+the difference in y-intercepts at `x = 0` - a meaningless value. This greatly harms the interpretability of this model.
+
+If we use a version of `x` which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead
+obtain a coefficient on `z` that's interpretable.
+
+~~~~
+<<dd_do>>
+gen xc = x - 5
+<</dd_do>>
+~~~~
+
+First we'll fit the model forcing continuity at the intervention. We fit this model by including a main effect for `xc`, the interaction of `xc` and
+`z`, but crucially, *not* a main effect for `z`.
+
+~~~~
+<<dd_do>>
+reg y c.xc c.xc#i.z
+est store int1
+predict y_int1
+twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+       (line y_int1 x if z == 1, lcolor(navy)) ///
+       (line y_int1 x if z == 0, lcolor(maroon)), ///
+         legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph7.svg) replace >>
+
+~~~~
+<<dd_do>>
+est table spline1 int1
+<</dd_do>>
+~~~~
+
+As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when `x = 0`; in the interaction
+model, it is the value estimated when `x` approaches 5 from the left.0
+
+Now, relax the continuity assumption.
+
+~~~~
+<<dd_do>>
+reg y c.xc##i.z
+est store int2
+predict y_int2
+twoway (scatter y x if z == 1) (scatter y x if z == 0) ///
+       (line y_int2 x if z == 1, lcolor(navy)) ///
+       (line y_int2 x if z == 0, lcolor(maroon)), ///
+         legend(off)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(graph8.svg) replace >>
+
+~~~~
+<<dd_do>>
+est table spline2 int2
+<</dd_do>>
+~~~~
+Again, we get the same results.
+
+## Obtaining both slopes
+
+As mentioned before, the one downside of the interaction model is that we don't directly get the post-slope, instead obtaining the pre-slope and and
+the difference in slopes. This is easily remedied:
+
+~~~~
+<<dd_do>>
+margins z, dydx(xc)
+<</dd_do>>
+~~~~
+
+Once again, agreeing with the slopes obtained [before](#obtain-pre-and-post-slopes) of <<dd_display: %9.3f `preslope'>> and
+<<dd_display: %9.3f `postslope'>>.
