@@ -2,3 +2,4 @@ ratpup.*
 stata.log
 .DS_store
 *.svg
+Stata/*.Rmd
