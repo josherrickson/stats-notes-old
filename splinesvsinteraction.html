@@ -1735,7 +1735,7 @@ The coefficient for <code>x</code> and the interaction capture the pre-slope and
 <div id="interaction-model-1---continuity-at-intervention" class="section level2">
 <h2>Interaction model 1 - Continuity at intervention</h2>
 <p>
-If we use a version of <code>x</code> which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead obtain a coefficient on <code>z</code> that’s interpretable.
+If we use a version of <code>x</code> which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead obtain a coefficient on the interaction that’s interpretable.
 </p>
 <pre><code>. gen xc = x - 5
 
@@ -1792,7 +1792,7 @@ First we’ll fit the model forcing continuity at the intervention. We fit this 
 
 </code></pre>
 <p>
-As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when <code>x = 0</code>; in the interaction model, it is the value estimated when <code>x</code> approaches 5 from the left.0
+As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when <code>x = 0</code>; in the interaction model, it is the value estimated when <code>x</code> approaches 5 from the left.)
 </p>
 </div>
 <div id="interaction-model-2---discontinuous-at-intervention" class="section level2">
