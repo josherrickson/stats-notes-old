@@ -114,8 +114,7 @@ xtsum ln_wage
 <</dd_do>>
 ~~~~
 
-It's an odd design choice to display the min/max for the between and within rows, but not the mean. In either case, we can obtain all these values
-without `xt`. As a sidenote, "T-bar" represents the average number of measures per individual, or `N/n`.
+We can replicate all these results without `xt`. As a sidenote, "T-bar" represents the average number of measures per individual, or `N/n`.
 
 ^#^^#^ Overall variation
 
