@@ -183,7 +183,7 @@ the difference in y-intercepts at `x = 0` - a meaningless value. This greatly ha
 ^#^^#^ Interaction model 1 - Continuity at intervention
 
 If we use a version of `x` which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead
-obtain a coefficient on `z` that's interpretable.
+obtain a coefficient on the interaction that's interpretable.
 
 ~~~~
 <<dd_do>>
@@ -215,7 +215,7 @@ est table spline1 int1
 ~~~~
 
 As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when `x = 0`; in the interaction
-model, it is the value estimated when `x` approaches 5 from the left.0
+model, it is the value estimated when `x` approaches 5 from the left.)
 
 ^#^^#^ Interaction Model 2 - Discontinuous at intervention
 
