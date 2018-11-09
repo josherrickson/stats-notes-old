@@ -3,3 +3,4 @@ stata.log
 .DS_store
 *.svg
 Stata/*.Rmd
+Stata/tmp.dta
