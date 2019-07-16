@@ -1,0 +1,42 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path=list(stata="/Applications/Stata/StataSE.app/Contents/MacOS/stata-se"))
+```
+
+## Stata
+
+```{stata}
+webuse margex
+codebook, compact
+regress y i.sex i.group
+* marginal mean per grouping
+margins group
+
+regress y i.sex##i.group
+* marginal mean when in interaction
+margins sex
+* marginal mean per interaction grouo
+margins sex#group
+
+regress y i.sex c.age
+* marginal mean at levels of continuous
+margins sex, at(age = (30 40))
+* marginal slope
+margins, dydx(age)
+
+regress y i.sex##c.age
+* marginal slope at each sex
+margins sex, dydx(age)
+* marginal mean at levels of continuous
+margins sex, at(age = (30 40))
+
+* interaction plot
+margins sex, at(age = (20(10)60))
+marginsplot
+
+```
