@@ -367,77 +367,47 @@ summary {
 </div>
 
 
-<div id="stata" class="section level2">
-<h2>Stata</h2>
-<pre class="stata"><code>webuse margex
-codebook, compact
-regress y i.sex i.group
-* marginal mean per grouping
-margins group
-
-regress y i.sex##i.group
-* marginal mean when in interaction
-margins sex
-* marginal mean per interaction grouo
-margins sex#group
-
-regress y i.sex c.age
-* marginal mean at levels of continuous
-margins sex, at(age = (30 40))
-* marginal slope
-margins, dydx(age)
-
-regress y i.sex##c.age
-* marginal slope at each sex
-margins sex, dydx(age)
-* marginal mean at levels of continuous
-margins sex, at(age = (30 40))
-
-* interaction plot
-margins sex, at(age = (20(10)60))
-marginsplot
+<div id="load-data" class="section level2 tabset">
+<h2>Load data</h2>
+<div id="stata" class="section level3">
+<h3>Stata</h3>
+<p>FF</p>
+<pre><code>## 
+## . quiet webuse mar. 
+## .</code></pre>
+<p>TF</p>
+<pre class="stata"><code>quiet webuse margex
 </code></pre>
+<pre><code>## 
+## . quiet webuse mar. 
+## .</code></pre>
+<p>FT</p>
+<pre><code>## 
+## . quiet webuse mar. 
+## .</code></pre>
+<p>TT</p>
+<pre class="stata"><code>quiet webuse margex
+</code></pre>
+<pre><code>## 
+## . quiet webuse mar. 
+## .</code></pre>
+</div>
+<div id="r" class="section level3">
+<h3>R</h3>
+<pre class="r"><code>library(haven)
+m &lt;- read_dta(&quot;http://www.stata-press.com/data/r15/margex.dta&quot;)
+m$sex &lt;- as.factor(m$sex)
+m$group &lt;- as.factor(m$group)</code></pre>
+</div>
+</div>
+<div id="marginal-means-of-categorical-variable" class="section level2 tabset">
+<h2>Marginal Means of Categorical Variable</h2>
+<div id="stata-1" class="section level3">
+<h3>Stata</h3>
 <pre><code>## 
 ## . webuse mar(Artificial data for margins)
 ## 
-## . codebook, compact
-## 
-## Variable    Obs Unique      Mean  Min       Max  Label
-## -------------------------------------------------------------------------------
-## y          3000    879  69.73357    0     146.3  
-## outcome    3000      2  .1696667    0         1  
-## sex        3000      2  .5006667    0         1  
-## group      3000      3     1.828    1         3  
-## age        3000     41    39.799   20        60  
-## distance   3000    371  58.58566  .25  748.8927  
-## ycn        3000    878  74.47263    0     153.8  
-## yc         3000      2  .2413333    0         1  
-## treatment  3000      2  .5006667    0         1  
-## agegroup   3000      3  2.263667    1         3  
-## arm        3000      3  1.970667    1         3  
-## -------------------------------------------------------------------------------
-## 
-## . regress y i.sex i.group
-## 
-##       Source |       SS           df       MS      Number of obs   =     3,000
-## -------------+----------------------------------   F(3, 2996)      =    152.06
-##        Model |  183866.077         3  61288.6923   Prob &gt; F        =    0.0000
-##     Residual |  1207566.93     2,996  403.059723   R-squared       =    0.1321
-## -------------+----------------------------------   Adj R-squared   =    0.1313
-##        Total |  1391433.01     2,999  463.965657   Root MSE        =    20.076
-## 
-## ------------------------------------------------------------------------------
-##            y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
-## -------------+----------------------------------------------------------------
-##          sex |
-##      female  |   18.32202   .8930951    20.52   0.000     16.57088    20.07316
-##              |
-##        group |
-##           2  |   8.037615    .913769     8.80   0.000     6.245937    9.829293
-##           3  |   18.63922   1.159503    16.08   0.000     16.36572    20.91272
-##              |
-##        _cons |   53.32146   .9345465    57.06   0.000     51.48904    55.15388
-## ------------------------------------------------------------------------------
+## . quiet regress y i.sex i.group
 ## 
 ## . * marginal mean per grouping
 ## 
@@ -458,32 +428,35 @@ marginsplot
 ##           3  |   81.13391    .848727    95.59   0.000     79.46976    82.79805
 ## ------------------------------------------------------------------------------
 ## 
-## . 
-## . regress y i.sex##i.group
+## .</code></pre>
+</div>
+<div id="r-1" class="section level3">
+<h3>R</h3>
+<pre class="r"><code>(mod1 &lt;- lm(y ~ sex + group, data = m))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ sex + group, data = m)
 ## 
-##       Source |       SS           df       MS      Number of obs   =     3,000
-## -------------+----------------------------------   F(5, 2994)      =     92.91
-##        Model |  186898.199         5  37379.6398   Prob &gt; F        =    0.0000
-##     Residual |  1204534.81     2,994  402.316235   R-squared       =    0.1343
-## -------------+----------------------------------   Adj R-squared   =    0.1329
-##        Total |  1391433.01     2,999  463.965657   Root MSE        =    20.058
+## Coefficients:
+## (Intercept)         sex1       group2       group3  
+##      53.321       18.322        8.038       18.639</code></pre>
+<pre class="r"><code>library(emmeans)
+emmeans(mod1, &quot;group&quot;)</code></pre>
+<pre><code>##  group emmean    SE   df lower.CL upper.CL
+##  1       62.5 0.647 2996     61.2     63.8
+##  2       70.5 0.606 2996     69.3     71.7
+##  3       81.1 0.848 2996     79.5     82.8
 ## 
-## ------------------------------------------------------------------------------
-##            y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
-## -------------+----------------------------------------------------------------
-##          sex |
-##      female  |   21.62507   1.509999    14.32   0.000     18.66433    24.58581
-##              |
-##        group |
-##           2  |   11.37444   1.573314     7.23   0.000     8.289552    14.45932
-##           3  |    21.6188   1.588487    13.61   0.000     18.50416    24.73344
-##              |
-##    sex#group |
-##    female#2  |  -4.851582   1.942744    -2.50   0.013     -8.66083   -1.042333
-##    female#3  |  -6.084875   3.004638    -2.03   0.043    -11.97624   -.1935115
-##              |
-##        _cons |    50.6107   1.367932    37.00   0.000     47.92852    53.29288
-## ------------------------------------------------------------------------------
+## Results are averaged over the levels of: sex 
+## Confidence level used: 0.95</code></pre>
+</div>
+</div>
+<div id="next" class="section level2">
+<h2>Next</h2>
+<pre><code>## 
+## . webuse mar(Artificial data for margins)
+## 
+## . quiet regress y i.sex##i.group
 ## 
 ## . * marginal mean when in interaction
 ## 
@@ -525,24 +498,11 @@ marginsplot
 ##    female#3  |    87.7697   2.468947    35.55   0.000     82.92869     92.6107
 ## ------------------------------------------------------------------------------
 ## 
-## . 
-## . regress y i.sex c.age
+## .</code></pre>
+<pre><code>## 
+## . webuse mar(Artificial data for margins)
 ## 
-##       Source |       SS           df       MS      Number of obs   =     3,000
-## -------------+----------------------------------   F(2, 2997)      =    209.88
-##        Model |  170938.657         2  85469.3283   Prob &gt; F        =    0.0000
-##     Residual |  1220494.35     2,997  407.238688   R-squared       =    0.1229
-## -------------+----------------------------------   Adj R-squared   =    0.1223
-##        Total |  1391433.01     2,999  463.965657   Root MSE        =     20.18
-## 
-## ------------------------------------------------------------------------------
-##            y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
-## -------------+----------------------------------------------------------------
-##          sex |
-##      female  |   14.03271   .7777377    18.04   0.000     12.50775    15.55766
-##          age |  -.5043666    .033698   -14.97   0.000    -.5704402   -.4382931
-##        _cons |   82.78115   1.323613    62.54   0.000     80.18586    85.37643
-## ------------------------------------------------------------------------------
+## . quiet regress y i.sex c.age
 ## 
 ## . * marginal mean at levels of continuous
 ## 
@@ -585,28 +545,11 @@ marginsplot
 ##          age |  -.5043666    .033698   -14.97   0.000    -.5704402   -.4382931
 ## ------------------------------------------------------------------------------
 ## 
-## . 
-## . regress y i.sex##c.age
+## .</code></pre>
+<pre><code>## 
+## . webuse mar(Artificial data for margins)
 ## 
-##       Source |       SS           df       MS      Number of obs   =     3,000
-## -------------+----------------------------------   F(3, 2996)      =    139.91
-##        Model |  170983.675         3  56994.5583   Prob &gt; F        =    0.0000
-##     Residual |  1220449.33     2,996   407.35959   R-squared       =    0.1229
-## -------------+----------------------------------   Adj R-squared   =    0.1220
-##        Total |  1391433.01     2,999  463.965657   Root MSE        =    20.183
-## 
-## ------------------------------------------------------------------------------
-##            y |      Coef.   Std. Err.      t    P&gt;|t|     [95% Conf. Interval]
-## -------------+----------------------------------------------------------------
-##          sex |
-##      female  |   14.92308   2.789012     5.35   0.000     9.454508    20.39165
-##          age |  -.4929608   .0480944   -10.25   0.000    -.5872622   -.3986595
-##              |
-##    sex#c.age |
-##      female  |  -.0224116   .0674167    -0.33   0.740    -.1545994    .1097762
-##              |
-##        _cons |   82.36936   1.812958    45.43   0.000      78.8146    85.92413
-## ------------------------------------------------------------------------------
+## . quiet regress y i.sex##c.age
 ## 
 ## . * marginal slope at each sex
 ## 
@@ -652,7 +595,12 @@ marginsplot
 ##    2#female  |   76.67755   .5461908   140.39   0.000      75.6066    77.74849
 ## ------------------------------------------------------------------------------
 ## 
-## . 
+## .</code></pre>
+<pre><code>## 
+## . webuse mar(Artificial data for margins)
+## 
+## . quiet regress y i.sex##c.age
+## 
 ## . * interaction plot
 ## 
 ## . margins sex, at(age = (20(10)60))
@@ -693,8 +641,34 @@ marginsplot
 ## 
 ##   Variables that uniquely identify margins: age sex
 ## 
-## . 
+## . graph export &quot;marginsplot.svg&quot;, replace
+## (file marginsplot.svg written in SVG format)
+## 
 ## .</code></pre>
+</div>
+<div id="r-2" class="section level2">
+<h2>R</h2>
+<pre class="r"><code>library(haven)
+m &lt;- read_dta(&quot;http://www.stata-press.com/data/r15/margex.dta&quot;)
+m$sex &lt;- as.factor(m$sex)
+m$group &lt;- as.factor(m$group)
+(mod1 &lt;- lm(y ~ sex + group, data = m))</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ sex + group, data = m)
+## 
+## Coefficients:
+## (Intercept)         sex1       group2       group3  
+##      53.321       18.322        8.038       18.639</code></pre>
+<pre class="r"><code>library(emmeans)
+emmeans(mod1, &quot;group&quot;)</code></pre>
+<pre><code>##  group emmean    SE   df lower.CL upper.CL
+##  1       62.5 0.647 2996     61.2     63.8
+##  2       70.5 0.606 2996     69.3     71.7
+##  3       81.1 0.848 2996     79.5     82.8
+## 
+## Results are averaged over the levels of: sex 
+## Confidence level used: 0.95</code></pre>
 </div>
 
 

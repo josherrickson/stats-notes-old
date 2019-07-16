@@ -4,39 +4,113 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(engine.path=list(stata="/Applications/Stata/StataSE.app/Contents/MacOS/stata-se"))
+knitr::opts_chunk$set(echo = TRUE,
+                      engine.path = list(stata =
+          "/Applications/Stata/StataSE.app/Contents/MacOS/stata-se"))
 ```
 
-## Stata
 
-```{stata}
+## Load data {.tabset}
+
+### Stata
+
+FF
+```{stata, echo = FALSE, cleanlog = FALSE}
+quiet webuse margex
+
+```
+TF
+```{stata, echo = TRUE, cleanlog = FALSE}
+quiet webuse margex
+
+```
+FT
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+
+```
+TT
+```{stata, echo = TRUE, cleanlog = TRUE}
+quiet webuse margex
+
+```
+
+### R
+
+```{r}
+library(haven)
+m <- read_dta("http://www.stata-press.com/data/r15/margex.dta")
+m$sex <- as.factor(m$sex)
+m$group <- as.factor(m$group)
+```
+
+## Marginal Means of Categorical Variable {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
 webuse margex
-codebook, compact
-regress y i.sex i.group
+quiet regress y i.sex i.group
 * marginal mean per grouping
 margins group
+```
 
-regress y i.sex##i.group
+### R
+
+```{r}
+(mod1 <- lm(y ~ sex + group, data = m))
+library(emmeans)
+emmeans(mod1, "group")
+```
+
+## Next
+
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+webuse margex
+quiet regress y i.sex##i.group
 * marginal mean when in interaction
 margins sex
 * marginal mean per interaction grouo
 margins sex#group
+```
 
-regress y i.sex c.age
+```{stata, echo = FALSE, cleanlog = TRUE}
+webuse margex
+quiet regress y i.sex c.age
 * marginal mean at levels of continuous
 margins sex, at(age = (30 40))
 * marginal slope
 margins, dydx(age)
+```
 
-regress y i.sex##c.age
+```{stata, echo = FALSE, cleanlog = TRUE}
+webuse margex
+quiet regress y i.sex##c.age
 * marginal slope at each sex
 margins sex, dydx(age)
 * marginal mean at levels of continuous
 margins sex, at(age = (30 40))
+```
 
+```{stata, echo = FALSE, cleanlog = TRUE}
+webuse margex
+quiet regress y i.sex##c.age
 * interaction plot
 margins sex, at(age = (20(10)60))
 marginsplot
+graph export "marginsplot.svg", replace
+```
 
+## R
+
+```{r}
+library(haven)
+m <- read_dta("http://www.stata-press.com/data/r15/margex.dta")
+m$sex <- as.factor(m$sex)
+m$group <- as.factor(m$group)
+(mod1 <- lm(y ~ sex + group, data = m))
+
+library(emmeans)
+emmeans(mod1, "group")
 ```
