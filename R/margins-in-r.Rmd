@@ -1,6 +1,9 @@
 ---
-title: "Untitled"
-output: html_document
+title: "Stata's `margins` command in R  "
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -10,96 +13,13 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 
-## Load data {.tabset}
+# Load data {.tabset}
 
-### Stata
+## Stata
 
-FF
-```{stata, echo = FALSE, cleanlog = FALSE}
-quiet webuse margex
-
-```
-TF
-```{stata, echo = TRUE, cleanlog = FALSE}
-quiet webuse margex
-
-```
-FT
 ```{stata, echo = FALSE, cleanlog = TRUE}
 quiet webuse margex
 
-```
-TT
-```{stata, echo = TRUE, cleanlog = TRUE}
-quiet webuse margex
-
-```
-
-### R
-
-```{r}
-library(haven)
-m <- read_dta("http://www.stata-press.com/data/r15/margex.dta")
-m$sex <- as.factor(m$sex)
-m$group <- as.factor(m$group)
-```
-
-## Marginal Means of Categorical Variable {.tabset}
-
-### Stata
-
-```{stata, echo = FALSE, cleanlog = TRUE}
-webuse margex
-quiet regress y i.sex i.group
-* marginal mean per grouping
-margins group
-```
-
-### R
-
-```{r}
-(mod1 <- lm(y ~ sex + group, data = m))
-library(emmeans)
-emmeans(mod1, "group")
-```
-
-## Next
-
-
-```{stata, echo = FALSE, cleanlog = TRUE}
-webuse margex
-quiet regress y i.sex##i.group
-* marginal mean when in interaction
-margins sex
-* marginal mean per interaction grouo
-margins sex#group
-```
-
-```{stata, echo = FALSE, cleanlog = TRUE}
-webuse margex
-quiet regress y i.sex c.age
-* marginal mean at levels of continuous
-margins sex, at(age = (30 40))
-* marginal slope
-margins, dydx(age)
-```
-
-```{stata, echo = FALSE, cleanlog = TRUE}
-webuse margex
-quiet regress y i.sex##c.age
-* marginal slope at each sex
-margins sex, dydx(age)
-* marginal mean at levels of continuous
-margins sex, at(age = (30 40))
-```
-
-```{stata, echo = FALSE, cleanlog = TRUE}
-webuse margex
-quiet regress y i.sex##c.age
-* interaction plot
-margins sex, at(age = (20(10)60))
-marginsplot
-graph export "marginsplot.svg", replace
 ```
 
 ## R
@@ -107,10 +27,147 @@ graph export "marginsplot.svg", replace
 ```{r}
 library(haven)
 m <- read_dta("http://www.stata-press.com/data/r15/margex.dta")
-m$sex <- as.factor(m$sex)
-m$group <- as.factor(m$group)
-(mod1 <- lm(y ~ sex + group, data = m))
-
-library(emmeans)
-emmeans(mod1, "group")
+m$sex <- as_factor(m$sex)
+m$group <- as_factor(m$group)
 ```
+
+# Marginal Means
+
+## Categorical Variable {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex i.group
+margins group
+```
+
+### R
+
+```{r}
+summary(mod1 <- lm(y ~ sex + group, data = m))
+library(emmeans)
+emmeans(mod1, ~ group)
+```
+
+## Categorical Variables & Interactions {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex##i.group
+margins sex
+margins sex#group
+```
+
+### R
+
+```{r}
+summary(mod1 <- lm(y ~ sex*group, data = m))
+emmeans(mod1, ~ group)
+emmeans(mod1, ~ group + sex)
+```
+
+## Catergorical Variables and Continuous Variables {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex c.age
+margins sex, at(age = (30 40))
+```
+
+### R
+
+**To Do**
+
+```{r}
+summary(mod1 <- lm(y ~ sex + age, data = m))
+```
+
+
+## Catergorical Variables & Continuous Variable Interaction {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex##c.age
+margins sex, at(age = (30 40))
+```
+
+### R
+
+**To Do**
+```{r}
+summary(mod1 <- lm(y ~ sex*age, data = m))
+```
+
+# Marginal Slopes
+
+## No interaction {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex c.age
+margins, dydx(age)
+```
+
+### R
+
+```{r}
+summary(mod1 <- lm(y ~ sex + age, data = m))
+emtrends(mod1, ~ 1, var = "age")
+```
+
+## Interaction {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex##c.age
+margins sex, dydx(age)
+```
+
+### R
+
+```{r}
+summary(mod1 <- lm(y ~ sex*age, data = m))
+emtrends(mod1, ~ sex, var = "age")
+```
+
+# Plotting
+
+## Interaction Plot {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.sex##c.age
+margins sex, at(age = (20(10)60))
+marginsplot, recastci(rarea)
+graph export "marginsplot.svg", replace
+```
+
+![](marginsplot.svg)
+
+### R
+
+```{r}
+library(interactions)
+summary(mod1 <- lm(y ~ sex*age, data = m))
+interact_plot(mod1, pred = age, modx = sex, interval = TRUE)
+```
+
+
+# Missing topics
+
+- `margins ..., atmeans`
+- Pairwise comparisons
