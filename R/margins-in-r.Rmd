@@ -1,6 +1,6 @@
 ---
 title: "Stata's `margins` command in R  "
-output: 
+output:
   html_document:
     toc: TRUE
     toc_float: TRUE
@@ -12,8 +12,14 @@ knitr::opts_chunk$set(echo = TRUE,
           "/Applications/Stata/StataSE.app/Contents/MacOS/stata-se"))
 ```
 
+One of Stata's major strengths is the [`margins`](https://www.stata.com/manuals/rmargins.pdf) command, a model post-estimation command which enables users to quickly and easily obtain marginal means and slopes, investigate interaction effects, and, via [`marginsplot`](https://www.stata.com/manuals/rmarginsplot.pdf), visualize said effects, especially interaction plots.
+
+I frequently find it frustrating coming to R and not having margins, so this document will demostrate how to get equivalent results out of R.
+
 
 # Load data {.tabset}
+
+We'll use a data set built into Stata, `margex`, which they use for a lot of margin examples. In Stata we can simply load it; R will have to import it via the `haven` library.
 
 ## Stata
 
@@ -33,25 +39,48 @@ m$group <- as_factor(m$group)
 
 # Marginal Means
 
+Marginal means are statistics calculated from predicted values of a model at fixed values of covariates.
+
 ## Categorical Variable {.tabset}
+
+When we have a single categorical variable (not involved in an interaction), one level is excluded as a reference or baseline category, and the coefficients on the other levels represent the average difference between those levels and the reference.
 
 ### Stata
 
 ```{stata, echo = FALSE, cleanlog = TRUE}
 quiet webuse margex
-regress y i.sex i.group
+regress y i.group
 margins group
 ```
 
 ### R
 
 ```{r}
-summary(mod1 <- lm(y ~ sex + group, data = m))
+summary(mod1 <- lm(y ~ group, data = m))
 library(emmeans)
 emmeans(mod1, ~ group)
 ```
 
+### Math
+
+Assume a linear regression set up with a single categorical variable, \(G\), with three groups. We fit
+
+\[
+  E(Y|G) = \beta_0 + \beta_1g_2 + \beta_2g_3,
+\]
+
+where \(g_2\) and \(g_3\) are dummy variables representing membership in groups 2 and 3 respectively (\(g_{2i} = 1\) if observation \(i\) has \(G = 2\), and equal to 0 otherwise.) Since \(g_1\) is not found in the model, it is the reference category.
+
+Therefore, \(\beta_0\) represents the average response among the reference category \(G = 1\). \(\beta_1\) represents the difference in the average response between groups \(G = 1\) and \(G = 2\). Therefore, \(\beta_0 + \beta_1\) is the average response in group \(G = 2\). A similar argument can be made about \(\beta_2\) and group 3.
+
+
 ## Categorical Variables & Interactions {.tabset}
+
+When we have an interaction of categorical variables, we can estimate the marginal mean in each combination of levels from the two categorical variables.
+
+Alternatively,
+
+**To do: `atmeans` versus as observed - I believe `emmeans` default is `atmeans` while Stata's is as observed.**
 
 ### Stata
 
@@ -69,6 +98,34 @@ summary(mod1 <- lm(y ~ sex*group, data = m))
 emmeans(mod1, ~ group)
 emmeans(mod1, ~ group + sex)
 ```
+
+### Math
+
+Consider the simplest case, with two binary variables \(Z\) and \(K\). We fit the model
+
+\[
+  E(Y|Z,K) = \beta_0 + \beta_1Z + \beta_2K + \beta_3ZK,
+\]
+
+where \(ZK = 0\) only if both \(Z = 1\) and \(K = 1\).
+
+This is functionally equivalent to defining a new variable \(L\),
+
+\[
+  L = \begin{cases}
+  0, & K = 0 \& Z = 0 \\
+  1, & K = 0 \& Z = 1 \\
+  2, & K = 1 \& Z = 0 \\
+  3, & K = 1 \& Z = 1,
+  \end{cases}
+\]
+
+and fitting the model
+
+\[
+  E(Y|L) = \beta_0 + \beta_1l_1 + \beta_2l_2 + \beta_3l_3.
+\]
+
 
 ## Catergorical Variables and Continuous Variables {.tabset}
 
