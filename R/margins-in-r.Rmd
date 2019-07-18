@@ -16,6 +16,12 @@ One of Stata's major strengths is the [`margins`](https://www.stata.com/manuals/
 
 I frequently find it frustrating coming to R and not having margins, so this document will demostrate how to get equivalent results out of R.
 
+In the R code, the following packages are used.
+
+```{r, message = FALSE}
+library(emmeans)
+library(interactions)
+```
 
 # Load data {.tabset}
 
@@ -32,7 +38,7 @@ quiet webuse margex
 
 ```{r}
 library(haven)
-m <- read_dta("http://www.stata-press.com/data/r15/margex.dta")
+m <- haven::read_dta("http://www.stata-press.com/data/r15/margex.dta")
 m$sex <- as_factor(m$sex)
 m$group <- as_factor(m$group)
 ```
@@ -57,8 +63,7 @@ margins group
 
 ```{r}
 summary(mod1 <- lm(y ~ group, data = m))
-library(emmeans)
-emmeans(mod1, ~ group)
+emmeans::emmeans(mod1, ~ group)
 ```
 
 ### Math
@@ -95,8 +100,8 @@ margins sex#group
 
 ```{r}
 summary(mod1 <- lm(y ~ sex*group, data = m))
-emmeans(mod1, ~ group)
-emmeans(mod1, ~ group + sex)
+emmeans::emmeans(mod1, ~ group)
+emmeans::emmeans(mod1, ~ group + sex)
 ```
 
 ### Math
@@ -129,6 +134,8 @@ and fitting the model
 
 ## Catergorical Variables and Continuous Variables {.tabset}
 
+When there are additional continuous variables in the model, we may wish to obtain the marginal mean at specified levels of the continuous variable.
+
 ### Stata
 
 ```{stata, echo = FALSE, cleanlog = TRUE}
@@ -139,10 +146,12 @@ margins sex, at(age = (30 40))
 
 ### R
 
-**To Do**
+For each unique level of the continuous variable, a seperate `emmeans` call is needed apparently. If anyone knows a way around this, please let me know.
 
 ```{r}
 summary(mod1 <- lm(y ~ sex + age, data = m))
+emmeans::emmeans(mod1, ~ sex, at = list(age = 30))
+emmeans::emmeans(mod1, ~ sex, at = list(age = 40))
 ```
 
 
@@ -158,9 +167,10 @@ margins sex, at(age = (30 40))
 
 ### R
 
-**To Do**
 ```{r}
 summary(mod1 <- lm(y ~ sex*age, data = m))
+emmeans::emmeans(mod1, ~ sex, at = list(age = 30))
+emmeans::emmeans(mod1, ~ sex, at = list(age = 40))
 ```
 
 # Marginal Slopes
@@ -179,7 +189,7 @@ margins, dydx(age)
 
 ```{r}
 summary(mod1 <- lm(y ~ sex + age, data = m))
-emtrends(mod1, ~ 1, var = "age")
+emmeans::emtrends(mod1, ~ 1, var = "age")
 ```
 
 ## Interaction {.tabset}
@@ -196,7 +206,7 @@ margins sex, dydx(age)
 
 ```{r}
 summary(mod1 <- lm(y ~ sex*age, data = m))
-emtrends(mod1, ~ sex, var = "age")
+emmeans::emtrends(mod1, ~ sex, var = "age")
 ```
 
 # Plotting
@@ -220,7 +230,7 @@ graph export "marginsplot.svg", replace
 ```{r}
 library(interactions)
 summary(mod1 <- lm(y ~ sex*age, data = m))
-interact_plot(mod1, pred = age, modx = sex, interval = TRUE)
+interactions::interact_plot(mod1, pred = age, modx = sex, interval = TRUE)
 ```
 
 
