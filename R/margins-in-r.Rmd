@@ -209,6 +209,28 @@ summary(mod1 <- lm(y ~ sex*age, data = m))
 emmeans::emtrends(mod1, ~ sex, var = "age")
 ```
 
+# Pairwise Comparisons
+
+## Categorical Variables {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.group
+margins group, pwcompare(pv)
+```
+
+### R
+
+Note that `pairs` is a generic, meaning that `emmeans::pairs` is an invalid call. Despite this, the "emmeans" package is required to call the below.
+```{r}
+summary(mod1 <- lm(y ~ group, data = m))
+pairs(emmeans::emmeans(mod1, ~ group), adjust = "none")
+```
+
+The `adjust = "none"` argument skips any multiple comparisons correction. This is done to obtain the same results as the regression coefficients. If you'd prefer a more ANOVA post-hoc approach, there are other options for `adjust`, see `?emmeans::contrast)` for details.
+
 # Plotting
 
 ## Interaction Plot {.tabset}
@@ -237,4 +259,3 @@ interactions::interact_plot(mod1, pred = age, modx = sex, interval = TRUE)
 # Missing topics
 
 - `margins ..., atmeans`
-- Pairwise comparisons
