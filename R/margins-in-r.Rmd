@@ -231,6 +231,24 @@ pairs(emmeans::emmeans(mod1, ~ group), adjust = "none")
 
 The `adjust = "none"` argument skips any multiple comparisons correction. This is done to obtain the same results as the regression coefficients. If you'd prefer a more ANOVA post-hoc approach, there are other options for `adjust`, see `?emmeans::contrast)` for details.
 
+## Restricted categorical variables {.tabset}
+
+### Stata
+
+```{stata, echo = FALSE, cleanlog = TRUE}
+quiet webuse margex
+regress y i.group##i.sex
+margins sex@group, contrast(pv nowald)
+```
+
+### R
+
+```{r}
+summary(mod1 <- lm(y ~ group*sex, data = m))
+emmeans::contrast(emmeans::emmeans(mod1, ~ sex | group), "pairwise")
+```
+
+
 # Plotting
 
 ## Interaction Plot {.tabset}
