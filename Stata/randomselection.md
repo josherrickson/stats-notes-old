@@ -107,6 +107,9 @@ list, sep(0)
 <</dd_do>>
 ~~~~
 
+(Recall that when calling `bysort`, any argument in parantheses is used for sorting, not for by'ing. Since I sorted by `foreign` and `rand` above I
+probably could have just used the prefix `by foreign:`, however, I prefer always using `bysort` with full sorting just to avoid any issues.)
+
 We could have also enforced an unequal split in `foreign`:
 
 ~~~~

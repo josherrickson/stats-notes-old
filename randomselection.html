@@ -1697,6 +1697,9 @@ So we have two separate randomly sorted list, sep(0)s here. To select a fixed nu
 
 </code></pre>
 <p>
+(Recall that when calling <code>bysort</code>, any argument in parantheses is used for sorting, not for by’ing. Since I sorted by <code>foreign</code> and <code>rand</code> above I probably could have just used the prefix <code>by foreign:</code>, however, I prefer always using <code>bysort</code> with full sorting just to avoid any issues.)
+</p>
+<p>
 We could have also enforced an unequal split in <code>foreign</code>:
 </p>
 <pre><code>. gen insample2 = rownumber &lt;= 3 if foreign == 0
