@@ -1,0 +1,8 @@
+/* Allow scrolling panes */
+.chart-wrapper .chart-stage {
+    overflow: scroll;
+}
+/* Proper image placement */
+.image-container {
+    position: static;
+}
