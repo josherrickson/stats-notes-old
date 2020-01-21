@@ -97,7 +97,7 @@ list, sep(0)
 <</dd_do>>
 ~~~~
 
-So we have two separate randomly sorted list, sep(0)s here. To select a fixed number from each, we can use the `bysort` prefix.
+So we have two separate randomly sorted lists here. To select a fixed number from each, we can use the `bysort` prefix.
 
 ~~~~
 <<dd_do>>
