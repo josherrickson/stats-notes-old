@@ -35,33 +35,83 @@ The model we'll be fitting is
 
 ![mediation](path.png)
 
+Here, "satis" is a potential mediator between "support" and "perform". The direct effect is the arrow between "support" and "perform", the indirect
+effect is the arrows from "support" to "perform" which passes through "satis", and the total effect is the sum of the direct and indirect effects.
+
 ~~~~
 <<dd_do>>
 sem (perform <- satis support) (satis <- support)
+<</dd_do>>
+~~~~
 
+The direct, indirect and total effects can be estimated via `estat teffects`.
+
+
+~~~~
+<<dd_do>>
 estat teffects
+<</dd_do>>
+~~~~
 
+Let's calculate them manually. First we'll re-display the SEM results with the `coeflegend` to obtain the names to access the coefficients.
+
+
+~~~~
+<<dd_do>>
 sem, coeflegend
+<</dd_do>>
+~~~~
 
-* main effect
+The main effects are directly from the model, but for completeness let's obtain it.
+
+~~~~
+<<dd_do>>
 estat teffects, noindirect nototal
 nlcom _b[perform:support]
+<</dd_do>>
+~~~~
 
-* Indirect effect
+For the indirect effect, we'll simply multiply the path from "support" to "satis" and from "satis" to "perform".
+
+~~~~
+<<dd_do>>
 estat teffects, nodirect nototal
 nlcom _b[perform:satis]*_b[satis:support]
+<</dd_do>>
+~~~~
 
-* Total effect
+Finally, we can sum those for the direct effect.
+
+~~~~
+<<dd_do>>
 estat teffects, nodirect noindirect
 nlcom _b[perform:satis]*_b[satis:support] + _b[perform:support]
+<</dd_do>>
+~~~~
+
+^#^ With survey data
+
+We'll reproduce the above results with survey set data. The actually `svyset` here is nonsense, this test data is not actual survey data.
 
 
-
-
+~~~~
+<<dd_do>>
 svyset branch [pweight = perform]
+<</dd_do>>
+~~~~
 
+To use the `svy` prefix, we switch from `sem` to `gsem`.
+
+~~~~
+<<dd_do>>
 svy: gsem (perform <- satis support) (satis <- support)
+<</dd_do>>
+~~~~
 
+Finally, all three effects can be calculated via the same `nlcom` commands.
+
+~~~~
+<<dd_do>>
 * main effect
 nlcom _b[perform:support]
 
