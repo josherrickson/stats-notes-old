@@ -1,7 +1,7 @@
 ~~~
 <<dd_ignore>>
 ---
-title: Stata: Mediation with svyset data
+title: Mediation with svyset data
 author: Josh Errickson
 output:
   html_document:
@@ -33,7 +33,7 @@ webuse gsem_multmed
 
 The model we'll be fitting is
 
-[mediation](path.png)
+![mediation](path.png)
 
 ~~~~
 <<dd_do>>
