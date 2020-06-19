@@ -1592,7 +1592,7 @@ First, we’ll generate a random number per row. You can use any distribution yo
 
 </code></pre>
 <p>
-<code>rnormal</code> takes in 2 optional arguments of a mean and standard devation; the defaults are 0 and 1 respectively.
+<code>rnormal</code> takes in 2 optional arguments of a mean and standard deviation; the defaults are 0 and 1 respectively.
 </p>
 <p>
 If you prefer uniform, you call <code>generate rand = runiform(a, b)</code> where <code>a</code> and <code>b</code> are upper and lower bounds, e.g. <code>generate rand = runiform(0, 1)</code>.
@@ -1646,7 +1646,7 @@ Recall that <code>_n</code> refers to the current row number, so this is just fl
 <div id="sample-by-subgroup" class="section level2">
 <h2>Sample by Subgroup</h2>
 <p>
-Consider the sample we obtained above, and notice that we sampled 3 domestic cars and 2 foreign cars. Since it was a simple random sample, that split is random; we could have just as easily obtained all foriegn cars or any other combination. Perhaps we want to force some balance, for example, that our random sample is exactly 2 foreign and 2 domestic.
+Consider the sample we obtained above, and notice that we sampled 3 domestic cars and 1 foreign car. Since it was a simple random sample, that split is random; we could have just as easily obtained all foreign cars or any other combination. Perhaps we want to force some balance, for example, that our random sample is exactly 2 foreign and 2 domestic.
 </p>
 <p>
 We’ll generate a new random number first just as before.
@@ -1672,7 +1672,7 @@ We’ll generate a new random number first just as before.
 
 </code></pre>
 <p>
-Now when we sort, we’ll sort by <code>foriegn</code> first.
+Now when we sort, we’ll sort by <code>foreign</code> first.
 </p>
 <pre><code>. sort foreign rand
 
@@ -1716,7 +1716,7 @@ So we have two separate randomly sorted lists here. To select a fixed number fro
 
 </code></pre>
 <p>
-(Recall that when calling <code>bysort</code>, any argument in parantheses is used for sorting, not for by’ing. Since I sorted by <code>foreign</code> and <code>rand</code> above I probably could have just used the prefix <code>by foreign:</code>, however, I prefer always using <code>bysort</code> with full sorting just to avoid any issues.)
+(Recall that when calling <code>bysort</code>, any argument in parentheses is used for sorting, not for by’ing. Since I sorted by <code>foreign</code> and <code>rand</code> above I probably could have just used the prefix <code>by foreign:</code>, however, I prefer always using <code>bysort</code> with full sorting just to avoid any issues.)
 </p>
 <p>
 We could have also enforced an unequal split in <code>foreign</code>:
@@ -1795,7 +1795,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

@@ -48,7 +48,7 @@ list, sep(0)
 <</dd_do>>
 ~~~~
 
-`rnormal` takes in 2 optional arguments of a mean and standard devation; the defaults are 0 and 1 respectively.
+`rnormal` takes in 2 optional arguments of a mean and standard deviation; the defaults are 0 and 1 respectively.
 
 If you prefer uniform, you call `generate rand = runiform(a, b)` where `a` and `b` are upper and lower bounds, e.g. `generate rand = runiform(0, 1)`.
 
@@ -74,8 +74,8 @@ Recall that `_n` refers to the current row number, so this is just flagging all 
 
 ^#^^#^ Sample by Subgroup
 
-Consider the sample we obtained above, and notice that we sampled 3 domestic cars and 2 foreign cars. Since it was a simple random sample, that split
-is random; we could have just as easily obtained all foriegn cars or any other combination. Perhaps we want to force some balance, for example, that
+Consider the sample we obtained above, and notice that we sampled 3 domestic cars and 1 foreign car. Since it was a simple random sample, that split
+is random; we could have just as easily obtained all foreign cars or any other combination. Perhaps we want to force some balance, for example, that
 our random sample is exactly 2 foreign and 2 domestic.
 
 We'll generate a new random number first just as before.
@@ -88,7 +88,7 @@ list, sep(0)
 <</dd_do>>
 ~~~~
 
-Now when we sort, we'll sort by `foriegn` first.
+Now when we sort, we'll sort by `foreign` first.
 
 ~~~~
 <<dd_do>>
@@ -107,7 +107,7 @@ list, sep(0)
 <</dd_do>>
 ~~~~
 
-(Recall that when calling `bysort`, any argument in parantheses is used for sorting, not for by'ing. Since I sorted by `foreign` and `rand` above I
+(Recall that when calling `bysort`, any argument in parentheses is used for sorting, not for by'ing. Since I sorted by `foreign` and `rand` above I
 probably could have just used the prefix `by foreign:`, however, I prefer always using `bysort` with full sorting just to avoid any issues.)
 
 We could have also enforced an unequal split in `foreign`:
