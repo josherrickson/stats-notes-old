@@ -199,40 +199,7 @@ Examples:
 
 #### Theory
 
-Assume our regression equation is
-
-\[
-  E(Y|X = x) = \beta_0 + \beta_1x.
-\]
-
-If we include \(\log(X)\) instead, we have
-
-\[
-  E(Y|X = x) = \beta_0 + \beta_1\log(x).
-\]
-
-Consider when \(X = cX\) where \(c\) is some constant (e.g. 2 for a doubling of \(X\) or 1.3 for a 30% increase in \(X\)).
-
-\[
-  E(Y|X = cx) = \beta_0 + \beta_1\log(cx).
-\]
-
-Therefore if we look at the difference in expectation,
-
-\[
-  E(Y|X = cx) - E(Y|X = x)  = \beta_1(\log(cx) - \log(x)) = \beta_1\log(c).
-\]
-
-#### Approximation
-
-If your percent change is small (e.g. a few percent) then you can approximate the change. This is because
-
-\[
-  log(1 + x) \approx x,
-\]
-
-when `x` is close to 0. So to approximate what effect a 1\% change in `X` would have, simply multiple \(\hat{\beta}\) by that value;
-\(0.1\hat{\beta}\). This works reliably well up to \(\pm3\%\), moderately up to \(\pm5\%\) and gets much worse beyond that.
+To-do.
 
 Column
 ------------------------------

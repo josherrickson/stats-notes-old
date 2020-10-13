@@ -2925,30 +2925,7 @@ To test this, we predict the difference in predicted outcome with some values of
 </div>
 <div id="theory-2" class="section level4">
 <h4>Theory</h4>
-<p>Assume our regression equation is</p>
-<p><span class="math display">\[
-  E(Y|X = x) = \beta_0 + \beta_1x.
-\]</span></p>
-<p>If we include <span class="math inline">\(\log(X)\)</span> instead, we have</p>
-<p><span class="math display">\[
-  E(Y|X = x) = \beta_0 + \beta_1\log(x).
-\]</span></p>
-<p>Consider when <span class="math inline">\(X = cX\)</span> where <span class="math inline">\(c\)</span> is some constant (e.g. 2 for a doubling of <span class="math inline">\(X\)</span> or 1.3 for a 30% increase in <span class="math inline">\(X\)</span>).</p>
-<p><span class="math display">\[
-  E(Y|X = cx) = \beta_0 + \beta_1\log(cx).
-\]</span></p>
-<p>Therefore if we look at the difference in expectation,</p>
-<p><span class="math display">\[
-  E(Y|X = cx) - E(Y|X = x)  = \beta_1(\log(cx) - \log(x)) = \beta_1\log(c).
-\]</span></p>
-</div>
-<div id="approximation-1" class="section level4">
-<h4>Approximation</h4>
-<p>If your percent change is small (e.g. a few percent) then you can approximate the change. This is because</p>
-<p><span class="math display">\[
-  log(1 + x) \approx x,
-\]</span></p>
-<p>when <code>x</code> is close to 0. So to approximate what effect a 1% change in <code>X</code> would have, simply multiple <span class="math inline">\(\hat{\beta}\)</span> by that value; <span class="math inline">\(0.1\hat{\beta}\)</span>. This works reliably well up to <span class="math inline">\(\pm3\%\)</span>, moderately up to <span class="math inline">\(\pm5\%\)</span> and gets much worse beyond that.</p>
+<p>To-do.</p>
 </div>
 </div>
 </div>
