@@ -46,8 +46,7 @@ Column {data-width=400}
 
 #### tldr
 
-A 1 unit change in a predictor is associated with a \(\textrm{exp}(\hat{\beta})\) mulitplicative change in \(Y\), or a \(100(1 -
-\textrm{exp}(\hat{\beta}))\%\) change in \(Y\).
+A 1 unit change in a predictor is associated with a \(\textrm{exp}(\hat{\beta})\) mulitplicative change in \(Y\), or a \(100(\textrm{exp}(\hat{\beta}) - 1)\%\) change in \(Y\).
 
 Examples:
 

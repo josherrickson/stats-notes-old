@@ -2774,7 +2774,7 @@ window.FlexDashboardComponents.push({
 <h3>Discussion</h3>
 <div id="tldr" class="section level4">
 <h4>tldr</h4>
-<p>A 1 unit change in a predictor is associated with a <span class="math inline">\(\textrm{exp}(\hat{\beta})\)</span> mulitplicative change in <span class="math inline">\(Y\)</span>, or a <span class="math inline">\(100(1 - \textrm{exp}(\hat{\beta}))\%\)</span> change in <span class="math inline">\(Y\)</span>.</p>
+<p>A 1 unit change in a predictor is associated with a <span class="math inline">\(\textrm{exp}(\hat{\beta})\)</span> mulitplicative change in <span class="math inline">\(Y\)</span>, or a <span class="math inline">\(100(\textrm{exp}(\hat{\beta}) - 1)\%\)</span> change in <span class="math inline">\(Y\)</span>.</p>
 <p>Examples:</p>
 <ul>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is .2, a 1 unit increase in <span class="math inline">\(X\)</span> is associated with a <span class="math inline">\(\textrm{exp}(.2)\ \approx 1.22\)</span> multiplicative change in <span class="math inline">\(Y\)</span>, or a 22% increase.</li>
@@ -2811,8 +2811,8 @@ window.FlexDashboardComponents.push({
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">data</span>(mtcars)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>(m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(disp) <span class="op">~</span><span class="st"> </span>drat, <span class="dt">data =</span> mtcars))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(disp) <span class="sc">~</span> drat, <span class="at">data =</span> mtcars))</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = log(disp) ~ drat, data = mtcars)
@@ -2825,10 +2825,10 @@ Coefficients:
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">exp</span>(<span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">drat =</span> <span class="dv">5</span>)))<span class="op">/</span><span class="kw">exp</span>(<span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">drat =</span> <span class="dv">4</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">drat =</span> <span class="dv">5</span>)))<span class="sc">/</span><span class="fu">exp</span>(<span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">drat =</span> <span class="dv">4</span>)))</span></code></pre></div>
 <pre><code>        1 
 0.4350567 </code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">exp</span>(<span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">drat =</span> <span class="dv">30</span>)))<span class="op">/</span><span class="kw">exp</span>(<span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">drat =</span> <span class="dv">29</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">drat =</span> <span class="dv">30</span>)))<span class="sc">/</span><span class="fu">exp</span>(<span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">drat =</span> <span class="dv">29</span>)))</span></code></pre></div>
 <pre><code>        1 
 0.4350567 </code></pre>
 </div>
@@ -2885,8 +2885,8 @@ Coefficients:
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">data</span>(mtcars)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>(m &lt;-<span class="st"> </span><span class="kw">lm</span>(drat <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(disp), <span class="dt">data =</span> mtcars))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">lm</span>(drat <span class="sc">~</span> <span class="fu">log</span>(disp), <span class="at">data =</span> mtcars))</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = drat ~ log(disp), data = mtcars)
@@ -2899,10 +2899,10 @@ To test this, we predict the difference in predicted outcome with some values of
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">5</span>)) <span class="op">-</span><span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">5</span><span class="op">*</span><span class="fl">1.25</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">5</span>)) <span class="sc">-</span> <span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">5</span><span class="sc">*</span><span class="fl">1.25</span>))</span></code></pre></div>
 <pre><code>        1 
 0.1534182 </code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">30</span>)) <span class="op">-</span><span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">30</span><span class="op">*</span><span class="fl">1.25</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">30</span>)) <span class="sc">-</span> <span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">30</span><span class="sc">*</span><span class="fl">1.25</span>))</span></code></pre></div>
 <pre><code>        1 
 0.1534182 </code></pre>
 </div>
@@ -2936,8 +2936,8 @@ To test this, we predict the difference in predicted outcome with some values of
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">data</span>(mtcars)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>(m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(drat) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(disp), <span class="dt">data =</span> mtcars))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(drat) <span class="sc">~</span> <span class="fu">log</span>(disp), <span class="at">data =</span> mtcars))</span></code></pre></div>
 <pre><code>
 Call:
 lm(formula = log(drat) ~ log(disp), data = mtcars)
@@ -2950,10 +2950,10 @@ To test this, we predict the difference in predicted outcome with some values of
 <div class="knitr-options" data-fig-width="576" data-fig-height="460">
 
 </div>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">5</span>)) <span class="op">-</span><span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">5</span><span class="op">*</span><span class="fl">1.25</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">5</span>)) <span class="sc">-</span> <span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">5</span><span class="sc">*</span><span class="fl">1.25</span>))</span></code></pre></div>
 <pre><code>         1 
 0.04251857 </code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">30</span>)) <span class="op">-</span><span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">newdata =</span> <span class="kw">data.frame</span>(<span class="dt">disp =</span> <span class="dv">30</span><span class="op">*</span><span class="fl">1.25</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">30</span>)) <span class="sc">-</span> <span class="fu">predict</span>(m, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">disp =</span> <span class="dv">30</span><span class="sc">*</span><span class="fl">1.25</span>))</span></code></pre></div>
 <pre><code>         1 
 0.04251857 </code></pre>
 </div>
