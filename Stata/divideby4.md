@@ -4,10 +4,7 @@
 title: The "Divide by 4" Rule
 author: Josh Errickson
 output:
-  html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
+  html_document
 ---
 <</dd_ignore>>
 ~~~~
