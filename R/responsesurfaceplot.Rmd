@@ -1,0 +1,70 @@
+---
+title: "Response Surface Plot"
+author: "Josh Errickson"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+# Introduction
+
+Response surface analysis is just regression with an interaction. Typically the model fit is
+
+\[
+    y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \beta_3x_1x_2 + \beta_4x_1^2 + \beta_5x_2^2,
+\]
+
+but in general any interaction should work for the below visualization.
+
+# Using `rsm::persp.lm`
+
+The "rsm" package allegedly does response surface modeling automatically, but we
+can use it just for the `rsm::persp.lm` function (which can just be referred to
+as `persp` after loading the package). Note that `stats::persp` does *not* work
+directly with a model object; you'd need to do a few extra steps to generate a
+matrix first.
+
+```{r, message = FALSE}
+library(emmeans)
+library(rsm)
+
+data(mtcars)
+
+m <- lm(mpg ~ disp + qsec + disp:qsec + I(disp^2) + I(qsec^2), data = mtcars)
+
+rsm::persp.lm(m, disp ~ qsec, zlab = "mpg", theta = 120, phi = 10, r = 10)
+```
+
+# Using plotly
+
+Alternately, [plotly](https://plotly.com/r/) can be used to create an
+interactive plot. The data needs to be set up in a bit of an odd fashion,
+instead of a matrix of x-y-z triads, a list is created with the unique x values,
+the unique y values, and a matrix corresponding to those values.
+
+```{r, message = FALSE}
+
+library(plotly)
+
+# Set up grid
+q <- 15:23
+d <- (1:9)*50
+
+em <- as.data.frame(emmeans(m, ~ qsec*disp, at = list(qsec = q, disp = d)))
+
+# x & y are unique values, z is len(x) x len(y) matrix
+dd <- list(q = q,
+           d = d,
+           m = matrix(em$emmean,
+                      nrow = length(q),
+                      ncol = length(d),
+                      byrow = TRUE))
+
+
+plot_ly(x = dd$q, y = dd$d, z = dd$m, type = "surface") |>
+  layout(scene = list(xaxis=list(title = "qsec"),
+                      yaxis=list(title = "disp"),
+                      zaxis=list(title = "mpg")))
+```
