@@ -37,12 +37,18 @@ m <- lm(mpg ~ disp + qsec + disp:qsec + I(disp^2) + I(qsec^2), data = mtcars)
 rsm::persp.lm(m, disp ~ qsec, zlab = "mpg", theta = 120, phi = 10, r = 10)
 ```
 
+(Note: `persp.lm` does not support other types of models such as mixed models
+from `lmer`, however plotly below should support all types of models that
+[`emmeans` supports](https://cran.r-project.org/web/packages/emmeans/vignettes/models.html).)
+
 # Using plotly
 
 Alternately, [plotly](https://plotly.com/r/) can be used to create an
 interactive plot. The data needs to be set up in a bit of an odd fashion,
 instead of a matrix of x-y-z triads, a list is created with the unique x values,
-the unique y values, and a matrix corresponding to those values.
+the unique y values, and a matrix of predicted values of the outcome containing
+all pairwise values of x and y. We use `emmeans` to generate these predicted
+values.
 
 ```{r, message = FALSE}
 
