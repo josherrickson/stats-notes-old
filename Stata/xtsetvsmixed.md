@@ -57,8 +57,7 @@ xtreg <model>, re
 
 The short version of how to fit each model using `mixed` is:
 
-- `fe`: By individual, center each \\(y\\) and \\(x\\) (hence each individual has an average value of 0, so the between variance is 0) and run a linear
-  model with `reg`.
+- `fe`: Run a linear model with `reg` including the group as a categorical variable (this is called the Least Squares Dummy Variable, LSDV, model).
 - `be`: Collapse over individual, and run a linear model with `reg`.
 - `re`: A traditional mixed model with a random effect (this is random effect in the sense of a mixed model, not in the `xt` setting) for individual.
 
@@ -186,23 +185,28 @@ xtreg ln_wage grade age ttl_exp tenure not_smsa south, fe
 <</dd_do>>
 ~~~~
 
-To replicate, let's center each variable by individual and fit a linear model
+To replicate, we'll include `idcode` as a categorical variable. One of the
+benefits of `xtreg ..., fe` is efficiency; since there are over 4000 `idcode`,
+the regression model will fail to run. Consequently, we'll demostrate on a subset of the data
 
 ~~~~
 <<dd_do>>
-foreach v of varlist ln_wage grade age ttl_exp tenure not_smsa south {
-	qui egen `v'_mean = mean(`v'), by(idcode)
-	qui gen `v'_cen = `v' - `v'_mean
-}
-reg ln_wage_cen grade_cen age_cen ttl_exp_cen tenure_cen not_smsa_cen south_cen, noconstant
+preserve
+keep if idcode < 100
+xtreg ln_wage grade age ttl_exp tenure not_smsa south, fe
+reg ln_wage grade age ttl_exp tenure not_smsa south i.idcode, noconstant
+restore
 <</dd_do>>
 ~~~~
 
-As I stated earlier, we do get slightly different results. However, the coefficients agree to three decimals.
+`grade` is not estimated in the fixed effects model because it is
+time-invarying; within each individual it is constant. In the `regress` model,
+we are able to estimate it.
 
-`grade` is not estimated because it is time-invarying; within each individual it is constant.
-
-`xtreg` reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared).
+`xtreg` reports 3 R-squared statistics; this is a within variance model so we
+can use that value (which agrees with the regression R-squared). Note that the
+`regress` R-squared estimate is artificially inflated due to the massive amount
+of predictors.
 
 ^#^^#^ `xtreg, be`: Between Effect model (Between variance)
 
