@@ -79,9 +79,9 @@ plot_ly(x = dd$q, y = dd$d, z = dd$m, type = "surface") |>
 
 Response surface plots can be extremely misleading due to extrapolation.
 Consider the plots above. One thing we would be tempted to interpret from the
-plot is that the lowest mileage cars (~5-10 MPG) occurs when `disp` and `qsec`
-are at their maximum. However, this is complete extrapolation. We can look at
-the predicted values for the cars in the data:
+plot is to predict that the lowest mileage cars are around 5 mpg, and this
+occurs when `disp` and `qsec` are at their maximum. However, this is complete
+extrapolation. We can look at the predicted values for the cars in the data:
 
 ```{r}
 summary(predict(mod1))
@@ -99,7 +99,7 @@ text(21, 400, "There's no data in this region!", col = "red")
 
 Finally, let's add the predicted values onto the response surface to further
 visualize the areas of the response surface that is pure extrapolation. (Note
-that I add one to the predicted values (`predict(m) + 1`) to move the points
+that I add one to the predicted values (`predict(mod1) + 1`) to move the points
 slightly above the surface, improving visualization.)
 
 
