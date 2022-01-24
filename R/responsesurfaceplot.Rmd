@@ -27,14 +27,13 @@ directly with a model object; you'd need to do a few extra steps to generate a
 matrix first.
 
 ```{r, message = FALSE}
-library(emmeans)
 library(rsm)
 
 data(mtcars)
 
-m <- lm(mpg ~ disp + qsec + disp:qsec + I(disp^2) + I(qsec^2), data = mtcars)
+mod1 <- lm(mpg ~ disp + qsec + disp:qsec + I(disp^2) + I(qsec^2), data = mtcars)
 
-rsm::persp.lm(m, disp ~ qsec, zlab = "mpg", theta = 120, phi = 10, r = 10)
+rsm::persp.lm(mod1, disp ~ qsec, zlab = "mpg", theta = 120, phi = 10, r = 10)
 ```
 
 (Note: `persp.lm` does not support other types of models such as mixed models
@@ -51,14 +50,15 @@ all pairwise values of x and y. We use `emmeans` to generate these predicted
 values.
 
 ```{r, message = FALSE}
-
 library(plotly)
+library(emmeans)
+
 
 # Set up grid
-q <- 15:23
-d <- (1:9)*50
+q <- 14:23
+d <- (1:10)*50
 
-em <- as.data.frame(emmeans(m, ~ qsec*disp, at = list(qsec = q, disp = d)))
+em <- as.data.frame(emmeans(mod1, ~ qsec*disp, at = list(qsec = q, disp = d)))
 
 # x & y are unique values, z is len(x) x len(y) matrix
 dd <- list(q = q,
@@ -68,9 +68,52 @@ dd <- list(q = q,
                       ncol = length(d),
                       byrow = TRUE))
 
-
 plot_ly(x = dd$q, y = dd$d, z = dd$m, type = "surface") |>
   layout(scene = list(xaxis=list(title = "qsec"),
                       yaxis=list(title = "disp"),
                       zaxis=list(title = "mpg")))
+```
+
+
+# A Warning about Interpretation
+
+Response surface plots can be extremely misleading due to extrapolation.
+Consider the plots above. One thing we would be tempted to interpret from the
+plot is that the lowest mileage cars (~5-10 MPG) occurs when `disp` and `qsec`
+are at their maximum. However, this is complete extrapolation. We can look at
+the predicted values for the cars in the data:
+
+```{r}
+summary(predict(mod1))
+```
+
+The lowest predicted mileage is `r round(min(predict(mod1)), 2)`, yet the
+response surface dips below 5! What's happening is that there are no cars in the
+car with both high `disp` and high `qsec`, so that area of the response curve is
+entirely extrapolated - we have no idea what should be occurring there.
+
+```{r}
+plot(mtcars$disp ~ mtcars$qsec)
+text(21, 400, "There's no data in this region!", col = "red")
+```
+
+Finally, let's add the predicted values onto the response surface to further
+visualize the areas of the response surface that is pure extrapolation. (Note
+that I add one to the predicted values (`predict(m) + 1`) to move the points
+slightly above the surface, improving visualization.)
+
+
+```{r}
+df <- data.frame(qsec = mtcars$qsec,
+                 disp = mtcars$disp,
+                 predict = predict(mod1) + 1)
+
+
+plot_ly(x = dd$q, y = dd$d, z = dd$m, type = "surface") |>
+  layout(scene = list(xaxis=list(title = "qsec"),
+                      yaxis=list(title = "disp"),
+                      zaxis=list(title = "mpg"))) |>
+  add_trace(x = df$qsec, y = df$disp, z = df$predict, mode = "markers",
+            type = "scatter3d",
+            marker = list(size = 10, color = "red", symbol = 104))
 ```
