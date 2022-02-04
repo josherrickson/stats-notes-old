@@ -191,6 +191,8 @@ a single `di` statement:
 Note the reference to two matrix extractions: `wo[1, i]` and `w[1, i]`. These
 insert the observed (`wo`) and expected (`w`) number of events!
 
+^#^ Making the modification
+
 So ultimately, we just need to return the `w` matrix. Finding the other returns,
 
 ~~~~
