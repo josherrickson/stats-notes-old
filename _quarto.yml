@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Statistics Notes"
+  navbar:
+    left:
+      - text: R Topics
+        menu:
+          - responsesurfaceplot.qmd
+      - text: Stata Topics
+        menu:
+          - svy_gsem_teffects.qmd
+          - logitinterpretation.qmd
+          - xtsetvsmixed.qmd
+      - text: Statistical Topics
+        menu:
+          - splinesvsinteraction.qmd
+          - randomselection.qmd
+          - iccirr.qmd
+          - divideby4.qmd
+      - href: index.html
+        text: Back to list
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

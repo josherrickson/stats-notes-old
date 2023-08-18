@@ -1,0 +1,653 @@
+---
+title: Stata's mixed versus xtreg
+author: Josh Errickson
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+In Stata, panel data (repeated measures) can be modeled using `mixed` (and its
+siblings e.g. `melogit`, `mepoisson`) or using the `xt` toolkit, including
+`xtset` and `xtreg`.
+
+This document is an attempt to show the equivalency of the models between the
+two commands. There will be slight differences due to the algorithms used in the
+backend but the results should generally be equivalent.
+
+# Data
+
+We'll use the "nlswork" data:
+
+```stata
+. webuse nlswork, clear
+(National Longitudinal Survey of Young Women, 14-24 years old in 1968)
+
+. desc
+
+Contains data from https://www.stata-press.com/data/r18/nlswork.dta
+ Observations:        28,534                  National Longitudinal Survey of
+                                                Young Women, 14-24 years old in
+                                                1968
+    Variables:            21                  27 Nov 2022 08:14
+                                              (_dta has notes)
+-------------------------------------------------------------------------------
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+-------------------------------------------------------------------------------
+idcode          int     %8.0g                 NLS ID
+year            byte    %8.0g                 Interview year
+birth_yr        byte    %8.0g                 Birth year
+age             byte    %8.0g                 Age in current year
+race            byte    %8.0g      racelbl    Race
+msp             byte    %8.0g                 1 if married, spouse present
+nev_mar         byte    %8.0g                 1 if never married
+grade           byte    %8.0g                 Current grade completed
+collgrad        byte    %8.0g                 1 if college graduate
+not_smsa        byte    %8.0g                 1 if not SMSA
+c_city          byte    %8.0g                 1 if central city
+south           byte    %8.0g                 1 if south
+ind_code        byte    %8.0g                 Industry of employment
+occ_code        byte    %8.0g                 Occupation
+union           byte    %8.0g                 1 if union
+wks_ue          byte    %8.0g                 Weeks unemployed last year
+ttl_exp         float   %9.0g                 Total work experience
+tenure          float   %9.0g                 Job tenure, in years
+hours           int     %8.0g                 Usual hours worked
+wks_work        int     %8.0g                 Weeks worked last year
+ln_wage         float   %9.0g                 ln(wage/GNP deflator)
+-------------------------------------------------------------------------------
+Sorted by: idcode  year
+
+```
+
+`idcode` represents each individual, data is measured over the years. Lets set
+it up using `xtset`:
+
+```stata
+. xtset idcode
+
+Panel variable: idcode (unbalanced)
+
+```
+
+# Theory
+
+Within the panel/`xt` framework, there are three separate models:
+
+- `fe` or "fixed effects". This is modeling the within variation - Ignoring
+  differences between individuals, is there a difference per values of
+  time-varying variables?
+- `be` or "between effects". This is modeling the between variation - Averaging
+  across individuals (collapsing over time), is there a difference per values of
+  subject-varying variables?
+- `re` or "random effects". This generates a weighted average of the above two
+  models.
+
+Each is fitted via
+
+```stata
+xtreg <model>, fe
+xtreg <model>, be
+xtreg <model>, re
+```
+
+The short version of how to fit each model using `mixed` is:
+
+- `fe`: Run a linear model with `reg` including the group as a categorical
+  variable (this is called the Least Squares Dummy Variable, LSDV, model).
+- `be`: Collapse over individual, and run a linear model with `reg`.
+- `re`: A traditional mixed model with a random effect (this is random effect in
+  the sense of a mixed model, not in the `xt` setting) for individual.
+
+## The Math
+
+Picture a typical mixed model setup:
+
+$$
+    y\_{it} = \alpha + x\_{it}\beta + \nu\_i + \epsilon\_{it}.
+$$
+
+Here $i$ is an index for individuals, $t$ is an index for time. $y\_{it}$ and
+$x\_{it}$ are some outcome and predictor which are both time and individual
+varying. $\nu\_{i}$ is an error associated with each individual and
+$\epsilon\_{it}$ is an additional error per observation.
+
+If this model is true, then the following must be true:
+
+$$
+    \overline{y}\_i = \alpha + \overline{x}\_i\beta + \nu\_i + \overline{\epsilon\_i}.
+$$
+
+Each bar'd variable is average over each individual. In this model, $\nu\_i$ and
+$\overline{\epsilon}\_i$ are indistinguishable, so this is just a linear model.
+
+Since we have that both models are equivalent, if we difference them, we remain
+equivalent:
+
+$$
+    (y\_{it} - \overline{y}\_i) = (x\_{it} - \overline{x}\_i)\beta + (\epsilon\_{it} - \overline{\epsilon}\_i).
+$$
+
+Again, we have just a linear model.
+
+Finally, the random effects model doesn't add much clarity, but it essentially
+is a weighted combination of the other two, with the weight being a function of
+the variance of $\nu\_i$ and $\epsilon\_i$. If the variance of $\nu\_i$ is 0,
+then there's no individual level effect and the first model can be fit lineally
+(because $\nu\_i$ is constant and folds into the intercept).
+
+## Assumptions
+
+There is one key different assumption between the models:
+
+The random effects model assumes that unobservable variables are uncorrelated
+with other covariates. The other models don't.
+
+The between effects and random effects models assume that $\nu\_i$ and
+$\overline{x}\_i$ are uncorrelated (individual intercepts are independent of
+predictors).
+
+# `xtsum`: Estimating between/within/overall variance
+
+The `xtsum` command can be used to estimate the variance of a variable within
+versus between.
+
+```stata
+. xtsum ln_wage
+
+Variable         |      Mean   Std. dev.       Min        Max |    Observations
+-----------------+--------------------------------------------+----------------
+ln_wage  overall |  1.674907   .4780935          0   5.263916 |     N =   28534
+         between |              .424569          0   3.912023 |     n =    4711
+         within  |               .29266  -.4077221    4.78367 | T-bar = 6.05689
+
+```
+
+We can replicate all these results without `xt`. As a sidenote, "T-bar"
+represents the average number of measures per individual, or `N/n`.
+
+## Overall variation
+
+Easy:
+
+```stata
+. summ ln_wage
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     ln_wage |     28,534    1.674907    .4780935          0   5.263916
+
+```
+
+## Within variation
+
+Taking our cue from the notes in [the theory](#the-theory), to obtain within
+variation we will center the variable by individual.
+
+```stata
+. egen meanln_wage = mean(ln_wage), by(idcode)
+
+. gen cln_wage = ln_wage - meanln_wage
+
+. summ cln_wage
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+    cln_wage |     28,534   -2.83e-10      .29266  -2.082629   3.108763
+
+```
+
+Note that the mean is 0 (within rounding error), as we'd expect. To get the
+mean/min/max back into the same scale as the raw data we can re-add the overall
+mean to
+
+```stata
+. egen overallmean = mean(ln_wage)
+
+. gen cln_wage2 = cln_wage + overallmean
+
+. summ cln_wage2
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+   cln_wage2 |     28,534    1.674907      .29266  -.4077221   4.783669
+
+```
+
+This works because each individual has mean of 0 or in the second case,
+`overallmean`, in either case, since the means are constant, we've removed any
+between variance and isolated the within variance.
+
+## Between variation
+
+We simply collapse by id.
+
+```stata
+. preserve
+
+. collapse (mean) ln_wage, by(idcode)
+
+. summ ln_wage
+
+    Variable |        Obs        Mean    Std. dev.       Min        Max
+-------------+---------------------------------------------------------
+     ln_wage |      4,711    1.650605     .424569          0   3.912023
+
+. restore
+
+```
+
+Doing this works because each subject now has a single observation, hence the
+within variance is identically 0, so the remaining variance is between-variance.
+
+# Fitting the models
+
+Let's use the following as our model
+
+```stata
+ln_wage ~ grade + age + ttl_exp + tenure + not_smsa + south
+```
+
+## `xtreg, fe`: Fixed Effect model (Within variance)
+
+The fixed effects results are
+
+```stata
+. xtreg ln_wage grade age ttl_exp tenure not_smsa south, fe
+note: grade omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+R-squared:                                      Obs per group:
+     Within  = 0.1491                                         min =          1
+     Between = 0.3526                                         avg =        6.0
+     Overall = 0.2517                                         max =         15
+
+                                                F(5, 23389)       =     819.94
+corr(u_i, Xb) = 0.2348                          Prob > F          =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |          0  (omitted)
+         age |  -.0026787    .000863    -3.10   0.002    -.0043703   -.0009871
+     ttl_exp |   .0287709   .0014474    19.88   0.000     .0259339    .0316079
+      tenure |   .0114355   .0009229    12.39   0.000     .0096265    .0132445
+    not_smsa |  -.0921689   .0096641    -9.54   0.000    -.1111112   -.0732266
+       south |  -.0633396   .0110819    -5.72   0.000    -.0850608   -.0416184
+       _cons |   1.591678   .0186849    85.19   0.000     1.555054    1.628302
+-------------+----------------------------------------------------------------
+     sigma_u |  .36167618
+     sigma_e |  .29477563
+         rho |  .60086475   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(4696, 23389) = 6.63                 Prob > F = 0.0000
+
+```
+
+To replicate, we'll include `idcode` as a categorical variable. One of the
+benefits of `xtreg ..., fe` is efficiency; since there are over 4000 `idcode`,
+the regression model will fail to run. Consequently, we'll demostrate on a
+subset of the data
+
+```stata
+. preserve
+
+. keep if idcode < 100
+(27,959 observations deleted)
+
+. xtreg ln_wage grade age ttl_exp tenure not_smsa south, fe
+note: grade omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =        567
+Group variable: idcode                          Number of groups  =         89
+
+R-squared:                                      Obs per group:
+     Within  = 0.1895                                         min =          1
+     Between = 0.2312                                         avg =        6.4
+     Overall = 0.1900                                         max =         15
+
+                                                F(5, 473)         =      22.12
+corr(u_i, Xb) = 0.1420                          Prob > F          =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |          0  (omitted)
+         age |  -.0045718   .0054274    -0.84   0.400    -.0152366    .0060931
+     ttl_exp |   .0313655   .0091803     3.42   0.001     .0133263    .0494046
+      tenure |   .0149681   .0061975     2.42   0.016     .0027901    .0271462
+    not_smsa |   .0003284   .0743637     0.00   0.996    -.1457957    .1464524
+       south |   .1353543    .170972     0.79   0.429    -.2006042    .4713129
+       _cons |   1.770705   .1125176    15.74   0.000     1.549609    1.991801
+-------------+----------------------------------------------------------------
+     sigma_u |  .35036238
+     sigma_e |  .26779328
+         rho |   .6312319   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+F test that all u_i=0: F(88, 473) = 9.01                     Prob > F = 0.0000
+
+. reg ln_wage grade age ttl_exp tenure not_smsa south i.idcode, noconstant
+
+      Source |       SS           df       MS      Number of obs   =       567
+-------------+----------------------------------   F(94, 473)      =    305.03
+       Model |  2056.18728        94  21.8743328   Prob > F        =    0.0000
+    Residual |  33.9203619       473  .071713239   R-squared       =    0.9838
+-------------+----------------------------------   Adj R-squared   =    0.9805
+       Total |  2090.10764       567  3.68625687   Root MSE        =    .26779
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |   .1664948   .0111166    14.98   0.000     .1446507    .1883389
+         age |  -.0045718   .0054274    -0.84   0.400    -.0152366    .0060931
+     ttl_exp |   .0313655   .0091803     3.42   0.001     .0133263    .0494046
+      tenure |   .0149681   .0061975     2.42   0.016     .0027901    .0271462
+    not_smsa |   .0003284   .0743637     0.00   0.996    -.1457957    .1464524
+       south |   .1353543    .170972     0.79   0.429    -.2006042    .4713129
+             |
+      idcode |
+          2  |  -.4226575   .1098026    -3.85   0.000    -.6384187   -.2068963
+          3  |  -.5725985    .104336    -5.49   0.000    -.7776178   -.3675791
+          4  |  -.9436944   .1389879    -6.79   0.000    -1.216805   -.6705843
+          5  |   -.222494   .1118964    -1.99   0.047    -.4423696   -.0026184
+          6  |  -.4007454   .1096849    -3.65   0.000    -.6162754   -.1852154
+          7  |  -.6883352   .1225737    -5.62   0.000    -.9291914   -.4474789
+          9  |  -.2376803   .1165492    -2.04   0.042    -.4666986    -.008662
+         10  |  -.3435751   .1106681    -3.10   0.002    -.5610371   -.1261131
+         12  |  -.5649688   .2342601    -2.41   0.016    -1.025288   -.1046496
+         13  |  -.1909402   .1248158    -1.53   0.127    -.4362023    .0543219
+         14  |   -.455463   .2143522    -2.12   0.034    -.8766633   -.0342628
+         15  |  -.4232663   .1481695    -2.86   0.004    -.7144181   -.1321146
+         16  |  -.5371115   .1264239    -4.25   0.000    -.7855334   -.2886895
+         17  |  -.3603291   .1480851    -2.43   0.015    -.6513151   -.0693431
+         18  |  -1.048504   .1680767    -6.24   0.000    -1.378773   -.7182346
+         19  |  -.6236019    .126136    -4.94   0.000    -.8714581   -.3757457
+         20  |  -.5473341   .1259303    -4.35   0.000    -.7947861   -.2998822
+         21  |  -.7002773   .1569423    -4.46   0.000    -1.008668   -.3918869
+         22  |  -.4564266    .124073    -3.68   0.000    -.7002291   -.2126242
+         23  |  -.8079256    .166224    -4.86   0.000    -1.134554   -.4812968
+         24  |  -.4104822   .1151672    -3.56   0.000    -.6367848   -.1841795
+         25  |  -.3723879   .1189486    -3.13   0.002     -.606121   -.1386548
+         26  |  -.5195303   .1469161    -3.54   0.000    -.8082192   -.2308414
+         27  |  -.2435413    .162567    -1.50   0.135    -.5629841    .0759016
+         29  |  -.3157487   .1642662    -1.92   0.055    -.6385305    .0070331
+         30  |    .080972   .1171126     0.69   0.490    -.1491533    .3110972
+         33  |  -.3586822   .2790194    -1.29   0.199    -.9069531    .1895887
+         35  |  -.6745962    .279494    -2.41   0.016      -1.2238   -.1253927
+         36  |  -.3269244   .1273912    -2.57   0.011    -.5772471   -.0766016
+         37  |  -.6471198   .1735604    -3.73   0.000    -.9881646   -.3060751
+         38  |  -.4596228   .1274658    -3.61   0.000    -.7100921   -.2091535
+         39  |  -.4201852    .163985    -2.56   0.011    -.7424145    -.097956
+         40  |  -.5339167   .2840895    -1.88   0.061     -1.09215    .0243168
+         41  |  -.3757769    .122508    -3.07   0.002     -.616504   -.1350497
+         43  |  -1.311499   .2226841    -5.89   0.000    -1.749072   -.8739265
+         44  |  -.2583422   .1631146    -1.58   0.114     -.578861    .0621766
+         45  |  -.1339062   .1198129    -1.12   0.264    -.3693376    .1015253
+         46  |  -1.736985   .2252408    -7.71   0.000    -2.179582   -1.294389
+         47  |  -.6256071   .2058861    -3.04   0.003    -1.030172   -.2210425
+         48  |  -.9859271   .1824752    -5.40   0.000     -1.34449   -.6273647
+         49  |  -.3247521   .1438057    -2.26   0.024     -.607329   -.0421751
+         50  |  -.2738516   .1866851    -1.47   0.143    -.6406863    .0929831
+         51  |  -.6200922   .1274217    -4.87   0.000    -.8704748   -.3697096
+         53  |  -.6259007   .1428582    -4.38   0.000     -.906616   -.3451854
+         54  |  -.5365555   .2812581    -1.91   0.057    -1.089225    .0161143
+         55  |  -.4445126   .1231406    -3.61   0.000    -.6864829   -.2025422
+         56  |   .3443307   .1570771     2.19   0.029     .0356754    .6529859
+         57  |  -.6570438    .114101    -5.76   0.000    -.8812514   -.4328363
+         58  |   -.435127   .1799124    -2.42   0.016    -.7886535   -.0816005
+         59  |   -.628225   .1364025    -4.61   0.000    -.8962548   -.3601951
+         60  |   -.475028   .1440273    -3.30   0.001    -.7580406   -.1920155
+         61  |  -.7261986   .1510088    -4.81   0.000     -1.02293   -.4294675
+         62  |  -.3044535   .1221368    -2.49   0.013    -.5444515   -.0644556
+         63  |   .0037803   .1285151     0.03   0.977    -.2487508    .2563115
+         64  |  -.5483459   .1340122    -4.09   0.000    -.8116787   -.2850131
+         65  |  -.3321434    .141554    -2.35   0.019    -.6102959    -.053991
+         66  |  -.8689924   .1212238    -7.17   0.000    -1.107196   -.6307886
+         67  |  -.3807511   .1543163    -2.47   0.014    -.6839814   -.0775208
+         68  |  -.6198262   .1756128    -3.53   0.000    -.9649039   -.2747485
+         69  |  -.4311974   .1330101    -3.24   0.001    -.6925613   -.1698336
+         70  |   .0557999     .23286     0.24   0.811    -.4017682    .5133679
+         71  |   -.541011   .1282886    -4.22   0.000    -.7930971   -.2889249
+         72  |  -.4935751   .1234947    -4.00   0.000    -.7362413    -.250909
+         73  |  -.6795435   .1474628    -4.61   0.000    -.9693067   -.3897804
+         75  |  -.0205057    .126925    -0.16   0.872    -.2699124     .228901
+         76  |  -.0420092   .2920378    -0.14   0.886    -.6158611    .5318427
+         77  |   -.284598   .1677175    -1.70   0.090    -.6141614    .0449655
+         78  |   .1533827   .1098172     1.40   0.163    -.0624072    .3691726
+         79  |   .4001081   .2748834     1.46   0.146    -.1400355    .9402517
+         80  |   .0210369   .1955429     0.11   0.914    -.3632033     .405277
+         81  |  -.2832579   .2152753    -1.32   0.189    -.7062723    .1397564
+         82  |   .0315568   .1432313     0.22   0.826    -.2498916    .3130052
+         83  |  -.4661398   .1293009    -3.61   0.000     -.720215   -.2120646
+         84  |   .0525394   .2789779     0.19   0.851      -.49565    .6007288
+         85  |    .206903   .1590657     1.30   0.194      -.10566    .5194659
+         86  |  -.7807072   .1429434    -5.46   0.000     -1.06159   -.4998246
+         87  |  -.5240905   .2246382    -2.33   0.020    -.9655027   -.0826783
+         88  |  -.1660402   .2047806    -0.81   0.418    -.5684324    .2363519
+         89  |   .0577245   .2107879     0.27   0.784     -.356472    .4719209
+         91  |   .1126238   .2082437     0.54   0.589    -.2965734     .521821
+         92  |    .488832   .2785641     1.75   0.080    -.0585442    1.036208
+         93  |  -.3047289   .2808968    -1.08   0.279    -.8566889    .2472311
+         94  |  -.2315187   .1288964    -1.80   0.073    -.4847991    .0217617
+         95  |  -.5423296   .1395023    -3.89   0.000    -.8164505   -.2682088
+         96  |  -.0991001   .2025628    -0.49   0.625    -.4971343    .2989342
+         97  |   .0848356   .1679777     0.51   0.614    -.2452392    .4149104
+         98  |  -.0877863   .1183023    -0.74   0.458    -.3202494    .1446767
+         99  |   -.127322   .1556316    -0.82   0.414    -.4331369    .1784928
+------------------------------------------------------------------------------
+
+. restore
+
+```
+
+`grade` is not estimated in the fixed effects model because it is
+time-invarying; within each individual it is constant. In the `regress` model,
+we are able to estimate it.
+
+`xtreg` reports 3 R-squared statistics; this is a within variance model so we
+can use that value (which agrees with the regression R-squared). Note that the
+`regress` R-squared estimate is artificially inflated due to the massive amount
+of predictors.
+
+## `xtreg, be`: Between Effect model (Between variance)
+
+The between effects results are
+
+```stata
+. xtreg ln_wage grade age ttl_exp tenure not_smsa south, be
+
+Between regression (regression on group means)  Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+R-squared:                                      Obs per group:
+     Within  = 0.1427                                         min =          1
+     Between = 0.4787                                         avg =        6.0
+     Overall = 0.3562                                         max =         15
+
+                                                F(6,4690)         =     717.89
+sd(u_i + avg(e_i.)) = .3068161                  Prob > F          =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |    .064188   .0019539    32.85   0.000     .0603575    .0680185
+         age |  -.0041071   .0010618    -3.87   0.000    -.0061886   -.0020255
+     ttl_exp |   .0287514    .002033    14.14   0.000     .0247658    .0327369
+      tenure |   .0286782   .0022174    12.93   0.000      .024331    .0330254
+    not_smsa |   -.175568   .0111952   -15.68   0.000    -.1975159   -.1536202
+       south |  -.1086271   .0098438   -11.04   0.000    -.1279256   -.0893287
+       _cons |   .8066724   .0329873    24.45   0.000     .7420017     .871343
+------------------------------------------------------------------------------
+
+```
+
+To replicate, collapse over `idcode` and run a regression:
+
+```stata
+. preserve
+
+. collapse (mean) ln_wage grade age ttl_exp tenure not_smsa south, by(idcode)
+
+. reg ln_wage grade age ttl_exp tenure not_smsa south
+
+      Source |       SS           df       MS      Number of obs   =     4,697
+-------------+----------------------------------   F(6, 4690)      =    724.96
+       Model |  406.076398         6  67.6793996   Prob > F        =    0.0000
+    Residual |  437.838178     4,690  .093355688   R-squared       =    0.4812
+-------------+----------------------------------   Adj R-squared   =    0.4805
+       Total |  843.914575     4,696  .179709237   Root MSE        =    .30554
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |   .0642015   .0019467    32.98   0.000     .0603849     .068018
+         age |  -.0039009   .0010611    -3.68   0.000    -.0059812   -.0018206
+     ttl_exp |   .0285569   .0020267    14.09   0.000     .0245836    .0325301
+      tenure |   .0288392   .0022077    13.06   0.000      .024511    .0331673
+    not_smsa |  -.1758847   .0111494   -15.78   0.000    -.1977428   -.1540266
+       south |  -.1080377   .0098055   -11.02   0.000    -.1272611   -.0888142
+       _cons |   .8000955   .0328792    24.33   0.000     .7356368    .8645542
+------------------------------------------------------------------------------
+
+. restore
+
+```
+
+Again, the coefficients agree to three decimals and the between R-square agrees.
+
+All predictors here are estimated; if we had any time-variant by
+individual-invariant predictors (e.g. time), they would not be estimable here.
+
+## `xtreg, re`: Random Effect model (Both variances)
+
+The random effects results are
+
+```stata
+. xtreg ln_wage grade age ttl_exp tenure not_smsa south, re
+
+Random-effects GLS regression                   Number of obs     =     28,091
+Group variable: idcode                          Number of groups  =      4,697
+
+R-squared:                                      Obs per group:
+     Within  = 0.1483                                         min =          1
+     Between = 0.4701                                         avg =        6.0
+     Overall = 0.3569                                         max =         15
+
+                                                Wald chi2(6)      =    8304.62
+corr(u_i, X) = 0 (assumed)                      Prob > chi2       =     0.0000
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |   .0691836   .0017689    39.11   0.000     .0657166    .0726506
+         age |  -.0038386   .0006544    -5.87   0.000    -.0051212   -.0025559
+     ttl_exp |   .0301313   .0011215    26.87   0.000     .0279331    .0323294
+      tenure |   .0134656   .0008442    15.95   0.000      .011811    .0151202
+    not_smsa |   -.128591   .0072246   -17.80   0.000     -.142751    -.114431
+       south |  -.0932646    .007231   -12.90   0.000     -.107437   -.0790921
+       _cons |   .7544109   .0273445    27.59   0.000     .7008168    .8080051
+-------------+----------------------------------------------------------------
+     sigma_u |  .26027808
+     sigma_e |  .29477563
+         rho |  .43808743   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+```
+
+Just fit a regular mixed model:
+
+```stata
+. mixed ln_wage grade age ttl_exp tenure not_smsa south || idcode:
+
+Performing EM optimization ...
+
+Performing gradient-based optimization: 
+Iteration 0:  Log likelihood = -9218.9773  
+Iteration 1:  Log likelihood = -9218.9773  
+
+Computing standard errors ...
+
+Mixed-effects ML regression                         Number of obs    =  28,091
+Group variable: idcode                              Number of groups =   4,697
+                                                    Obs per group:
+                                                                 min =       1
+                                                                 avg =     6.0
+                                                                 max =      15
+                                                    Wald chi2(6)     = 8496.81
+Log likelihood = -9218.9773                         Prob > chi2      =  0.0000
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |   .0691186   .0017231    40.11   0.000     .0657414    .0724959
+         age |   -.003869   .0006491    -5.96   0.000    -.0051411   -.0025969
+     ttl_exp |    .030151   .0011135    27.08   0.000     .0279687    .0323334
+      tenure |    .013591   .0008441    16.10   0.000     .0119365    .0152454
+    not_smsa |  -.1299789    .007154   -18.17   0.000    -.1440004   -.1159575
+       south |  -.0941264   .0071291   -13.20   0.000    -.1080991   -.0801537
+       _cons |   .7566548   .0267655    28.27   0.000     .7041954    .8091142
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+  Random-effects parameters  |   Estimate   Std. err.     [95% conf. interval]
+-----------------------------+------------------------------------------------
+idcode: Identity             |
+                  var(_cons) |   .0626522   .0017678      .0592815    .0662147
+-----------------------------+------------------------------------------------
+               var(Residual) |    .087569    .000811      .0859938    .0891732
+------------------------------------------------------------------------------
+LR test vs. linear model: chibar2(01) = 7277.75       Prob >= chibar2 = 0.0000
+
+```
+
+The results are very close; we can get even closer by fitting the `xtreg` model
+with the `mle` option, which uses a different estimation strategy.
+
+```stata
+. xtreg ln_wage grade age ttl_exp tenure not_smsa south, re mle
+
+Fitting constant-only model:
+Iteration 0:  Log likelihood = -12663.954
+Iteration 1:  Log likelihood = -12649.756
+Iteration 2:  Log likelihood = -12649.614
+Iteration 3:  Log likelihood = -12649.614
+
+Fitting full model:
+Iteration 0:  Log likelihood = -9271.8615
+Iteration 1:  Log likelihood = -9219.1214
+Iteration 2:  Log likelihood = -9218.9773
+Iteration 3:  Log likelihood = -9218.9773
+
+Random-effects ML regression                        Number of obs    =  28,091
+Group variable: idcode                              Number of groups =   4,697
+
+Random effects u_i ~ Gaussian                       Obs per group:
+                                                                 min =       1
+                                                                 avg =     6.0
+                                                                 max =      15
+
+                                                    LR chi2(6)       = 6861.27
+Log likelihood = -9218.9773                         Prob > chi2      =  0.0000
+
+------------------------------------------------------------------------------
+     ln_wage | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       grade |   .0691186   .0017233    40.11   0.000     .0657411    .0724962
+         age |   -.003869   .0006491    -5.96   0.000    -.0051413   -.0025967
+     ttl_exp |    .030151   .0011135    27.08   0.000     .0279687    .0323334
+      tenure |    .013591   .0008454    16.08   0.000     .0119341    .0152478
+    not_smsa |  -.1299789   .0071711   -18.13   0.000     -.144034   -.1159239
+       south |  -.0941264   .0071356   -13.19   0.000    -.1081119   -.0801409
+       _cons |   .7566548   .0267773    28.26   0.000     .7041722    .8091374
+-------------+----------------------------------------------------------------
+    /sigma_u |   .2503043   .0035313                      .2434779    .2573221
+    /sigma_e |   .2959207   .0013704                       .293247    .2986188
+         rho |   .4170663   .0074745                      .4024774    .4317704
+------------------------------------------------------------------------------
+LR test of sigma_u=0: chibar2(01) = 7277.75            Prob >= chibar2 = 0.000
+
+```

@@ -1,0 +1,239 @@
+---
+title: Choosing a Random Sample
+author: Josh Errickson
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+A common task is to select a random subset of rows from your data set. This
+document discusses an easy way to do this, including sampling from subsamples.
+
+## Data
+
+We'll load up the "auto" data set and shrink it down substantially in order to
+be able to print out the results.
+
+```stata
+. sysuse auto
+(1978 automobile data)
+
+. keep make foreign
+
+. bysort foreign: gen row = _n
+
+. keep if row <= 4
+(66 observations deleted)
+
+. drop row
+
+. list, sep(0)
+
+     +--------------------------+
+     | make             foreign |
+     |--------------------------|
+  1. | AMC Concord     Domestic |
+  2. | AMC Pacer       Domestic |
+  3. | AMC Spirit      Domestic |
+  4. | Buick Century   Domestic |
+  5. | Audi 5000        Foreign |
+  6. | Audi Fox         Foreign |
+  7. | BMW 320i         Foreign |
+  8. | Datsun 200       Foreign |
+     +--------------------------+
+
+```
+
+## Simple Random Sample
+
+Let's say we want to select 4 rows, as a simple random sample. That is, the
+probability of any row being included in the sample is equal.
+
+First, we'll generate a random number per row. You can use any distribution you
+want; uniform or normal are common.
+
+
+```stata
+. generate rand = rnormal()
+
+. list, sep(0)
+
+     +--------------------------------------+
+     | make             foreign        rand |
+     |--------------------------------------|
+  1. | AMC Concord     Domestic   -.4705035 |
+  2. | AMC Pacer       Domestic   -.3938664 |
+  3. | AMC Spirit      Domestic   -.2524172 |
+  4. | Buick Century   Domestic   -1.404408 |
+  5. | Audi 5000        Foreign   -.8082101 |
+  6. | Audi Fox         Foreign   -.0387205 |
+  7. | BMW 320i         Foreign    1.185362 |
+  8. | Datsun 200       Foreign   -.2958094 |
+     +--------------------------------------+
+
+```
+
+`rnormal` takes in 2 optional arguments of a mean and standard deviation; the
+defaults are 0 and 1 respectively.
+
+If you prefer uniform, you call `generate rand = runiform(a, b)` where `a` and
+`b` are upper and lower bounds, e.g. `generate rand = runiform(0, 1)`.
+
+Now we simply sort by this new variable.
+
+```stata
+. sort rand
+
+. list, sep(0)
+
+     +--------------------------------------+
+     | make             foreign        rand |
+     |--------------------------------------|
+  1. | Buick Century   Domestic   -1.404408 |
+  2. | Audi 5000        Foreign   -.8082101 |
+  3. | AMC Concord     Domestic   -.4705035 |
+  4. | AMC Pacer       Domestic   -.3938664 |
+  5. | Datsun 200       Foreign   -.2958094 |
+  6. | AMC Spirit      Domestic   -.2524172 |
+  7. | Audi Fox         Foreign   -.0387205 |
+  8. | BMW 320i         Foreign    1.185362 |
+     +--------------------------------------+
+
+```
+
+Finally, we can identify our sample.
+
+```stata
+. gen insample = _n <= 4
+
+. list, sep(0)
+
+     +-------------------------------------------------+
+     | make             foreign        rand   insample |
+     |-------------------------------------------------|
+  1. | Buick Century   Domestic   -1.404408          1 |
+  2. | Audi 5000        Foreign   -.8082101          1 |
+  3. | AMC Concord     Domestic   -.4705035          1 |
+  4. | AMC Pacer       Domestic   -.3938664          1 |
+  5. | Datsun 200       Foreign   -.2958094          0 |
+  6. | AMC Spirit      Domestic   -.2524172          0 |
+  7. | Audi Fox         Foreign   -.0387205          0 |
+  8. | BMW 320i         Foreign    1.185362          0 |
+     +-------------------------------------------------+
+
+```
+
+Recall that `_n` refers to the current row number, so this is just flagging all
+rows 4 and below!
+
+## Sample by Subgroup
+
+Consider the sample we obtained above, and notice that we sampled 3 domestic
+cars and 1 foreign car. Since it was a simple random sample, that split is
+random; we could have just as easily obtained all foreign cars or any other
+combination. Perhaps we want to force some balance, for example, that our random
+sample is exactly 2 foreign and 2 domestic.
+
+We'll generate a new random number first just as before.
+
+```stata
+. drop rand insample
+
+. generate rand = rnormal()
+
+. list, sep(0)
+
+     +--------------------------------------+
+     | make             foreign        rand |
+     |--------------------------------------|
+  1. | Buick Century   Domestic   -1.179235 |
+  2. | Audi 5000        Foreign    1.503948 |
+  3. | AMC Concord     Domestic    .0767283 |
+  4. | AMC Pacer       Domestic    -.627642 |
+  5. | Datsun 200       Foreign   -1.122534 |
+  6. | AMC Spirit      Domestic   -1.491838 |
+  7. | Audi Fox         Foreign    .0291835 |
+  8. | BMW 320i         Foreign   -.7714012 |
+     +--------------------------------------+
+
+```
+
+Now when we sort, we'll sort by `foreign` first.
+
+```stata
+. sort foreign rand
+
+. list, sep(0)
+
+     +--------------------------------------+
+     | make             foreign        rand |
+     |--------------------------------------|
+  1. | AMC Spirit      Domestic   -1.491838 |
+  2. | Buick Century   Domestic   -1.179235 |
+  3. | AMC Pacer       Domestic    -.627642 |
+  4. | AMC Concord     Domestic    .0767283 |
+  5. | Datsun 200       Foreign   -1.122534 |
+  6. | BMW 320i         Foreign   -.7714012 |
+  7. | Audi Fox         Foreign    .0291835 |
+  8. | Audi 5000        Foreign    1.503948 |
+     +--------------------------------------+
+
+```
+
+So we have two separate randomly sorted lists here. To select a fixed number
+from each, we can use the `bysort` prefix.
+
+```stata
+. bysort foreign (rand): gen rownumber = _n
+
+. gen insample = rownumber <= 2
+
+. list, sep(0)
+
+     +------------------------------------------------------------+
+     | make             foreign        rand   rownum~r   insample |
+     |------------------------------------------------------------|
+  1. | AMC Spirit      Domestic   -1.491838          1          1 |
+  2. | Buick Century   Domestic   -1.179235          2          1 |
+  3. | AMC Pacer       Domestic    -.627642          3          0 |
+  4. | AMC Concord     Domestic    .0767283          4          0 |
+  5. | Datsun 200       Foreign   -1.122534          1          1 |
+  6. | BMW 320i         Foreign   -.7714012          2          1 |
+  7. | Audi Fox         Foreign    .0291835          3          0 |
+  8. | Audi 5000        Foreign    1.503948          4          0 |
+     +------------------------------------------------------------+
+
+```
+
+(Recall that when calling `bysort`, any argument in parentheses is used for
+sorting, not for by'ing. Since I sorted by `foreign` and `rand` above I probably
+could have just used the prefix `by foreign:`, however, I prefer always using
+`bysort` with full sorting just to avoid any issues.)
+
+We could have also enforced an unequal split in `foreign`:
+
+```stata
+. gen insample2 = rownumber <= 3 if foreign == 0
+(4 missing values generated)
+
+. replace insample2 = rownumber <= 1 if foreign == 1
+(4 real changes made)
+
+. list, sep(0)
+
+     +-----------------------------------------------------------------------+
+     | make             foreign        rand   rownum~r   insample   insamp~2 |
+     |-----------------------------------------------------------------------|
+  1. | AMC Spirit      Domestic   -1.491838          1          1          1 |
+  2. | Buick Century   Domestic   -1.179235          2          1          1 |
+  3. | AMC Pacer       Domestic    -.627642          3          0          1 |
+  4. | AMC Concord     Domestic    .0767283          4          0          0 |
+  5. | Datsun 200       Foreign   -1.122534          1          1          1 |
+  6. | BMW 320i         Foreign   -.7714012          2          1          0 |
+  7. | Audi Fox         Foreign    .0291835          3          0          0 |
+  8. | Audi 5000        Foreign    1.503948          4          0          0 |
+     +-----------------------------------------------------------------------+
+
+```
