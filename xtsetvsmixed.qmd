@@ -8,6 +8,8 @@ output:
     toc_float: yes
 ---
 
+# Introduction
+
 In Stata, panel data (repeated measures) can be modeled using `mixed` (and its
 siblings e.g. `melogit`, `mepoisson`) or using the `xt` toolkit, including
 `xtset` and `xtreg`.

@@ -1,13 +1,9 @@
-~~~
-<<dd_ignore>>
 ---
 title: Modifying a built-in Stata command
 author: Josh Errickson
 output:
   html_document
 ---
-<</dd_ignore>>
-~~~~
 
 I recently came across an issue in which modifying a shipped-with-Stata command was
 the easier way to address. I'm writing this to document the approach I took in
@@ -16,7 +12,7 @@ case it comes up again and proves useful to remember the steps I took.
 (Note: If you see `...` in Stata code snippets below, it indicates portions of
 code I excluded for brevity.)
 
-^#^ The Problem
+# The Problem
 
 A client was working with survival data and using the `sts test` command to show
 that the number of observed and expected events was similar. The `sts test`
@@ -27,8 +23,7 @@ expected number of events. The problem was that `sts test` returns very little
 information and thus bootstrap wouldn't work as normal (as it requires
 `return`'d or `ereturn`'d values to operate).
 
-~~~~
-<<dd_ignore>>
+```stata
 . webuse stan3
 (Heart transplant data)
 
@@ -57,34 +52,30 @@ posttran |    events         events
 scalars:
                r(chi2) =  .1261354821436887
                  r(df) =  1
-
-<</dd_ignore>>
-~~~~
+```
 
 While I could probably have figured out the math that Stata uses to calculate
 those expected events, it seemed probably easier and definitely more fun to hack
 the `sts test` command.
 
-^#^ Finding where to modify
+# Finding where to modify
 
 The `which` command will tell you whether a command exists in an ado file, or is
 "built-in", which cannot be modified as easily. Since the "test" of `sts test`
 is a subcommand, we can find where `sts` is defined.
 
-~~~~
+```stata
 <<dd_do>>
 which sts
 <</dd_do>>
-~~~~
+```
 
 Opening that file, I quickly found the `test` subcommand:
 
-~~~~
-<<dd_ignore>>
+```stata
 program define Test, rclass
 ...
-<</dd_ignore>>
-~~~~
+```
 
 Searching the file for "Expected" or "events" or any other text in the `sts
 test` output came up blank, so the actual calcuations must take place elsewhere.
@@ -93,8 +84,7 @@ The `sts test` command runs a variety of different tests, and I noticed that a
 good chunk of the code was dedicated to determining which test the user request,
 and setting the `cmd` macro.
 
-~~~~
-<<dd_ignore>>
+```stata
 ...
 	else if "`tware'"~="" {
 		local cmd "tware_st"
@@ -106,35 +96,31 @@ and setting the `cmd` macro.
 ...
 	else	local cmd "logrank"
 ...
-<</dd_ignore>>
-~~~~
+```
 
 Finally, near the bottom of the command, the `cmd` macro is used:
 
-~~~~
-<<dd_ignore>>
+```stata
 ...
 	`vv' `cmd' _t _d `w' if `touse', strata(`strata') /*
 		*/ t0(_t0) `id' `by' `options' `detail' `trend' `p' `q'
 ...
-<</dd_ignore>>
-~~~~
+```
 
 Ignore the `vv` macro (which handles `version` if applicable), it's clear that
 the `cmd` macro must be an actual command. And the particular test the client
 was working with was the logrank test, therefore I was looking for the `logrank`
 command.
 
-~~~~
+```stata
 <<dd_do>>
 which logrank
 <</dd_do>>
-~~~~
+```
 
 Inside I found the following code:
 
-~~~~
-<<dd_ignore>>
+```stata
 ...
   di in smcl in gr _n _col(`len') `" {c |}  Observed       Expected"'
 	local pad = `len' - `len1'
@@ -165,8 +151,7 @@ Inside I found the following code:
 	di in smcl in gr _skip(`pad') `"Total "' `"{c |}"' in ye /*
 			*/ %10.0g `sum' `"     "' %10.2f `sum'
 ...
-<</dd_ignore>>
-~~~~
+```
 
 This is very confusing code to look at at first (for some reason all
 shipped-with-Stata code uses the shortest possible versions of the command
@@ -179,54 +164,48 @@ takes in a categorical variable and prints a row per level, so the `while` loop
 must be going through each level of the variable. Inside the loop, there is only
 a single `di` statement:
 
-~~~~
-<<dd_ignore>>
+```stata
 ...
 		di in smcl in gr _skip(`pad') `"`x' "' "{c |}" in ye /*
 			*/ %10.0g `wo'[1,`i'] `"     "' %10.2f `w'[1,`i']
 ...
-<</dd_ignore>>
-~~~~
+```
 
 Note the reference to two matrix extractions: `wo[1, i]` and `w[1, i]`. These
 insert the observed (`wo`) and expected (`w`) number of events!
 
-^#^ Making the modification
+# Making the modification
 
 So ultimately, we just need to return the `w` matrix. Finding the other returns,
 
-~~~~
-<<dd_ignore>>
+```stata
 ...
 	ret scalar df = colsof(`w') - 1
 	ret scalar chi2 = `V'[1,1]
 ...
-<</dd_ignore>>
-~~~~
+```
 
 we can add our own return that stores each expected value into a scalar:
 
-~~~
-<<dd_ignore>>
+```stata
   matrix events=`w'
   local i 1
   while `i' <= _N {
     return scalar e`i' = events[1,`i']
     local i = `i' + 1
   }
-<</dd_ignore>>
-~~~~
+```
 
 Now we can save this, re-open Stata, and it works!
 
-~~~~
+```stata
 <<dd_do>>
 webuse stan3
 bootstrap e1=r(e1) e2=r(e2), reps(10): sts test posttran
 <</dd_do>>
-~~~~
+```
 
-^#^ An Added Complication
+# An Added Complication
 
 The client was working on a virtual Windows machine which did not have
 permission to overwrite the logrank.ado file. It is easy enough to make a copy
@@ -237,22 +216,19 @@ might be slightly messy due to it being a subcommand.
 Instead, we can use the sts.ado to figure out to get the comparable `logrank`
 command for a given `sts test` command.
 
-~~~~
-<<dd_ignore>>
+```stata
 ...
 	`vv' `cmd' _t _d `w' if `touse', strata(`strata') /*
 		*/ t0(_t0) `id' `by' `options' `detail' `trend' `p' `q'
 ...
-<</dd_ignore>>
-~~~~
+```
 
 As mentioned above, `vv` is just version control, so here we have some variables
 passed to `logrank` (`_t`, `_d`, and whatever is inside `w`), and a bunch of
 options. We can modify our version of `logrank` to print out all these, to
 determine what is actually being passed.
 
-~~~~
-<<dd_ignore>>
+```stata
 program define logrank /* timevar [deadvar] [, by(group) t0(t0) id(tvid)] */, rclass
 	version 6.0, missing
 	syntax varlist(min=1 max=2) [if] [in] [fw iw] [, /*
@@ -264,13 +240,12 @@ display "varlist: `varlist'"
 display "t0: `t0'"
 display "id: `id'"
 etc...
-<</dd_ignore>>
-~~~~
+```
 
 Ultimately it ended up that the command was:
 
-~~~~
+```stata
 <<dd_do>>
 logrank _t _d, by(posttran) id(id) t0(_t0)
 <</dd_do>>
-~~~~
+```

@@ -8,10 +8,12 @@ output:
     toc_float: yes
 ---
 
+# Introduction
+
 A common task is to select a random subset of rows from your data set. This
 document discusses an easy way to do this, including sampling from subsamples.
 
-## Data
+# Data
 
 We'll load up the "auto" data set and shrink it down substantially in order to
 be able to print out the results.
@@ -27,7 +29,7 @@ list, sep(0)
 <</dd_do>>
 ```
 
-## Simple Random Sample
+# Simple Random Sample
 
 Let's say we want to select 4 rows, as a simple random sample. That is, the
 probability of any row being included in the sample is equal.
@@ -73,7 +75,7 @@ list, sep(0)
 Recall that `_n` refers to the current row number, so this is just flagging all
 rows 4 and below!
 
-## Sample by Subgroup
+# Sample by Subgroup
 
 Consider the sample we obtained above, and notice that we sampled 3 domestic
 cars and 1 foreign car. Since it was a simple random sample, that split is

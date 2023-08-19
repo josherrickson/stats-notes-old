@@ -8,6 +8,8 @@ output:
     toc_float: yes
 ---
 
+# Introduction
+
 When looking at the results of a logistic model, there are several different
 measures of the relationship between the predictors and the probability of a
 positive outcome that can be used to interpret the model:

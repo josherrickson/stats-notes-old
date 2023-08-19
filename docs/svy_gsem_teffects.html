@@ -207,7 +207,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#standard-mediation" id="toc-standard-mediation" class="nav-link active" data-scroll-target="#standard-mediation">Standard Mediation</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#standard-mediation" id="toc-standard-mediation" class="nav-link" data-scroll-target="#standard-mediation">Standard Mediation</a></li>
   <li><a href="#with-survey-data" id="toc-with-survey-data" class="nav-link" data-scroll-target="#with-survey-data">With survey data</a></li>
   </ul>
 </nav>
@@ -238,6 +239,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -254,6 +257,7 @@ Stata Versioning
 <p>Mediation models in Stata are fit with the <code>sem</code> command. <code>sem</code> does not support <code>svyset</code> data, so instead you use <code>gsem</code> (e.g.&nbsp;<code>svy: gsem ...</code>). However, <code>gsem</code> does not support <code>estat teffects</code> which calculates direct, indirect and total effects.</p>
 <p>This document shows how to manually calculate these effects using <code>nlcom</code>.</p>
 <p>Note that this is a case where all variables are continuous and all models are linear - we are only using <code>gsem</code> for it’s support of <code>svy:</code>, not it’s support of GLMs. Indirect effects are a more complicated topic in those models which we do not address here. Additionally, we’ll trust Stata to compute standard errors rather than getting into any sticky issues of bootstrapping.</p>
+</section>
 <section id="standard-mediation" class="level1">
 <h1>Standard Mediation</h1>
 <p>First, let’s estimate the direct, indirect and total effects without the use of the survey design to show equivalence.</p>

@@ -14,6 +14,7 @@ website:
           - svy_gsem_teffects.qmd
           - logitinterpretation.qmd
           - xtsetvsmixed.qmd
+          - modifying_stata_builtin.qmd
       - text: Statistical Topics
         menu:
           - splinesvsinteraction.qmd

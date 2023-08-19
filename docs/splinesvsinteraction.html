@@ -207,7 +207,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link active" data-scroll-target="#data-generation">Data generation</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation">Data generation</a></li>
   <li><a href="#obtain-pre-and-post-slopes" id="toc-obtain-pre-and-post-slopes" class="nav-link" data-scroll-target="#obtain-pre-and-post-slopes">Obtain pre and post slopes</a></li>
   <li><a href="#spline-version" id="toc-spline-version" class="nav-link" data-scroll-target="#spline-version">Spline version</a>
   <ul class="collapse">
@@ -250,13 +251,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>Linear splines are sometimes used when looking at interrupted time series models. For example, consider the scatter plot below.</p>
 <p><img src="graphs/splinesinteractions1.svg" class="img-fluid"></p>
 <p>The slope amongst the red points (<code>x &lt; 5</code>) is clearly different from the slope amongst the blue points (<code>x &gt; 5</code>). The best fit line fails to capture this at all.</p>
 <p>Imagine that <code>x</code> is time, and at <code>x = 5</code>, some intervention took place. The goal is to capture the change in slope that occurs after the intervention. One easy approach would be to fit separate pre and post models, and test for equality of coefficients. However, we can also address this with a single model.</p>
 <p>A linear spline model (as fit by Stata’s <a href="https://www.stata.com/manuals/rmkspline.pdf"><code>mkspline</code></a>) can capture that change in trend. Including an indicator for pre/post even allows a discontinuity at <code>x = 5</code> instead of the typical continuous spline. However, splines can be harder to interpret and more complicated to work with. This document will demonstrate that an interaction model is equivalent to the linear spline model, and with a simple re-scaling, easier to interpret.</p>
-<section id="data-generation" class="level2">
-<h2 class="anchored" data-anchor-id="data-generation">Data generation</h2>
+</section>
+<section id="data-generation" class="level1">
+<h1>Data generation</h1>
 <p>Let’s create a slightly more general data set where there is a “jump” (discontinuity) at intervention in addition to the change in trend.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">clear</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>

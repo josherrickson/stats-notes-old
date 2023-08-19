@@ -8,6 +8,8 @@ output:
     toc_float: yes
 ---
 
+# Introduction
+
 Linear splines are sometimes used when looking at interrupted time series
 models. For example, consider the scatter plot below.
 
@@ -31,7 +33,7 @@ harder to interpret and more complicated to work with. This document will
 demonstrate that an interaction model is equivalent to the linear spline model,
 and with a simple re-scaling, easier to interpret.
 
-## Data generation
+# Data generation
 
 Let's create a slightly more general data set where there is a "jump"
 (discontinuity) at intervention in addition to the change in trend.

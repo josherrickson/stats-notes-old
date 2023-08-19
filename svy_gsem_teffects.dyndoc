@@ -8,6 +8,8 @@ output:
     toc_float: yes
 ---
 
+# Introduction
+
 ::: {.callout-important}
 ## Stata Versioning
 

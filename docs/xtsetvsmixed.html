@@ -147,6 +147,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="./xtsetvsmixed.html" rel="" target="">
  <span class="dropdown-text">Stata’s mixed versus xtreg</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./modifying_stata_builtin.html" rel="" target="">
+ <span class="dropdown-text">Modifying a built-in Stata command</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -209,7 +213,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data" id="toc-data" class="nav-link active" data-scroll-target="#data">Data</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a>
   <ul class="collapse">
   <li><a href="#the-math" id="toc-the-math" class="nav-link" data-scroll-target="#the-math">The Math</a></li>
@@ -256,8 +261,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>In Stata, panel data (repeated measures) can be modeled using <code>mixed</code> (and its siblings e.g.&nbsp;<code>melogit</code>, <code>mepoisson</code>) or using the <code>xt</code> toolkit, including <code>xtset</code> and <code>xtreg</code>.</p>
 <p>This document is an attempt to show the equivalency of the models between the two commands. There will be slight differences due to the algorithms used in the backend but the results should generally be equivalent.</p>
+</section>
 <section id="data" class="level1">
 <h1>Data</h1>
 <p>We’ll use the “nlswork” data:</p>
