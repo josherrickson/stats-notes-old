@@ -6,26 +6,22 @@ website:
   title: "Statistics Notes"
   navbar:
     left:
-      - text: R Topics
+      - text: Topics
         menu:
-          - responsesurfaceplot.qmd
-      - text: Stata Topics
-        menu:
-          - svy_gsem_teffects.qmd
-          - logitinterpretation.qmd
-          - xtsetvsmixed.qmd
-          - modifying_stata_builtin.qmd
-      - text: Statistical Topics
-        menu:
-          - splinesvsinteraction.qmd
-          - randomselection.qmd
-          - iccirr.qmd
           - divideby4.qmd
-          - vizrandomeffects.qmd
+          - iccirr.qmd
+          - logitinterpretation.qmd
+          - logtransform.qmd
           - mixedModelsSPSS.qmd
           - moderationMediation.qmd
+          - modifying_stata_builtin.qmd
+          - randomselection.qmd
+          - responsesurfaceplot.qmd
+          - splinesvsinteraction.qmd
+          - svy_gsem_teffects.qmd
           - visualizeCollinearity.qmd
-          - logtransform.qmd
+          - vizrandomeffects.qmd
+          - xtsetvsmixed.qmd
       - href: index.html
         text: Back to list
 
