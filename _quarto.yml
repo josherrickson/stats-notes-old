@@ -15,6 +15,7 @@ website:
           - mixedModelsSPSS.qmd
           - moderationMediation.qmd
           - modifying_stata_builtin.qmd
+          - poissonapprox.qmd
           - randomselection.qmd
           - responsesurfaceplot.qmd
           - splinesvsinteraction.qmd
@@ -23,11 +24,11 @@ website:
           - vizrandomeffects.qmd
           - xtsetvsmixed.qmd
       - href: index.html
-        text: Back to list
+        text: List of Topics
+      - href: https://errickson.net
+        text: Home
 
 format:
   html:
-    theme:
-      light: cosmo
-      dark: [cosmo, theme-dark.scss]
+    theme: style.css
     toc: true

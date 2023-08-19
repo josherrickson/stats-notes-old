@@ -1,0 +1,268 @@
+---
+title: When can Poisson Regression approximate Logistic?
+author: Josh Errickson
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+An older idea in Epidemiology is to use a Poisson regression model in place of a
+logistic regression model. This idea has some validity because with a low mean,
+the Poisson distribution approximates the binary distribution.
+
+# Simulation
+
+Let's examine this. First, we define a program which generates some data
+according to a logistic model, then fits both logistic and Poisson regression
+models against it.
+
+This program, defined below, takes in three arguments
+
+- `n` - Sample size
+- `p` - Baseline probability of success
+- `b1` - Coefficient of interest.
+
+The model is simply
+
+$$
+    logit(P(Y = 1 | X)) = logit(p) + b_1x
+$$
+
+```stata
+. program def binsim, rclass
+  1.     drop _all
+  2.     args n p b1
+  3.     set obs `n'
+  4.     gen x = rnormal()
+  5.     gen y = rbinomial(1, invlogit(logit(`p') + `b1'*x))
+  6.     * Return P(success) to ensure everything is working
+.     mean y
+  7.     mat b = e(b)
+  8.     scalar pp = b[1,1]
+  9.     return scalar pp=pp
+ 10. 
+.     * Poisson model
+.     poisson y x
+ 11.     mat b = e(b)
+ 12.     scalar b_pois = b[1,1]
+ 13.     return scalar b_pois=b_pois
+ 14. 
+.     * Logistic model
+.     logistic y x
+ 15.     mat b = e(b)
+ 16.     scalar b_logit = b[1,1]
+ 17.     return scalar b_logit=b_logit
+ 18. end
+
+```
+
+# Results
+
+Now we can run it with a few different settings. Specifically, we're interested
+in how close to 0 the mean must be for the Poisson coefficient to approximate
+the logistic coefficient.
+
+Set a few parameters
+
+```stata
+. local beta1 .4
+
+. local reps 1000
+
+```
+
+## 10% success
+
+```stata
+. simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+>     reps(`reps') nodots: binsim 10000 .1 `beta1'
+
+      Command: binsim 10000 .1 .4
+           pp: r(pp)
+       b_pois: r(b_pois)
+      b_logit: r(b_logit)
+
+
+```
+
+First we'll ensure the code is working and that P(success) is 10% as requested.
+
+```stata
+. mean pp
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+          pp |   .1057365   .0000978      .1055445    .1059285
+--------------------------------------------------------------
+
+```
+
+Now we can look at the kernel densities
+
+```stata
+. twoway kdensity b_logit || kdensity b_pois, ///
+>     xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+
+```
+
+![](graphs/poisson1.svg)
+
+The Poisson coefficient is strongly negatively biased. We can estimate the bias
+as a percent of the true coefficient.
+
+```stata
+. gen error = abs(b_logit - b_pois)/b_logit
+
+. mean error
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+       error |   .1195278   .0001314      .1192699    .1197857
+--------------------------------------------------------------
+
+```
+
+## 5% success
+
+```stata
+. simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+>     reps(`reps') nodots: binsim 10000 .05 `beta1'
+
+      Command: binsim 10000 .05 .4
+           pp: r(pp)
+       b_pois: r(b_pois)
+      b_logit: r(b_logit)
+
+
+. mean pp
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+          pp |   .0535497   .0000704      .0534115    .0536879
+--------------------------------------------------------------
+
+. twoway kdensity b_logit || kdensity b_pois, ///
+>     xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+
+. gen error = abs(b_logit - b_pois)/b_logit
+
+. mean error
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+       error |   .0616367   .0001023      .0614361    .0618374
+--------------------------------------------------------------
+
+```
+
+![](graphs/poisson2.svg)
+
+Still see a negative bias.
+
+## 3% success
+
+```stata
+. simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+>     reps(`reps') nodots: binsim 10000 .03 `beta1'
+
+      Command: binsim 10000 .03 .4
+           pp: r(pp)
+       b_pois: r(b_pois)
+      b_logit: r(b_logit)
+
+
+. mean pp
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+          pp |   .0322263   .0000573      .0321139    .0323387
+--------------------------------------------------------------
+
+. twoway kdensity b_logit || kdensity b_pois, ///
+>     xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+
+. gen error = abs(b_logit - b_pois)/b_logit
+
+. mean error
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+       error |   .0375324   .0000839      .0373677    .0376971
+--------------------------------------------------------------
+
+```
+
+![](graphs/poisson3.svg)
+
+The bias is minimal but still present.
+
+## 1% success
+
+```stata
+. simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+>     reps(`reps') nodots: binsim 10000 .01 `beta1'
+
+      Command: binsim 10000 .01 .4
+           pp: r(pp)
+       b_pois: r(b_pois)
+      b_logit: r(b_logit)
+
+
+. mean pp
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+          pp |   .0108073   .0000342      .0107402    .0108744
+--------------------------------------------------------------
+
+. twoway kdensity b_logit || kdensity b_pois, ///
+>     xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+
+. gen error = abs(b_logit - b_pois)/b_logit
+
+. mean error
+
+Mean estimation                          Number of obs = 1,000
+
+--------------------------------------------------------------
+             |       Mean   Std. err.     [95% conf. interval]
+-------------+------------------------------------------------
+       error |   .0127062   .0000505      .0126072    .0128053
+--------------------------------------------------------------
+
+```
+
+![](graphs/poisson4.svg)
+
+The bias has all but disappeared.
+
+# Conclusion
+
+I wouldn't recommend using Poisson over Logistic unless P(Success) was 1% or
+less.
+
+There's an interesting artifact to explore, namely that the percent bias is
+consistently about 15-20% larger than the true beta.

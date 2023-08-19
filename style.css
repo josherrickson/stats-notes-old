@@ -1,0 +1,90 @@
+/*-- scss:defaults --*/
+$navbar-bg: #002b36;
+$dropdown-bg: #002b36;
+$dropdown-link-color: #93a1a1;
+$nav-tabs-link-active-bg: #586e75;
+$nav-tabs-link-active-color: #073642;
+
+/*-- scss:rules --*/
+:root {
+    /* Based on solarized-dark - http://www.zovirl.com/2011/07/22/solarized_cheat_sheet/*/
+    --base03: #002b36;
+    --base02: #073642;
+    --base01: #586e75;
+    --base00: #657b83;
+    --base0: #839496;
+    --base1: #93a1a1;
+    --base2: #eee8d5;
+    --base3: #fdf6e3;
+    --yellow: #b58900;
+    --orange: #cb4b16;
+    --red: #dc322f;
+    --magenta: #d33682;
+    --violet: #6c71c4;
+    --blue: #268bd2;
+    --cyan: #2aa198;
+    --green: #859900;
+
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 16px;
+    /*max-width: 600px;*/
+    margin: 0 auto;
+    /*padding: 15px 0 80px 0;*/
+    background: var(--base02);
+    color: var(--base2);
+}
+
+body a {
+    color: var(--blue);
+    text-decoration: none;
+}
+
+body a:hover {
+    color: var(--base2);
+    background-color: var(--blue);
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 200%;
+    color: var(--green);
+}
+
+h2 {
+    font-size: 150%;
+    color: var(--cyan);
+    font-style: italic;
+}
+
+h3 {
+    font-size: 125%;
+    color: var(--cyan);
+    text-decoration: underline;
+}
+
+h4 {
+    font-size: 110%;
+    text-decoration: underline;
+}
+
+pre {
+    margin-left: 5%;
+    color: var(--base1);
+}
+
+code {
+    background: var(--base02);
+    background-color: var(--base02);
+    color: var(--base2);
+    border: none;
+    border-radius: 0;
+}
+
+/* Have to add this to override background coloring on code */
+p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
+    background-color: var(--base02);
+    padding: .2em;
+}
