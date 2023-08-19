@@ -1,0 +1,161 @@
+---
+title: "Moderation and Mediation"
+author: "Josh Errickson"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+Moderation and mediation are terms for measuring conditional effects. They are
+frequently discussed in the context of SEMs. However, both can be estimated in
+standard regression settings.
+
+
+# Moderation
+
+## Definition
+
+Let $X$ be a predictor, $Y$ be a response and we are studying whether $Z$
+moderates the relationship between $X$ and $Y$. In other words, we want to
+know whether $Z$ modifies the strength (or direction) of the relationship
+between $X$ and $Y$. For example, we could study the relationship between
+socio-economic status ($X$) and frequency of breast exams ($Y$). Among
+younger women, breast exams are rare because current recommendations are for
+women age 40 and over to get exams. However, in older women, there is a
+relationship because those with higher SES tend to be more concerned with
+health. Age ($Z$) moderates the relationship between SES and frequency of
+breast exams.
+
+## In Regression
+
+Moderation is represented in a regression model with nothing more than an
+interaction term. There is a causal aspect to it, in that there needs to be the
+assumption that the predictor ($X$) has a causal relationship on the response
+($Y$). If $X$ is randomized, this assumption is satisfied. If the $X$ is not
+randomized, this assumption must be based on theory and domain specific
+knowledge.
+
+Fit the interaction model,
+
+$$
+  Y = \beta_0 + \beta_1X + \beta_2Z + \beta_3XZ + \epsilon.
+$$
+
+Therefore, $\beta_3$ measures the moderation effect.
+
+## Sources
+
+<http://davidakenny.net/cm/moderation.htm>
+
+# Mediation
+
+## Definition
+
+Again, let $X$ be a predictor and $Y$ be a response. We are studying whether $Z$
+mediates the relationship between $X$ and $Y$. Mediating variables are more
+complicated that moderators. A variable ($Z$) is said to be a mediator if it
+partially or fully explains the relationship between the predictor ($X$) and the
+response ($Y$). The easiest way to explain this is visually.
+
+The unmediated and mediated model follow.
+
+```{r}
+#| echo: false
+par(oma = c(0,0,0,0), mar = c(0,0,0,0))
+
+plot.new()
+scale <- c(10, 2, 3)
+names(scale) <- c("point", "text", "arrow")
+
+x <- c(.25, .75)
+y <- c(.75, .75)
+points(x[1], y[1], cex = scale["point"])
+points(x[2], y[2], cex = scale["point"])
+text(x[1], y[1], "X", cex = scale["text"])
+text(x[2], y[2], "Y", cex = scale["text"])
+arrows(x[1] + .07, y[1],
+       x[2] - .07, y[2], lwd = scale["arrow"])
+text(.5, y[2] + .05, "c", cex = scale["text"])
+
+x <- c(.25, .5, .75)
+y <- c(.15, .5, .15)
+
+points(x[1], y[1], cex = scale["point"])
+points(x[2], y[2], cex = scale["point"])
+points(x[3], y[3], cex = scale["point"])
+text(x[1], y[1], "X", cex = scale["text"])
+text(x[2], y[2], "Z", cex = scale["text"])
+text(x[3], y[3], "Y", cex = scale["text"])
+arrows(x[1] + .06, y[1] + .08,
+       x[2] - .07, y[2] - .06, lwd = scale["arrow"])
+arrows(x[1] + .08, y[1],
+       x[3] - .08, y[3], lwd = scale["arrow"])
+arrows(x[2] + .07, y[2] - .06,
+       x[3] - .06, y[3] + .08, lwd = scale["arrow"])
+text(.5, y[1] + .05, "d", cex = scale["text"])
+text(mean(x[1:2]) - .05, mean(y[1:2]) + .05, "a", cex = scale["text"])
+text(mean(x[2:3]) + .05, mean(y[1:2]) + .05, "b", cex = scale["text"])
+```
+
+In the first model, the unmediated model, the total relationship between $X$ and
+$Y$ is captured by $c$.
+
+In the second model, the total effect is split into direct and indirect effects.
+$d$ is the direct effect and $ab$. If the direct effect ($d$) is zero, then the
+relationship is fully mediated. In other words, without the existence of $Z$,
+there is no relationship between $X$ and $Y$.
+
+If the indirect effect is zero (either $a$ or $b$ are zero), then there is no
+indirect effect and no mediation occurs.
+
+Note: If fitting with linear regression, $c = d + ab$ and $c$ is the total
+effect. Otherwise (e.g. mixed model, logistic, etc) that relationship may not be
+precise, so $d + ab$ is a better estimate of the total effect.
+
+## In Regression
+
+::: {.callout-important}
+While we *can* fit mediation via regression (called the Baron-Kenny approach),
+it is **not** recommended. Use either SEM or the [mediation
+package](https://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf)
+in R or [causal
+mediation](https://www.stata.com/new-in-stata/causal-mediation-analysis/) in
+Stata.
+:::
+
+To test, we fit three regression models, testing all paths above.
+
+1. Test $c$ to establish a relationship between predictor ($X$) and response
+   ($Y$):
+
+$$
+ Y = \beta_0^{(1)} + cX + \epsilon.
+$$
+
+2. Test $a$ to establish correlation between predictor ($X$) and moderator
+   ($Z$):
+
+$$
+ Z = \beta_0^{(2)} + aX + \epsilon.
+$$
+
+3. Test $b$ to establish that the mediator ($Z$) affects the response ($Y$).
+   Include both mediator ($Z$) and predictor ($X$) to establish that the
+   relationship exists when controlling for $X$.
+
+$$
+ Y = \beta_0^{(3)} + dX + bM + \epsilon.
+$$
+
+If $c$, $a$ and $b$ are shown to be significant in each step above, we have
+established partial mediation.
+
+If additionally $d$ is zero, we have established full mediation.
+
+## Sources
+
+<http://davidakenny.net/cm/mediate.htm>
+
+<http://data.library.virginia.edu/introduction-to-mediation-analysis/>

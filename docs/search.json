@@ -1,23 +1,9 @@
 [
   {
-    "objectID": "vizrandomeffects.html",
-    "href": "vizrandomeffects.html",
-    "title": "Visualizing Nested and Cross Random Effects",
+    "objectID": "visualizeCollinearity.html",
+    "href": "visualizeCollinearity.html",
+    "title": "Visualizing the issue with Collinear Predictors",
     "section": "",
-    "text": "One way to think about random intercepts in a mixed models is the impact they will have on the residual covariance matrix. Of course, in a model with only fixed effects (e.g. lm), the residual covariance matrix is diagonal as each observation is assumed independent. In mixed models, there is a dependence structure across observations, so the residual covariance matrix will no longer be diagonal.\n\n\nWhether random effects are nested or crossed1 is a property of the data, not the model. However, when fitting the model, effects can be included as either nested or crossed.\nNested random effects are when each member of one group is contained entirely within a single unit of another group. The canonical example is students in classrooms; you may have repeated measures per student, but each student belongs to a single classroom (assuming no reassignments).\nCrossed random effects are when this nesting is not true. An example would be different seeds and different fields used for planting crops. Seeds of the same type can be planted in different fields, and each field can have multiple seeds in it."
-  },
-  {
-    "objectID": "vizrandomeffects.html#nested-versus-crossed",
-    "href": "vizrandomeffects.html#nested-versus-crossed",
-    "title": "Visualizing Nested and Cross Random Effects",
-    "section": "",
-    "text": "Whether random effects are nested or crossed1 is a property of the data, not the model. However, when fitting the model, effects can be included as either nested or crossed.\nNested random effects are when each member of one group is contained entirely within a single unit of another group. The canonical example is students in classrooms; you may have repeated measures per student, but each student belongs to a single classroom (assuming no reassignments).\nCrossed random effects are when this nesting is not true. An example would be different seeds and different fields used for planting crops. Seeds of the same type can be planted in different fields, and each field can have multiple seeds in it."
-  },
-  {
-    "objectID": "vizrandomeffects.html#footnotes",
-    "href": "vizrandomeffects.html#footnotes",
-    "title": "Visualizing Nested and Cross Random Effects",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\n“Crossed” simply means non-nested.↩︎"
+    "text": "Introduction\nWhile there are many resources out there to describe the issues arising with multicollinearity in independent variables, there’s a visualization for the problem that I came across in a book once and haven’t found replicated online. This replicates the visualization.\n\n\nSet-up\nLet \\(Y\\) be a response and \\(X_1\\) and \\(X_2\\) be the predictors, such that\n\\[\n    Y_i = \\beta_0 + \\beta_1X_{1i} + \\beta_2X_{2i} + \\epsilon_i\n\\]\nfor individual \\(i\\).\nFor simplicity, let’s say that\n\\[\n    \\beta_0 = 0,\\\\\n    \\beta_1 = 1,\\\\\n    \\beta_2 = 1.\n\\]\nI carry out a simulation by generating 1,000 simulations with a given correlation between predictors and obtain their coefficients.\n\nreps &lt;- 1000\nn &lt;- 100\nsave &lt;- matrix(nrow = reps, ncol = 3)\n\nfor (i in 1:reps) {\n  x1 &lt;- rnorm(n)\n  x2 &lt;- rnorm(n)\n  y &lt;- x1 + x2 + rnorm(n)\n\n  mod &lt;- lm(y ~ x1 + x2)\n  save[i,] &lt;- c(coef(mod)[-1], cor(x1, x2))\n}\n\nThe line x2 &lt;- rnorm(n) gets replaced with x2 &lt;- x1 + rnorm(n, sd = _), where the _ is replaced with difference values to induce more correlation between x1 and x2.\nFollowing these simulations, the coefficients are plotted against each out.\n\n\nSimulation\n\nNo CollinearityModerate CollinearityHigh CollinearityExtremely High Collinearity\n\n\nThe average correlation between \\(X_1\\) and \\(X_2\\) is 0.004.\n\n\n\n\n\nThe red dot represents the true coefficients. We see no relationship between the estimated coefficients, and each are well centered around the truth.\n\n\nThe average correlation between \\(X_1\\) and \\(X_2\\) is 0.549.\n\n\n\n\n\nWhile there is some semblance of a relationship, it is not very strong.\n\n\nThe average correlation between \\(X_1\\) and \\(X_2\\) is 0.894.\n\n\n\n\n\nThere’s a strong relationship now, such that if one coefficient is incorrectly high, the other is incorrectly low.\n\n\nThe average correlation between \\(X_1\\) and \\(X_2\\) is 0.995.\n\n\n\n\n\nWe now see a very strong relationship between the coefficients.\n\n\n\n\n\nWhy is this a problem?\nConsider the “extremely high correlation” results. With such high correlation, essentially \\(X_1 = X_2\\), which is represented by the red line (slope of -1). We can approximate our model:\n\\[\\begin{aligned}\n  Y_i &= \\beta_0 + \\beta_1X_{1i} + \\beta_2X_{2i} + \\epsilon_i\\\\\n  &\\approx \\beta_0 + (\\beta_1 + \\beta_2)X_{1i} + \\epsilon_i\\\\\n  &\\approx \\beta_0 + (\\beta_1 + \\beta_2)X_{2i} + \\epsilon_i\n\\end{aligned}\\]\nIn other words, the model has that \\(\\beta_1 + \\beta_2 = 2\\) (since we assumed above that both coefficients have values of 1.. So while all of those models would have the same predictive power for \\(Y\\), they would have drastically different interpretations depending on where along that red line they fall."
   }
 ]

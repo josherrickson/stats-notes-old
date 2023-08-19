@@ -21,6 +21,9 @@ website:
           - iccirr.qmd
           - divideby4.qmd
           - vizrandomeffects.qmd
+          - mixedModelsSPSS.qmd
+          - moderationMediation.qmd
+          - visualizeCollinearity.qmd
       - href: index.html
         text: Back to list
 
