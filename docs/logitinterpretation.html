@@ -147,6 +147,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="./xtsetvsmixed.html" rel="" target="">
  <span class="dropdown-text">Stata’s mixed versus xtreg</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./modifying_stata_builtin.html" rel="" target="">
+ <span class="dropdown-text">Modifying a built-in Stata command</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -209,7 +213,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#intercept-only-model" id="toc-intercept-only-model" class="nav-link active" data-scroll-target="#intercept-only-model">Intercept only model</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#intercept-only-model" id="toc-intercept-only-model" class="nav-link" data-scroll-target="#intercept-only-model">Intercept only model</a></li>
   <li><a href="#a-single-binary-predictor" id="toc-a-single-binary-predictor" class="nav-link" data-scroll-target="#a-single-binary-predictor">A single binary predictor</a>
   <ul class="collapse">
   <li><a href="#probabilities" id="toc-probabilities" class="nav-link" data-scroll-target="#probabilities">Probabilities</a></li>
@@ -263,6 +268,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>When looking at the results of a logistic model, there are several different measures of the relationship between the predictors and the probability of a positive outcome that can be used to interpret the model:</p>
 <ul>
 <li>The odds ratios</li>
@@ -271,6 +278,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Marginal probablities/percentages</li>
 </ul>
 <p>If you are unclear which you are looking at, confusion can abound. This is doubly-confounded in Stata (in my opinion) where certain <code>margins</code> commands will produce a different measure than perhaps expected.</p>
+</section>
 <section id="intercept-only-model" class="level1">
 <h1>Intercept only model</h1>
 <p>Let’s start simple and consider a model with only an intercept. We’ll use the “auto” data set, and fit a model predicting the probability of a car being foreign made.</p>

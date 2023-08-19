@@ -25,6 +25,7 @@ website:
           - mixedModelsSPSS.qmd
           - moderationMediation.qmd
           - visualizeCollinearity.qmd
+          - logtransform.qmd
       - href: index.html
         text: Back to list
 

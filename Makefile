@@ -5,9 +5,9 @@ qmds = $(dyndocs:.dyndoc=.qmd)
 default: $(qmds)
 	quarto render
 
-.PHONY:quarto-prerender
-quarto-prerender: $(qmds)
-	@echo > /dev/null
+.PHONY:stata
+stata: $(qmds)
+	@echo > /dev/null # empty command to avoid error
 
 $(qmds): %.qmd: %.dyndoc
 	/Applications/Stata/StataSE.app/Contents/MacOS/stata-se -b 'dyntext "$<", saving("$@") replace nostop'
