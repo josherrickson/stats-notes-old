@@ -25,6 +25,7 @@ website:
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme:
+      light: cosmo
+      dark: [cosmo, theme-dark.scss]
     toc: true
