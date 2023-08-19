@@ -20,6 +20,7 @@ website:
           - randomselection.qmd
           - iccirr.qmd
           - divideby4.qmd
+          - vizrandomeffects.qmd
       - href: index.html
         text: Back to list
 
