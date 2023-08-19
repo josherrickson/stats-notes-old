@@ -8,7 +8,7 @@
 
 <meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - Visualizing the issue with Collinear Predictors</title>
+<title>Statistics Notes - Moderation and Mediation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -209,10 +175,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#set-up" id="toc-set-up" class="nav-link" data-scroll-target="#set-up">Set-up</a></li>
-  <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
-  <li><a href="#why-is-this-a-problem" id="toc-why-is-this-a-problem" class="nav-link" data-scroll-target="#why-is-this-a-problem">Why is this a problem?</a></li>
+  <li><a href="#moderation" id="toc-moderation" class="nav-link active" data-scroll-target="#moderation">Moderation</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#in-regression" id="toc-in-regression" class="nav-link" data-scroll-target="#in-regression">In Regression</a></li>
+  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
+  </ul></li>
+  <li><a href="#mediation" id="toc-mediation" class="nav-link" data-scroll-target="#mediation">Mediation</a>
+  <ul class="collapse">
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#in-regression-1" id="toc-in-regression-1" class="nav-link" data-scroll-target="#in-regression-1">In Regression</a></li>
+  <li><a href="#sources-1" id="toc-sources-1" class="nav-link" data-scroll-target="#sources-1">Sources</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -221,7 +195,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Visualizing the issue with Collinear Predictors</h1>
+<h1 class="title">Moderation and Mediation</h1>
 </div>
 
 
@@ -242,96 +216,87 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
-<p>While there are many resources out there to describe the issues arising with multicollinearity in independent variables, there’s a visualization for the problem that I came across in a book once and haven’t found replicated online. This replicates the visualization.</p>
+<p>Moderation and mediation are terms for measuring conditional effects. They are frequently discussed in the context of SEMs. However, both can be estimated in standard regression settings.</p>
+<section id="moderation" class="level1">
+<h1>Moderation</h1>
+<section id="definition" class="level2">
+<h2 class="anchored" data-anchor-id="definition">Definition</h2>
+<p>Let <span class="math inline">\(X\)</span> be a predictor, <span class="math inline">\(Y\)</span> be a response and we are studying whether <span class="math inline">\(Z\)</span> moderates the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. In other words, we want to know whether <span class="math inline">\(Z\)</span> modifies the strength (or direction) of the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. For example, we could study the relationship between socio-economic status (<span class="math inline">\(X\)</span>) and frequency of breast exams (<span class="math inline">\(Y\)</span>). Among younger women, breast exams are rare because current recommendations are for women age 40 and over to get exams. However, in older women, there is a relationship because those with higher SES tend to be more concerned with health. Age (<span class="math inline">\(Z\)</span>) moderates the relationship between SES and frequency of breast exams.</p>
 </section>
-<section id="set-up" class="level1">
-<h1>Set-up</h1>
-<p>Let <span class="math inline">\(Y\)</span> be a response and <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> be the predictors, such that</p>
+<section id="in-regression" class="level2">
+<h2 class="anchored" data-anchor-id="in-regression">In Regression</h2>
+<p>Moderation is represented in a regression model with nothing more than an interaction term. There is a causal aspect to it, in that there needs to be the assumption that the predictor (<span class="math inline">\(X\)</span>) has a causal relationship on the response (<span class="math inline">\(Y\)</span>). If <span class="math inline">\(X\)</span> is randomized, this assumption is satisfied. If the <span class="math inline">\(X\)</span> is not randomized, this assumption must be based on theory and domain specific knowledge.</p>
+<p>Fit the interaction model,</p>
 <p><span class="math display">\[
-    Y_i = \beta_0 + \beta_1X_{1i} + \beta_2X_{2i} + \epsilon_i
+  Y = \beta_0 + \beta_1X + \beta_2Z + \beta_3XZ + \epsilon.
 \]</span></p>
-<p>for individual <span class="math inline">\(i\)</span>.</p>
-<p>For simplicity, let’s say that</p>
+<p>Therefore, <span class="math inline">\(\beta_3\)</span> measures the moderation effect.</p>
+</section>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
+<p><a href="http://davidakenny.net/cm/moderation.htm" class="uri">http://davidakenny.net/cm/moderation.htm</a></p>
+</section>
+</section>
+<section id="mediation" class="level1">
+<h1>Mediation</h1>
+<section id="definition-1" class="level2">
+<h2 class="anchored" data-anchor-id="definition-1">Definition</h2>
+<p>Again, let <span class="math inline">\(X\)</span> be a predictor and <span class="math inline">\(Y\)</span> be a response. We are studying whether <span class="math inline">\(Z\)</span> mediates the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Mediating variables are more complicated that moderators. A variable (<span class="math inline">\(Z\)</span>) is said to be a mediator if it partially or fully explains the relationship between the predictor (<span class="math inline">\(X\)</span>) and the response (<span class="math inline">\(Y\)</span>). The easiest way to explain this is visually.</p>
+<p>The unmediated and mediated model follow.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="moderationMediation_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>In the first model, the unmediated model, the total relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is captured by <span class="math inline">\(c\)</span>.</p>
+<p>In the second model, the total effect is split into direct and indirect effects. <span class="math inline">\(d\)</span> is the direct effect and <span class="math inline">\(ab\)</span>. If the direct effect (<span class="math inline">\(d\)</span>) is zero, then the relationship is fully mediated. In other words, without the existence of <span class="math inline">\(Z\)</span>, there is no relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p>If the indirect effect is zero (either <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span> are zero), then there is no indirect effect and no mediation occurs.</p>
+<p>Note: If fitting with linear regression, <span class="math inline">\(c = d + ab\)</span> and <span class="math inline">\(c\)</span> is the total effect. Otherwise (e.g.&nbsp;mixed model, logistic, etc) that relationship may not be precise, so <span class="math inline">\(d + ab\)</span> is a better estimate of the total effect.</p>
+</section>
+<section id="in-regression-1" class="level2">
+<h2 class="anchored" data-anchor-id="in-regression-1">In Regression</h2>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While we <em>can</em> fit mediation via regression (called the Baron-Kenny approach), it is <strong>not</strong> recommended. Use either SEM or the <a href="https://cran.r-project.org/web/packages/mediation/vignettes/mediation.pdf">mediation package</a> in R or <a href="https://www.stata.com/new-in-stata/causal-mediation-analysis/">causal mediation</a> in Stata.</p>
+</div>
+</div>
+<p>To test, we fit three regression models, testing all paths above.</p>
+<ol type="1">
+<li>Test <span class="math inline">\(c\)</span> to establish a relationship between predictor (<span class="math inline">\(X\)</span>) and response (<span class="math inline">\(Y\)</span>):</li>
+</ol>
 <p><span class="math display">\[
-    \beta_0 = 0,\\
-    \beta_1 = 1,\\
-    \beta_2 = 1.
+Y = \beta_0^{(1)} + cX + \epsilon.
 \]</span></p>
-<p>I carry out a simulation by generating 1,000 simulations with a given correlation between predictors and obtain their coefficients.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>reps <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>save <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">nrow =</span> reps, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>reps) {</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  x1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  x2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">&lt;-</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> <span class="fu">rnorm</span>(n)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  save[i,] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">coef</span>(mod)[<span class="sc">-</span><span class="dv">1</span>], <span class="fu">cor</span>(x1, x2))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The line <code>x2 &lt;- rnorm(n)</code> gets replaced with <code>x2 &lt;- x1 + rnorm(n, sd = _)</code>, where the <code>_</code> is replaced with difference values to induce more correlation between <code>x1</code> and <code>x2</code>.</p>
-<p>Following these simulations, the coefficients are plotted against each out.</p>
+<ol start="2" type="1">
+<li>Test <span class="math inline">\(a\)</span> to establish correlation between predictor (<span class="math inline">\(X\)</span>) and moderator (<span class="math inline">\(Z\)</span>):</li>
+</ol>
+<p><span class="math display">\[
+Z = \beta_0^{(2)} + aX + \epsilon.
+\]</span></p>
+<ol start="3" type="1">
+<li>Test <span class="math inline">\(b\)</span> to establish that the mediator (<span class="math inline">\(Z\)</span>) affects the response (<span class="math inline">\(Y\)</span>). Include both mediator (<span class="math inline">\(Z\)</span>) and predictor (<span class="math inline">\(X\)</span>) to establish that the relationship exists when controlling for <span class="math inline">\(X\)</span>.</li>
+</ol>
+<p><span class="math display">\[
+Y = \beta_0^{(3)} + dX + bM + \epsilon.
+\]</span></p>
+<p>If <span class="math inline">\(c\)</span>, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are shown to be significant in each step above, we have established partial mediation.</p>
+<p>If additionally <span class="math inline">\(d\)</span> is zero, we have established full mediation.</p>
 </section>
-<section id="simulation" class="level1">
-<h1>Simulation</h1>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">No Collinearity</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Moderate Collinearity</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">High Collinearity</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Extremely High Collinearity</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<p>The average correlation between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is 0.005.</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="visualizeCollinearity_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>The red dot represents the true coefficients. We see no relationship between the estimated coefficients, and each are well centered around the truth.</p>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p>The average correlation between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is 0.555.</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="visualizeCollinearity_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>While there is some semblance of a relationship, it is not very strong.</p>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<p>The average correlation between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is 0.894.</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="visualizeCollinearity_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>There’s a strong relationship now, such that if one coefficient is incorrectly high, the other is incorrectly low.</p>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<p>The average correlation between <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> is 0.995.</p>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="visualizeCollinearity_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>We now see a very strong relationship between the coefficients.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="why-is-this-a-problem" class="level1">
-<h1>Why is this a problem?</h1>
-<p>Consider the “extremely high correlation” results. With such high correlation, essentially <span class="math inline">\(X_1 = X_2\)</span>, which is represented by the red line (slope of -1). We can approximate our model:</p>
-<span class="math display">\[\begin{aligned}
-  Y_i &amp;= \beta_0 + \beta_1X_{1i} + \beta_2X_{2i} + \epsilon_i\\
-  &amp;\approx \beta_0 + (\beta_1 + \beta_2)X_{1i} + \epsilon_i\\
-  &amp;\approx \beta_0 + (\beta_1 + \beta_2)X_{2i} + \epsilon_i
-\end{aligned}\]</span>
-<p>In other words, the model has that <span class="math inline">\(\beta_1 + \beta_2 = 2\)</span> (since we assumed above that both coefficients have values of 1.. So while all of those models would have the same predictive power for <span class="math inline">\(Y\)</span>, they would have drastically different interpretations depending on where along that red line they fall.</p>
+<section id="sources-1" class="level2">
+<h2 class="anchored" data-anchor-id="sources-1">Sources</h2>
+<p><a href="http://davidakenny.net/cm/mediate.htm" class="uri">http://davidakenny.net/cm/mediate.htm</a></p>
+<p><a href="http://data.library.virginia.edu/introduction-to-mediation-analysis/" class="uri">http://data.library.virginia.edu/introduction-to-mediation-analysis/</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
