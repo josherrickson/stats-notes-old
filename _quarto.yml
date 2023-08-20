@@ -4,6 +4,8 @@ project:
 
 book:
   title: "Statistics Notes"
+  author: "Josh Errickson"
+  page-navigation: false
   chapters:
     - index.qmd
     - divideby4.qmd
@@ -26,5 +28,5 @@ format:
   html:
     theme:
       light: cosmo
-      dark: [cosmo, style.css]
-    toc: true
+      dark: [cosmo, theme-dark.scss]
+    number-sections: false

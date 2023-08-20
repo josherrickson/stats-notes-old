@@ -1,8 +1,5 @@
 ---
 title: The "Divide by 4" Rule
-author: Josh Errickson
-output:
-  html_document
 ---
 
 In addition to the odds ratio interpretation of coefficients in a logistic

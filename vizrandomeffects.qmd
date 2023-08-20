@@ -1,10 +1,5 @@
 ---
 title: "Visualizing Nested and Cross Random Effects"
-author: "Josh Errickson"
-output:
-  html_document:
-    toc: yes
-    toc_float: yes
 ---
 
 ```{r setup, include=FALSE}

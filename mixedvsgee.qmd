@@ -1,11 +1,5 @@
 ---
 title: "Interpreting Mixed Model coefficients versus GEE model coefficients"
-author: "Josh Errickson"
-output:
-  html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
 ---
 
 When there is a "random effect" to account for (e.g. repeated measures), two

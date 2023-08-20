@@ -1,11 +1,5 @@
 ---
 title: "Inter-rater Reliability"
-author: "Josh Errickson"
-output:
-  html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
 ---
 
 A few notes on agreement between raters.

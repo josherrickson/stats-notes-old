@@ -1,11 +1,5 @@
 ---
 title: Logistic Models and the Margins Command
-author: Josh Errickson
-output:
-  html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
 ---
 
 # Introduction

@@ -1,11 +1,5 @@
 ---
 title: Choosing a Random Sample
-author: Josh Errickson
-output:
-  html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
 ---
 
 # Introduction

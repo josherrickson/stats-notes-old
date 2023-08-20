@@ -1,7 +1,5 @@
 ---
 title: "Visualizing the issue with Collinear Predictors"
-author: "Josh Errickson"
-output: html_document
 ---
 
 ```{r setup, include=FALSE}

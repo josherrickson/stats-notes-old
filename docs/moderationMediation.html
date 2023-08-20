@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - 7&nbsp; Moderation and Mediation</title>
+<title>Statistics Notes - Moderation and Mediation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,8 +30,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./modifying_stata_builtin.html" rel="next">
-<link href="./mixedModelsSPSS.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -79,7 +76,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./moderationMediation.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./moderationMediation.html"><span class="chapter-title">Moderation and Mediation</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -109,98 +106,82 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">List of Topics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The “Divide by 4” Rule</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Inter-rater Reliability</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Models and the Margins Command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Log Transform Interpretation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Moderation and Mediation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifying a built-in Stata command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Choosing a Random Sample</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Response Surface Plot</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Splines vs Interaction models</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mediation with svyset data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing the issue with Collinear Predictors</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing Nested and Cross Random Effects</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stata’s mixed versus xtreg</span></a>
   </div>
 </li>
     </ul>
@@ -213,18 +194,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">8</span> Introduction</a></li>
-  <li><a href="#moderation" id="toc-moderation" class="nav-link" data-scroll-target="#moderation"><span class="header-section-number">9</span> Moderation</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#moderation" id="toc-moderation" class="nav-link" data-scroll-target="#moderation">Moderation</a>
   <ul class="collapse">
-  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition"><span class="header-section-number">9.1</span> Definition</a></li>
-  <li><a href="#in-regression" id="toc-in-regression" class="nav-link" data-scroll-target="#in-regression"><span class="header-section-number">9.2</span> In Regression</a></li>
-  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources"><span class="header-section-number">9.3</span> Sources</a></li>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#in-regression" id="toc-in-regression" class="nav-link" data-scroll-target="#in-regression">In Regression</a></li>
+  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources">Sources</a></li>
   </ul></li>
-  <li><a href="#mediation" id="toc-mediation" class="nav-link" data-scroll-target="#mediation"><span class="header-section-number">10</span> Mediation</a>
+  <li><a href="#mediation" id="toc-mediation" class="nav-link" data-scroll-target="#mediation">Mediation</a>
   <ul class="collapse">
-  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1"><span class="header-section-number">10.1</span> Definition</a></li>
-  <li><a href="#in-regression-1" id="toc-in-regression-1" class="nav-link" data-scroll-target="#in-regression-1"><span class="header-section-number">10.2</span> In Regression</a></li>
-  <li><a href="#sources-1" id="toc-sources-1" class="nav-link" data-scroll-target="#sources-1"><span class="header-section-number">10.3</span> Sources</a></li>
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#in-regression-1" id="toc-in-regression-1" class="nav-link" data-scroll-target="#in-regression-1">In Regression</a></li>
+  <li><a href="#sources-1" id="toc-sources-1" class="nav-link" data-scroll-target="#sources-1">Sources</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -234,19 +215,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></h1>
+<h1 class="title"><span class="chapter-title">Moderation and Mediation</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Josh Errickson </p>
-          </div>
-  </div>
     
   
     
@@ -255,18 +230,18 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="introduction" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Introduction</h1>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>Moderation and mediation are terms for measuring conditional effects. They are frequently discussed in the context of SEMs. However, both can be estimated in standard regression settings.</p>
 </section>
-<section id="moderation" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Moderation</h1>
-<section id="definition" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="definition"><span class="header-section-number">9.1</span> Definition</h2>
+<section id="moderation" class="level1">
+<h1>Moderation</h1>
+<section id="definition" class="level2">
+<h2 class="anchored" data-anchor-id="definition">Definition</h2>
 <p>Let <span class="math inline">\(X\)</span> be a predictor, <span class="math inline">\(Y\)</span> be a response and we are studying whether <span class="math inline">\(Z\)</span> moderates the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. In other words, we want to know whether <span class="math inline">\(Z\)</span> modifies the strength (or direction) of the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. For example, we could study the relationship between socio-economic status (<span class="math inline">\(X\)</span>) and frequency of breast exams (<span class="math inline">\(Y\)</span>). Among younger women, breast exams are rare because current recommendations are for women age 40 and over to get exams. However, in older women, there is a relationship because those with higher SES tend to be more concerned with health. Age (<span class="math inline">\(Z\)</span>) moderates the relationship between SES and frequency of breast exams.</p>
 </section>
-<section id="in-regression" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="in-regression"><span class="header-section-number">9.2</span> In Regression</h2>
+<section id="in-regression" class="level2">
+<h2 class="anchored" data-anchor-id="in-regression">In Regression</h2>
 <p>Moderation is represented in a regression model with nothing more than an interaction term. There is a causal aspect to it, in that there needs to be the assumption that the predictor (<span class="math inline">\(X\)</span>) has a causal relationship on the response (<span class="math inline">\(Y\)</span>). If <span class="math inline">\(X\)</span> is randomized, this assumption is satisfied. If the <span class="math inline">\(X\)</span> is not randomized, this assumption must be based on theory and domain specific knowledge.</p>
 <p>Fit the interaction model,</p>
 <p><span class="math display">\[
@@ -274,15 +249,15 @@ ul.task-list li input[type="checkbox"] {
 \]</span></p>
 <p>Therefore, <span class="math inline">\(\beta_3\)</span> measures the moderation effect.</p>
 </section>
-<section id="sources" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="sources"><span class="header-section-number">9.3</span> Sources</h2>
+<section id="sources" class="level2">
+<h2 class="anchored" data-anchor-id="sources">Sources</h2>
 <p><a href="http://davidakenny.net/cm/moderation.htm" class="uri">http://davidakenny.net/cm/moderation.htm</a></p>
 </section>
 </section>
-<section id="mediation" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Mediation</h1>
-<section id="definition-1" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="definition-1"><span class="header-section-number">10.1</span> Definition</h2>
+<section id="mediation" class="level1">
+<h1>Mediation</h1>
+<section id="definition-1" class="level2">
+<h2 class="anchored" data-anchor-id="definition-1">Definition</h2>
 <p>Again, let <span class="math inline">\(X\)</span> be a predictor and <span class="math inline">\(Y\)</span> be a response. We are studying whether <span class="math inline">\(Z\)</span> mediates the relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. Mediating variables are more complicated that moderators. A variable (<span class="math inline">\(Z\)</span>) is said to be a mediator if it partially or fully explains the relationship between the predictor (<span class="math inline">\(X\)</span>) and the response (<span class="math inline">\(Y\)</span>). The easiest way to explain this is visually.</p>
 <p>The unmediated and mediated model follow.</p>
 <div class="cell">
@@ -295,8 +270,8 @@ ul.task-list li input[type="checkbox"] {
 <p>If the indirect effect is zero (either <span class="math inline">\(a\)</span> or <span class="math inline">\(b\)</span> are zero), then there is no indirect effect and no mediation occurs.</p>
 <p>Note: If fitting with linear regression, <span class="math inline">\(c = d + ab\)</span> and <span class="math inline">\(c\)</span> is the total effect. Otherwise (e.g.&nbsp;mixed model, logistic, etc) that relationship may not be precise, so <span class="math inline">\(d + ab\)</span> is a better estimate of the total effect.</p>
 </section>
-<section id="in-regression-1" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="in-regression-1"><span class="header-section-number">10.2</span> In Regression</h2>
+<section id="in-regression-1" class="level2">
+<h2 class="anchored" data-anchor-id="in-regression-1">In Regression</h2>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -332,8 +307,8 @@ Y = \beta_0^{(3)} + dX + bM + \epsilon.
 <p>If <span class="math inline">\(c\)</span>, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are shown to be significant in each step above, we have established partial mediation.</p>
 <p>If additionally <span class="math inline">\(d\)</span> is zero, we have established full mediation.</p>
 </section>
-<section id="sources-1" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="sources-1"><span class="header-section-number">10.3</span> Sources</h2>
+<section id="sources-1" class="level2">
+<h2 class="anchored" data-anchor-id="sources-1">Sources</h2>
 <p><a href="http://davidakenny.net/cm/mediate.htm" class="uri">http://davidakenny.net/cm/mediate.htm</a></p>
 <p><a href="http://data.library.virginia.edu/introduction-to-mediation-analysis/" class="uri">http://data.library.virginia.edu/introduction-to-mediation-analysis/</a></p>
 
@@ -690,18 +665,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./mixedModelsSPSS.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./modifying_stata_builtin.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

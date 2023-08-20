@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - 9&nbsp; When can Poisson Regression approximate Logistic?</title>
+<title>Statistics Notes - When can Poisson Regression approximate Logistic?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./randomselection.html" rel="next">
-<link href="./modifying_stata_builtin.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -113,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./poissonapprox.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./poissonapprox.html"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -143,98 +140,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">List of Topics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The “Divide by 4” Rule</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Inter-rater Reliability</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Models and the Margins Command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Log Transform Interpretation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Moderation and Mediation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifying a built-in Stata command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Choosing a Random Sample</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Response Surface Plot</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Splines vs Interaction models</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mediation with svyset data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing the issue with Collinear Predictors</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing Nested and Cross Random Effects</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stata’s mixed versus xtreg</span></a>
   </div>
 </li>
     </ul>
@@ -247,15 +228,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#simulation" id="toc-simulation" class="nav-link active" data-scroll-target="#simulation"><span class="header-section-number">10</span> Simulation</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results"><span class="header-section-number">11</span> Results</a>
-  <ul class="collapse">
-  <li><a href="#success" id="toc-success" class="nav-link" data-scroll-target="#success"><span class="header-section-number">11.1</span> 10% success</a></li>
-  <li><a href="#success-1" id="toc-success-1" class="nav-link" data-scroll-target="#success-1"><span class="header-section-number">11.2</span> 5% success</a></li>
-  <li><a href="#success-2" id="toc-success-2" class="nav-link" data-scroll-target="#success-2"><span class="header-section-number">11.3</span> 3% success</a></li>
-  <li><a href="#success-3" id="toc-success-3" class="nav-link" data-scroll-target="#success-3"><span class="header-section-number">11.4</span> 1% success</a></li>
-  </ul></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">12</span> Conclusion</a></li>
+  <li><a href="#simulation" id="toc-simulation" class="nav-link active" data-scroll-target="#simulation">Simulation</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
 </nav>
     </div>
@@ -264,19 +239,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></h1>
+<h1 class="title"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Josh Errickson </p>
-          </div>
-  </div>
     
   
     
@@ -286,8 +255,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>An older idea in Epidemiology is to use a Poisson regression model in place of a logistic regression model. This idea has some validity because with a low mean, the Poisson distribution approximates the binary distribution.</p>
-<section id="simulation" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Simulation</h1>
+<section id="simulation" class="level1">
+<h1>Simulation</h1>
 <p>Let’s examine this. First, we define a program which generates some data according to a logistic model, then fits both logistic and Poisson regression models against it.</p>
 <p>This program, defined below, takes in three arguments</p>
 <ul>
@@ -324,15 +293,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a> 17.     <span class="fu">return</span> <span class="fu">scalar</span> b_logit=b_logit</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a> 18. <span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="results" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Results</h1>
+<section id="results" class="level1">
+<h1>Results</h1>
 <p>Now we can run it with a few different settings. Specifically, we’re interested in how close to 0 the mean must be for the Poisson coefficient to approximate the logistic coefficient.</p>
 <p>Set a few parameters</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">local</span> beta1 .4</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>. <span class="kw">local</span> reps 1000</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="success" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="success"><span class="header-section-number">11.1</span> 10% success</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">10% success</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">5% success</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">3% success</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">1% success</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">simulate</span> pp=<span class="fu">r</span>(pp) b_pois=<span class="fu">r</span>(b_pois) b_logit=<span class="fu">r</span>(b_logit), <span class="co">///</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>&gt;     reps(<span class="ot">`reps'</span>) <span class="kw">nodots</span>: binsim 10000 .1 <span class="ot">`beta1'</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -367,9 +338,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>-------------+------------------------------------------------</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="kw">error</span> |   .1195278   .0001314      .1192699    .1197857</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>--------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="success-1" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="success-1"><span class="header-section-number">11.2</span> 5% success</h2>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="sourceCode" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">simulate</span> pp=<span class="fu">r</span>(pp) b_pois=<span class="fu">r</span>(b_pois) b_logit=<span class="fu">r</span>(b_logit), <span class="co">///</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>&gt;     reps(<span class="ot">`reps'</span>) <span class="kw">nodots</span>: binsim 10000 .05 <span class="ot">`beta1'</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -405,9 +375,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>--------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="graphs/poisson2.svg" class="img-fluid"></p>
 <p>Still see a negative bias.</p>
-</section>
-<section id="success-2" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="success-2"><span class="header-section-number">11.3</span> 3% success</h2>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
 <div class="sourceCode" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">simulate</span> pp=<span class="fu">r</span>(pp) b_pois=<span class="fu">r</span>(b_pois) b_logit=<span class="fu">r</span>(b_logit), <span class="co">///</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>&gt;     reps(<span class="ot">`reps'</span>) <span class="kw">nodots</span>: binsim 10000 .03 <span class="ot">`beta1'</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -443,9 +412,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>--------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="graphs/poisson3.svg" class="img-fluid"></p>
 <p>The bias is minimal but still present.</p>
-</section>
-<section id="success-3" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="success-3"><span class="header-section-number">11.4</span> 1% success</h2>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
 <div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">simulate</span> pp=<span class="fu">r</span>(pp) b_pois=<span class="fu">r</span>(b_pois) b_logit=<span class="fu">r</span>(b_logit), <span class="co">///</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>&gt;     reps(<span class="ot">`reps'</span>) <span class="kw">nodots</span>: binsim 10000 .01 <span class="ot">`beta1'</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -481,10 +449,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>--------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="graphs/poisson4.svg" class="img-fluid"></p>
 <p>The bias has all but disappeared.</p>
+</div>
+</div>
+</div>
 </section>
-</section>
-<section id="conclusion" class="level1" data-number="12">
-<h1 data-number="12"><span class="header-section-number">12</span> Conclusion</h1>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
 <p>I wouldn’t recommend using Poisson over Logistic unless P(Success) was 1% or less.</p>
 <p>There’s an interesting artifact to explore, namely that the percent bias is consistently about 15-20% larger than the true beta.</p>
 
@@ -840,18 +810,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./modifying_stata_builtin.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./randomselection.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

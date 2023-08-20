@@ -1,8 +1,5 @@
 ---
 title: Modifying a built-in Stata command
-author: Josh Errickson
-output:
-  html_document
 ---
 
 I recently came across an issue in which modifying a shipped-with-Stata command was

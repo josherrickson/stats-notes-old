@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - 8&nbsp; Modifying a built-in Stata command</title>
+<title>Statistics Notes - Modifying a built-in Stata command</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./poissonapprox.html" rel="next">
-<link href="./moderationMediation.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -111,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modifying_stata_builtin.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modifying_stata_builtin.html"><span class="chapter-title">Modifying a built-in Stata command</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -141,98 +138,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">List of Topics</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The “Divide by 4” Rule</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Inter-rater Reliability</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Models and the Margins Command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Log Transform Interpretation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Moderation and Mediation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Modifying a built-in Stata command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Choosing a Random Sample</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Response Surface Plot</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Splines vs Interaction models</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mediation with svyset data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing the issue with Collinear Predictors</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing Nested and Cross Random Effects</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stata’s mixed versus xtreg</span></a>
   </div>
 </li>
     </ul>
@@ -245,10 +226,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem"><span class="header-section-number">9</span> The Problem</a></li>
-  <li><a href="#finding-where-to-modify" id="toc-finding-where-to-modify" class="nav-link" data-scroll-target="#finding-where-to-modify"><span class="header-section-number">10</span> Finding where to modify</a></li>
-  <li><a href="#making-the-modification" id="toc-making-the-modification" class="nav-link" data-scroll-target="#making-the-modification"><span class="header-section-number">11</span> Making the modification</a></li>
-  <li><a href="#an-added-complication" id="toc-an-added-complication" class="nav-link" data-scroll-target="#an-added-complication"><span class="header-section-number">12</span> An Added Complication</a></li>
+  <li><a href="#the-problem" id="toc-the-problem" class="nav-link active" data-scroll-target="#the-problem">The Problem</a></li>
+  <li><a href="#finding-where-to-modify" id="toc-finding-where-to-modify" class="nav-link" data-scroll-target="#finding-where-to-modify">Finding where to modify</a></li>
+  <li><a href="#making-the-modification" id="toc-making-the-modification" class="nav-link" data-scroll-target="#making-the-modification">Making the modification</a></li>
+  <li><a href="#an-added-complication" id="toc-an-added-complication" class="nav-link" data-scroll-target="#an-added-complication">An Added Complication</a></li>
   </ul>
 </nav>
     </div>
@@ -257,19 +238,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></h1>
+<h1 class="title"><span class="chapter-title">Modifying a built-in Stata command</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Josh Errickson </p>
-          </div>
-  </div>
     
   
     
@@ -280,8 +255,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p>I recently came across an issue in which modifying a shipped-with-Stata command was the easier way to address. I’m writing this to document the approach I took in case it comes up again and proves useful to remember the steps I took.</p>
 <p>(Note: If you see <code>...</code> in Stata code snippets below, it indicates portions of code I excluded for brevity.)</p>
-<section id="the-problem" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> The Problem</h1>
+<section id="the-problem" class="level1">
+<h1>The Problem</h1>
 <p>A client was working with survival data and using the <code>sts test</code> command to show that the number of observed and expected events was similar. The <code>sts test</code> command produces a p-value, as shown below, but the journal the client was submitting to rightly prefers confidence intervals over p-values. So the client was hoping to bootstrap <code>sts test</code> to generate confidence intervals for the expected number of events. The problem was that <code>sts test</code> returns very little information and thus bootstrap wouldn’t work as normal (as it requires <code>return</code>’d or <code>ereturn</code>’d values to operate).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">webuse</span> stan3</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(Heart transplant <span class="kw">data</span>)</span>
@@ -313,8 +288,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">r</span>(df) =  1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>While I could probably have figured out the math that Stata uses to calculate those expected events, it seemed probably easier and definitely more fun to hack the <code>sts test</code> command.</p>
 </section>
-<section id="finding-where-to-modify" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Finding where to modify</h1>
+<section id="finding-where-to-modify" class="level1">
+<h1>Finding where to modify</h1>
 <p>The <code>which</code> command will tell you whether a command exists in an ado file, or is “built-in”, which cannot be modified as easily. Since the “test” of <code>sts test</code> is a subcommand, we can find where <code>sts</code> is defined.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>. which <span class="kw">sts</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>/Applications/Stata/ado/base/<span class="fu">s</span>/<span class="kw">sts</span>.ado</span>
@@ -382,8 +357,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Note the reference to two matrix extractions: <code>wo[1, i]</code> and <code>w[1, i]</code>. These insert the observed (<code>wo</code>) and expected (<code>w</code>) number of events!</p>
 </section>
-<section id="making-the-modification" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Making the modification</h1>
+<section id="making-the-modification" class="level1">
+<h1>Making the modification</h1>
 <p>So ultimately, we just need to return the <code>w</code> matrix. Finding the other returns,</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>...</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    ret <span class="fu">scalar</span> df = <span class="fu">colsof</span>(<span class="ot">`w'</span>) - 1</span>
@@ -425,8 +400,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>          e2 |   43.80045   5.779255     7.58   0.000     32.47332    55.12758</span>
 <span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="an-added-complication" class="level1" data-number="12">
-<h1 data-number="12"><span class="header-section-number">12</span> An Added Complication</h1>
+<section id="an-added-complication" class="level1">
+<h1>An Added Complication</h1>
 <p>The client was working on a virtual Windows machine which did not have permission to overwrite the logrank.ado file. It is easy enough to make a copy of logrank.ado, rename <code>logrank</code> to <code>logrank2</code> and treat it as a user-written ado file, but we’d have to also create a custom version of <code>sts test</code> which might be slightly messy due to it being a subcommand.</p>
 <p>Instead, we can use the sts.ado to figure out to get the comparable <code>logrank</code> command for a given <code>sts test</code> command.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>...</span>
@@ -814,18 +789,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./moderationMediation.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./poissonapprox.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

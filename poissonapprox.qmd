@@ -1,11 +1,5 @@
 ---
 title: When can Poisson Regression approximate Logistic?
-author: Josh Errickson
-output:
-  html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float: yes
 ---
 
 An older idea in Epidemiology is to use a Poisson regression model in place of a
@@ -72,6 +66,8 @@ Set a few parameters
 . local reps 1000
 
 ```
+
+::: {.panel-tabset}
 
 ## 10% success
 
@@ -258,6 +254,8 @@ Mean estimation                          Number of obs = 1,000
 ![](graphs/poisson4.svg)
 
 The bias has all but disappeared.
+
+:::
 
 # Conclusion
 

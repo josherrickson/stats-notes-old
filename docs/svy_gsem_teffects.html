@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - 13&nbsp; Mediation with svyset data</title>
+<title>Statistics Notes - Mediation with svyset data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,8 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./visualizeCollinearity.html" rel="next">
-<link href="./splinesvsinteraction.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -111,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./svy_gsem_teffects.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./svy_gsem_teffects.html"><span class="chapter-title">Mediation with svyset data</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -141,98 +138,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The “Divide by 4” Rule</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Inter-rater Reliability</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Models and the Margins Command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Log Transform Interpretation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Moderation and Mediation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifying a built-in Stata command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Choosing a Random Sample</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Response Surface Plot</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Splines vs Interaction models</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Mediation with svyset data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing the issue with Collinear Predictors</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing Nested and Cross Random Effects</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Stata’s mixed versus xtreg</span></a>
   </div>
 </li>
     </ul>
@@ -245,9 +226,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">14</span> Introduction</a></li>
-  <li><a href="#standard-mediation" id="toc-standard-mediation" class="nav-link" data-scroll-target="#standard-mediation"><span class="header-section-number">15</span> Standard Mediation</a></li>
-  <li><a href="#with-survey-data" id="toc-with-survey-data" class="nav-link" data-scroll-target="#with-survey-data"><span class="header-section-number">16</span> With survey data</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#standard-mediation" id="toc-standard-mediation" class="nav-link" data-scroll-target="#standard-mediation">Standard Mediation</a></li>
+  <li><a href="#with-survey-data" id="toc-with-survey-data" class="nav-link" data-scroll-target="#with-survey-data">With survey data</a></li>
   </ul>
 </nav>
     </div>
@@ -256,19 +237,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></h1>
+<h1 class="title"><span class="chapter-title">Mediation with svyset data</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Josh Errickson </p>
-          </div>
-  </div>
     
   
     
@@ -277,8 +252,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="introduction" class="level1" data-number="14">
-<h1 data-number="14"><span class="header-section-number">14</span> Introduction</h1>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -296,8 +271,8 @@ Stata Versioning
 <p>This document shows how to manually calculate these effects using <code>nlcom</code>.</p>
 <p>Note that this is a case where all variables are continuous and all models are linear - we are only using <code>gsem</code> for it’s support of <code>svy:</code>, not it’s support of GLMs. Indirect effects are a more complicated topic in those models which we do not address here. Additionally, we’ll trust Stata to compute standard errors rather than getting into any sticky issues of bootstrapping.</p>
 </section>
-<section id="standard-mediation" class="level1" data-number="15">
-<h1 data-number="15"><span class="header-section-number">15</span> Standard Mediation</h1>
+<section id="standard-mediation" class="level1">
+<h1>Standard Mediation</h1>
 <p>First, let’s estimate the direct, indirect and total effects without the use of the survey design to show equivalence.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">webuse</span> gsem_multmed</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(Fictional job-performance <span class="kw">data</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -498,8 +473,8 @@ Stata Versioning
 <span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>       _nl_1 |   .8217557   .0404579    20.31   0.000     .7424597    .9010516</span>
 <span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>------------------------------------------------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="with-survey-data" class="level1" data-number="16">
-<h1 data-number="16"><span class="header-section-number">16</span> With survey data</h1>
+<section id="with-survey-data" class="level1">
+<h1>With survey data</h1>
 <p>We’ll reproduce the above results with survey set data. The actually <code>svyset</code> here is nonsense, this test data is not actual survey data.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">svyset</span> branch [<span class="kw">pweight</span> = perform]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -933,18 +908,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./splinesvsinteraction.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="./visualizeCollinearity.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 
 

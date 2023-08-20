@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - 16&nbsp; Stata’s mixed versus xtreg</title>
+<title>Statistics Notes - Stata’s mixed versus xtreg</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +64,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./vizrandomeffects.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -112,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./xtsetvsmixed.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata's mixed versus xtreg</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./xtsetvsmixed.html"><span class="chapter-title">Stata's mixed versus xtreg</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -142,98 +140,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">index.html</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">The “Divide by 4” Rule</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Inter-rater Reliability</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Logistic Models and the Margins Command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Log Transform Interpretation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Moderation and Mediation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifying a built-in Stata command</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">When can Poisson Regression approximate Logistic?</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Choosing a Random Sample</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Response Surface Plot</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Splines vs Interaction models</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Mediation with svyset data</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing the issue with Collinear Predictors</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Visualizing Nested and Cross Random Effects</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Stata’s mixed versus xtreg</span></a>
   </div>
 </li>
     </ul>
@@ -246,24 +228,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">17</span> Introduction</a></li>
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">18</span> Data</a></li>
-  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory"><span class="header-section-number">19</span> Theory</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a>
   <ul class="collapse">
-  <li><a href="#the-math" id="toc-the-math" class="nav-link" data-scroll-target="#the-math"><span class="header-section-number">19.1</span> The Math</a></li>
-  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions"><span class="header-section-number">19.2</span> Assumptions</a></li>
+  <li><a href="#the-math" id="toc-the-math" class="nav-link" data-scroll-target="#the-math">The Math</a></li>
+  <li><a href="#assumptions" id="toc-assumptions" class="nav-link" data-scroll-target="#assumptions">Assumptions</a></li>
   </ul></li>
-  <li><a href="#xtsum-estimating-betweenwithinoverall-variance" id="toc-xtsum-estimating-betweenwithinoverall-variance" class="nav-link" data-scroll-target="#xtsum-estimating-betweenwithinoverall-variance"><span class="header-section-number">20</span> <code>xtsum</code>: Estimating between/within/overall variance</a>
+  <li><a href="#xtsum-estimating-betweenwithinoverall-variance" id="toc-xtsum-estimating-betweenwithinoverall-variance" class="nav-link" data-scroll-target="#xtsum-estimating-betweenwithinoverall-variance"><code>xtsum</code>: Estimating between/within/overall variance</a>
   <ul class="collapse">
-  <li><a href="#overall-variation" id="toc-overall-variation" class="nav-link" data-scroll-target="#overall-variation"><span class="header-section-number">20.1</span> Overall variation</a></li>
-  <li><a href="#within-variation" id="toc-within-variation" class="nav-link" data-scroll-target="#within-variation"><span class="header-section-number">20.2</span> Within variation</a></li>
-  <li><a href="#between-variation" id="toc-between-variation" class="nav-link" data-scroll-target="#between-variation"><span class="header-section-number">20.3</span> Between variation</a></li>
+  <li><a href="#overall-variation" id="toc-overall-variation" class="nav-link" data-scroll-target="#overall-variation">Overall variation</a></li>
+  <li><a href="#within-variation" id="toc-within-variation" class="nav-link" data-scroll-target="#within-variation">Within variation</a></li>
+  <li><a href="#between-variation" id="toc-between-variation" class="nav-link" data-scroll-target="#between-variation">Between variation</a></li>
   </ul></li>
-  <li><a href="#fitting-the-models" id="toc-fitting-the-models" class="nav-link" data-scroll-target="#fitting-the-models"><span class="header-section-number">21</span> Fitting the models</a>
+  <li><a href="#fitting-the-models" id="toc-fitting-the-models" class="nav-link" data-scroll-target="#fitting-the-models">Fitting the models</a>
   <ul class="collapse">
-  <li><a href="#xtreg-fe-fixed-effect-model-within-variance" id="toc-xtreg-fe-fixed-effect-model-within-variance" class="nav-link" data-scroll-target="#xtreg-fe-fixed-effect-model-within-variance"><span class="header-section-number">21.1</span> <code>xtreg, fe</code>: Fixed Effect model (Within variance)</a></li>
-  <li><a href="#xtreg-be-between-effect-model-between-variance" id="toc-xtreg-be-between-effect-model-between-variance" class="nav-link" data-scroll-target="#xtreg-be-between-effect-model-between-variance"><span class="header-section-number">21.2</span> <code>xtreg, be</code>: Between Effect model (Between variance)</a></li>
-  <li><a href="#xtreg-re-random-effect-model-both-variances" id="toc-xtreg-re-random-effect-model-both-variances" class="nav-link" data-scroll-target="#xtreg-re-random-effect-model-both-variances"><span class="header-section-number">21.3</span> <code>xtreg, re</code>: Random Effect model (Both variances)</a></li>
+  <li><a href="#xtreg-fe-fixed-effect-model-within-variance" id="toc-xtreg-fe-fixed-effect-model-within-variance" class="nav-link" data-scroll-target="#xtreg-fe-fixed-effect-model-within-variance"><code>xtreg, fe</code>: Fixed Effect model (Within variance)</a></li>
+  <li><a href="#xtreg-be-between-effect-model-between-variance" id="toc-xtreg-be-between-effect-model-between-variance" class="nav-link" data-scroll-target="#xtreg-be-between-effect-model-between-variance"><code>xtreg, be</code>: Between Effect model (Between variance)</a></li>
+  <li><a href="#xtreg-re-random-effect-model-both-variances" id="toc-xtreg-re-random-effect-model-both-variances" class="nav-link" data-scroll-target="#xtreg-re-random-effect-model-both-variances"><code>xtreg, re</code>: Random Effect model (Both variances)</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -273,19 +255,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></h1>
+<h1 class="title"><span class="chapter-title">Stata’s mixed versus xtreg</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Josh Errickson </p>
-          </div>
-  </div>
     
   
     
@@ -294,13 +270,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="introduction" class="level1" data-number="17">
-<h1 data-number="17"><span class="header-section-number">17</span> Introduction</h1>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
 <p>In Stata, panel data (repeated measures) can be modeled using <code>mixed</code> (and its siblings e.g.&nbsp;<code>melogit</code>, <code>mepoisson</code>) or using the <code>xt</code> toolkit, including <code>xtset</code> and <code>xtreg</code>.</p>
 <p>This document is an attempt to show the equivalency of the models between the two commands. There will be slight differences due to the algorithms used in the backend but the results should generally be equivalent.</p>
 </section>
-<section id="data" class="level1" data-number="18">
-<h1 data-number="18"><span class="header-section-number">18</span> Data</h1>
+<section id="data" class="level1">
+<h1>Data</h1>
 <p>We’ll use the “nlswork” data:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">webuse</span> nlswork, <span class="kw">clear</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(National Longitudinal Survey <span class="kw">of</span> Young Women, 14-24 years old <span class="kw">in</span> 1968)</span>
@@ -345,8 +321,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Panel <span class="kw">variable</span>: idcode (unbalanced)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="theory" class="level1" data-number="19">
-<h1 data-number="19"><span class="header-section-number">19</span> Theory</h1>
+<section id="theory" class="level1">
+<h1>Theory</h1>
 <p>Within the panel/<code>xt</code> framework, there are three separate models:</p>
 <ul>
 <li><code>fe</code> or “fixed effects”. This is modeling the within variation - Ignoring differences between individuals, is there a difference per values of time-varying variables?</li>
@@ -363,8 +339,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>be</code>: Collapse over individual, and run a linear model with <code>reg</code>.</li>
 <li><code>re</code>: A traditional mixed model with a random effect (this is random effect in the sense of a mixed model, not in the <code>xt</code> setting) for individual.</li>
 </ul>
-<section id="the-math" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="the-math"><span class="header-section-number">19.1</span> The Math</h2>
+<section id="the-math" class="level2">
+<h2 class="anchored" data-anchor-id="the-math">The Math</h2>
 <p>Picture a typical mixed model setup:</p>
 <p><span class="math display">\[
     y\_{it} = \alpha + x\_{it}\beta + \nu\_i + \epsilon\_{it}.
@@ -382,15 +358,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Again, we have just a linear model.</p>
 <p>Finally, the random effects model doesn’t add much clarity, but it essentially is a weighted combination of the other two, with the weight being a function of the variance of <span class="math inline">\(\nu\_i\)</span> and <span class="math inline">\(\epsilon\_i\)</span>. If the variance of <span class="math inline">\(\nu\_i\)</span> is 0, then there’s no individual level effect and the first model can be fit lineally (because <span class="math inline">\(\nu\_i\)</span> is constant and folds into the intercept).</p>
 </section>
-<section id="assumptions" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="assumptions"><span class="header-section-number">19.2</span> Assumptions</h2>
+<section id="assumptions" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions">Assumptions</h2>
 <p>There is one key different assumption between the models:</p>
 <p>The random effects model assumes that unobservable variables are uncorrelated with other covariates. The other models don’t.</p>
 <p>The between effects and random effects models assume that <span class="math inline">\(\nu\_i\)</span> and <span class="math inline">\(\overline{x}\_i\)</span> are uncorrelated (individual intercepts are independent of predictors).</p>
 </section>
 </section>
-<section id="xtsum-estimating-betweenwithinoverall-variance" class="level1" data-number="20">
-<h1 data-number="20"><span class="header-section-number">20</span> <code>xtsum</code>: Estimating between/within/overall variance</h1>
+<section id="xtsum-estimating-betweenwithinoverall-variance" class="level1">
+<h1><code>xtsum</code>: Estimating between/within/overall variance</h1>
 <p>The <code>xtsum</code> command can be used to estimate the variance of a variable within versus between.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">xtsum</span> ln_wage</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -400,8 +376,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         between |              .424569          0   3.912023 |     n =    4711</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         within  |               .29266  -.4077221    4.78367 | T-<span class="bn">bar</span> = 6.05689</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>We can replicate all these results without <code>xt</code>. As a sidenote, “T-bar” represents the average number of measures per individual, or <code>N/n</code>.</p>
-<section id="overall-variation" class="level2" data-number="20.1">
-<h2 data-number="20.1" class="anchored" data-anchor-id="overall-variation"><span class="header-section-number">20.1</span> Overall variation</h2>
+<section id="overall-variation" class="level2">
+<h2 class="anchored" data-anchor-id="overall-variation">Overall variation</h2>
 <p>Easy:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>. summ ln_wage</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -409,8 +385,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>-------------+---------------------------------------------------------</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>     ln_wage |     28,534    1.674907    .4780935          0   5.263916</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="within-variation" class="level2" data-number="20.2">
-<h2 data-number="20.2" class="anchored" data-anchor-id="within-variation"><span class="header-section-number">20.2</span> Within variation</h2>
+<section id="within-variation" class="level2">
+<h2 class="anchored" data-anchor-id="within-variation">Within variation</h2>
 <p>Taking our cue from the notes in <a href="#the-theory">the theory</a>, to obtain within variation we will center the variable by individual.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">egen</span> meanln_wage = <span class="kw">mean</span>(ln_wage), <span class="kw">by</span>(idcode)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -433,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>   cln_wage2 |     28,534    1.674907      .29266  -.4077221   4.783669</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This works because each individual has mean of 0 or in the second case, <code>overallmean</code>, in either case, since the means are constant, we’ve removed any between variance and isolated the within variance.</p>
 </section>
-<section id="between-variation" class="level2" data-number="20.3">
-<h2 data-number="20.3" class="anchored" data-anchor-id="between-variation"><span class="header-section-number">20.3</span> Between variation</h2>
+<section id="between-variation" class="level2">
+<h2 class="anchored" data-anchor-id="between-variation">Between variation</h2>
 <p>We simply collapse by id.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">preserve</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -450,12 +426,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Doing this works because each subject now has a single observation, hence the within variance is identically 0, so the remaining variance is between-variance.</p>
 </section>
 </section>
-<section id="fitting-the-models" class="level1" data-number="21">
-<h1 data-number="21"><span class="header-section-number">21</span> Fitting the models</h1>
+<section id="fitting-the-models" class="level1">
+<h1>Fitting the models</h1>
 <p>Let’s use the following as our model</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ln_wage ~ grade + age + ttl_exp + tenure + not_smsa + south</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<section id="xtreg-fe-fixed-effect-model-within-variance" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="xtreg-fe-fixed-effect-model-within-variance"><span class="header-section-number">21.1</span> <code>xtreg, fe</code>: Fixed Effect model (Within variance)</h2>
+<section id="xtreg-fe-fixed-effect-model-within-variance" class="level2">
+<h2 class="anchored" data-anchor-id="xtreg-fe-fixed-effect-model-within-variance"><code>xtreg, fe</code>: Fixed Effect model (Within variance)</h2>
 <p>The fixed effects results are</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">xtreg</span> ln_wage grade age ttl_exp tenure not_smsa south, <span class="kw">fe</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">note</span>: grade omitted because <span class="kw">of</span> collinearity.</span>
@@ -638,8 +614,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>grade</code> is not estimated in the fixed effects model because it is time-invarying; within each individual it is constant. In the <code>regress</code> model, we are able to estimate it.</p>
 <p><code>xtreg</code> reports 3 R-squared statistics; this is a within variance model so we can use that value (which agrees with the regression R-squared). Note that the <code>regress</code> R-squared estimate is artificially inflated due to the massive amount of predictors.</p>
 </section>
-<section id="xtreg-be-between-effect-model-between-variance" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="xtreg-be-between-effect-model-between-variance"><span class="header-section-number">21.2</span> <code>xtreg, be</code>: Between Effect model (Between variance)</h2>
+<section id="xtreg-be-between-effect-model-between-variance" class="level2">
+<h2 class="anchored" data-anchor-id="xtreg-be-between-effect-model-between-variance"><code>xtreg, be</code>: Between Effect model (Between variance)</h2>
 <p>The between effects results are</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">xtreg</span> ln_wage grade age ttl_exp tenure not_smsa south, <span class="kw">be</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -695,8 +671,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Again, the coefficients agree to three decimals and the between R-square agrees.</p>
 <p>All predictors here are estimated; if we had any time-variant by individual-invariant predictors (e.g.&nbsp;time), they would not be estimable here.</p>
 </section>
-<section id="xtreg-re-random-effect-model-both-variances" class="level2" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="xtreg-re-random-effect-model-both-variances"><span class="header-section-number">21.3</span> <code>xtreg, re</code>: Random Effect model (Both variances)</h2>
+<section id="xtreg-re-random-effect-model-both-variances" class="level2">
+<h2 class="anchored" data-anchor-id="xtreg-re-random-effect-model-both-variances"><code>xtreg, re</code>: Random Effect model (Both variances)</h2>
 <p>The random effects results are</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">xtreg</span> ln_wage grade age ttl_exp tenure not_smsa south, re</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1163,15 +1139,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./vizrandomeffects.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-  </div>
-</nav>
 </div> <!-- /content -->
 
 
