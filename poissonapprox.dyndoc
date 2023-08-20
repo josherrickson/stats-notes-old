@@ -1,0 +1,173 @@
+---
+title: When can Poisson Regression approximate Logistic?
+---
+
+An older idea in Epidemiology is to use a Poisson regression model in place of a
+logistic regression model. This idea has some validity because with a low mean,
+the Poisson distribution approximates the binary distribution.
+
+# Simulation
+
+Let's examine this. First, we define a program which generates some data
+according to a logistic model, then fits both logistic and Poisson regression
+models against it.
+
+This program, defined below, takes in three arguments
+
+- `n` - Sample size
+- `p` - Baseline probability of success
+- `b1` - Coefficient of interest.
+
+The model is simply
+
+$$
+    logit(P(Y = 1 | X)) = logit(p) + b_1x
+$$
+
+```stata
+<<dd_do>>
+program def binsim, rclass
+    drop _all
+    args n p b1
+    set obs `n'
+    gen x = rnormal()
+    gen y = rbinomial(1, invlogit(logit(`p') + `b1'*x))
+    * Return P(success) to ensure everything is working
+    mean y
+    mat b = e(b)
+    scalar pp = b[1,1]
+    return scalar pp=pp
+
+    * Poisson model
+    poisson y x
+    mat b = e(b)
+    scalar b_pois = b[1,1]
+    return scalar b_pois=b_pois
+
+    * Logistic model
+    logistic y x
+    mat b = e(b)
+    scalar b_logit = b[1,1]
+    return scalar b_logit=b_logit
+end
+<</dd_do>>
+```
+
+# Results
+
+Now we can run it with a few different settings. Specifically, we're interested
+in how close to 0 the mean must be for the Poisson coefficient to approximate
+the logistic coefficient.
+
+Set a few parameters
+
+```stata
+<<dd_do>>
+local beta1 .4
+local reps 1000
+<</dd_do>>
+```
+
+::: {.panel-tabset}
+
+## 10% success
+
+```stata
+<<dd_do>>
+simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+    reps(`reps') nodots: binsim 10000 .1 `beta1'
+<</dd_do>>
+```
+
+First we'll ensure the code is working and that P(success) is 10% as requested.
+
+```stata
+<<dd_do>>
+mean pp
+<</dd_do>>
+```
+
+Now we can look at the kernel densities
+
+```stata
+<<dd_do>>
+twoway kdensity b_logit || kdensity b_pois, ///
+    xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+<</dd_do>>
+```
+
+<<dd_graph: saving(graphs/poisson1.svg) replace markdown>>
+
+The Poisson coefficient is strongly negatively biased. We can estimate the bias
+as a percent of the true coefficient.
+
+```stata
+<<dd_do>>
+gen error = abs(b_logit - b_pois)/b_logit
+mean error
+<</dd_do>>
+```
+
+## 5% success
+
+```stata
+<<dd_do>>
+simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+    reps(`reps') nodots: binsim 10000 .05 `beta1'
+mean pp
+twoway kdensity b_logit || kdensity b_pois, ///
+    xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+gen error = abs(b_logit - b_pois)/b_logit
+mean error
+<</dd_do>>
+```
+
+<<dd_graph: saving(graphs/poisson2.svg) replace markdown>>
+
+Still see a negative bias.
+
+## 3% success
+
+```stata
+<<dd_do>>
+simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+    reps(`reps') nodots: binsim 10000 .03 `beta1'
+mean pp
+twoway kdensity b_logit || kdensity b_pois, ///
+    xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+gen error = abs(b_logit - b_pois)/b_logit
+mean error
+<</dd_do>>
+```
+
+<<dd_graph: saving(graphs/poisson3.svg) replace markdown>>
+
+The bias is minimal but still present.
+
+## 1% success
+
+```stata
+<<dd_do>>
+simulate pp=r(pp) b_pois=r(b_pois) b_logit=r(b_logit), ///
+    reps(`reps') nodots: binsim 10000 .01 `beta1'
+mean pp
+twoway kdensity b_logit || kdensity b_pois, ///
+    xline(`beta1') legend(label(1 "Logistic") label(2 "Poisson"))
+gen error = abs(b_logit - b_pois)/b_logit
+mean error
+<</dd_do>>
+```
+
+<<dd_graph: saving(graphs/poisson4.svg) replace markdown>>
+
+The bias has all but disappeared.
+
+:::
+
+# Conclusion
+
+I wouldn't recommend using Poisson over Logistic unless P(Success) was 1% or
+less.
+
+There's an interesting artifact to explore, namely that the percent bias is
+consistently about 15-20% larger than the true beta.

@@ -4,3 +4,4 @@ stata.log
 *.svg
 Stata/*.Rmd
 Stata/tmp.dta
+/.quarto/

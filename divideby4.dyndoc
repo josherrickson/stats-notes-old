@@ -1,0 +1,47 @@
+---
+title: The "Divide by 4" Rule
+---
+
+In addition to the odds ratio interpretation of coefficients in a logistic
+regression model, the "divide by 4" rule can also help with interpretation.
+
+```stata
+<<dd_do>>
+sysuse auto
+logit foreign mpg
+<</dd_do>>
+```
+
+The coefficient on `mpg`, .1597, is the log odds. The "divide by 4" rule says
+that the log odds divided by 4 (so $.1597/4 = .0399$) is the maximum difference
+in predicted probability for a 1-unit change in `mpg`.
+
+In other words, consider the following plot of predicted probabilities.
+
+```stata
+<<dd_do>>
+quiet margins, at(mpg = (12(1)41)) nose
+marginsplot, ///
+    recast(line) ///
+    addplot(pci .5 12 .5 41, lpattern(shortdash) lcolor(black)  || ///
+            pci 0 `=4.378866/.1597621' 1 `=4.378866/.1597621', ///
+            lpattern(shortdash) lcolor(black)) ///
+    legend(off)
+<</dd_do>>
+```
+
+<<dd_graph: replace saving(graphs/divideby4.svg) markdown>>
+
+
+The line represents the predicted probability of the outcome being 1 as `mpg`
+varies. In linear regression, this would be a straight line, and the difference
+in predicted probability between `mpg` = 14 versus `mpg` = 15 would be
+equivalent to the difference in predicted probability between `mpg` = 30 versus
+`mpg` = 31. However, since this is a logistic curve, the difference in predicted
+probability varies over `mpg`, being sharpest near the middle. Specifically, at
+the point when the predicted probability is exactly .5 (the dashed lines), the
+slope is the largest, and it recedes from there.
+
+This means that at that middle point (around `mpg` = 27), the increasing `mpg`
+by 1 is increasing the predicted probability by .0399. For all other places on
+that curve, the increased probability is less than .0399.
