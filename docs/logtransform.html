@@ -8,7 +8,7 @@
 
 <meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - Log Transform Interpretation</title>
+<title>Statistics Notes - 5&nbsp; Log Transform Interpretation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,21 +65,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./mixedModelsSPSS.html" rel="next">
+<link href="./logitinterpretation.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -100,135 +104,170 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Statistics Notes</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-topics" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Topics</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-topics">    
-        <li>
-    <a class="dropdown-item" href="./divideby4.html" rel="" target="">
- <span class="dropdown-text">The "Divide by 4" Rule</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./iccirr.html" rel="" target="">
- <span class="dropdown-text">Inter-rater Reliability</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./logitinterpretation.html" rel="" target="">
- <span class="dropdown-text">Logistic Models and the Margins Command</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./logtransform.html" rel="" target="">
- <span class="dropdown-text">Log Transform Interpretation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./mixedModelsSPSS.html" rel="" target="">
- <span class="dropdown-text">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./moderationMediation.html" rel="" target="">
- <span class="dropdown-text">Moderation and Mediation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./modifying_stata_builtin.html" rel="" target="">
- <span class="dropdown-text">Modifying a built-in Stata command</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./poissonapprox.html" rel="" target="">
- <span class="dropdown-text">When can Poisson Regression approximate Logistic?</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./randomselection.html" rel="" target="">
- <span class="dropdown-text">Choosing a Random Sample</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./responsesurfaceplot.html" rel="" target="">
- <span class="dropdown-text">Response Surface Plot</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./splinesvsinteraction.html" rel="" target="">
- <span class="dropdown-text">Splines vs Interaction models</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./svy_gsem_teffects.html" rel="" target="">
- <span class="dropdown-text">Mediation with svyset data</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./visualizeCollinearity.html" rel="" target="">
- <span class="dropdown-text">Visualizing the issue with Collinear Predictors</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./vizrandomeffects.html" rel="" target="">
- <span class="dropdown-text">Visualizing Nested and Cross Random Effects</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./xtsetvsmixed.html" rel="" target="">
- <span class="dropdown-text">Stata’s mixed versus xtreg</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
- <span class="menu-text">List of Topics</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="https://errickson.net" rel="" target="">
- <span class="menu-text">Home</span></a>
-  </li>  
-</ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
-          </div> <!-- /navcollapse -->
-      </div> <!-- /container-fluid -->
-    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./logtransform.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Statistics Notes</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">6</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#multiplicative-vs-percent-change" id="toc-multiplicative-vs-percent-change" class="nav-link" data-scroll-target="#multiplicative-vs-percent-change">Multiplicative vs Percent Change</a></li>
+  <li><a href="#multiplicative-vs-percent-change" id="toc-multiplicative-vs-percent-change" class="nav-link" data-scroll-target="#multiplicative-vs-percent-change"><span class="header-section-number">6.1</span> Multiplicative vs Percent Change</a></li>
   </ul></li>
-  <li><a href="#logged-outcome" id="toc-logged-outcome" class="nav-link" data-scroll-target="#logged-outcome">Logged Outcome</a>
+  <li><a href="#logged-outcome" id="toc-logged-outcome" class="nav-link" data-scroll-target="#logged-outcome"><span class="header-section-number">7</span> Logged Outcome</a>
   <ul class="collapse">
-  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a></li>
-  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory"><span class="header-section-number">7.1</span> Theory</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">7.2</span> Example</a></li>
   </ul></li>
-  <li><a href="#logged-predictor" id="toc-logged-predictor" class="nav-link" data-scroll-target="#logged-predictor">Logged Predictor</a>
+  <li><a href="#logged-predictor" id="toc-logged-predictor" class="nav-link" data-scroll-target="#logged-predictor"><span class="header-section-number">8</span> Logged Predictor</a>
   <ul class="collapse">
-  <li><a href="#theory-1" id="toc-theory-1" class="nav-link" data-scroll-target="#theory-1">Theory</a>
+  <li><a href="#theory-1" id="toc-theory-1" class="nav-link" data-scroll-target="#theory-1"><span class="header-section-number">8.1</span> Theory</a>
   <ul class="collapse">
-  <li><a href="#approximation" id="toc-approximation" class="nav-link" data-scroll-target="#approximation">Approximation</a></li>
+  <li><a href="#approximation" id="toc-approximation" class="nav-link" data-scroll-target="#approximation"><span class="header-section-number">8.1.1</span> Approximation</a></li>
   </ul></li>
-  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1">Example</a></li>
+  <li><a href="#example-1" id="toc-example-1" class="nav-link" data-scroll-target="#example-1"><span class="header-section-number">8.2</span> Example</a></li>
   </ul></li>
-  <li><a href="#both-logged" id="toc-both-logged" class="nav-link" data-scroll-target="#both-logged">Both Logged</a>
+  <li><a href="#both-logged" id="toc-both-logged" class="nav-link" data-scroll-target="#both-logged"><span class="header-section-number">9</span> Both Logged</a>
   <ul class="collapse">
-  <li><a href="#theory-2" id="toc-theory-2" class="nav-link" data-scroll-target="#theory-2">Theory</a></li>
-  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2">Example</a></li>
+  <li><a href="#theory-2" id="toc-theory-2" class="nav-link" data-scroll-target="#theory-2"><span class="header-section-number">9.1</span> Theory</a></li>
+  <li><a href="#example-2" id="toc-example-2" class="nav-link" data-scroll-target="#example-2"><span class="header-section-number">9.2</span> Example</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -238,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Log Transform Interpretation</h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></h1>
 </div>
 
 
@@ -259,27 +298,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="introduction" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Introduction</h1>
 <p>Log transformations can be useful when a variable is very right-skewed, or multiplicative effects are desired over additive. However, interpretation can be challenging.</p>
 <p>We are always discussing the natural log (ln), i.e.&nbsp;log base e.</p>
-<section id="multiplicative-vs-percent-change" class="level2">
-<h2 class="anchored" data-anchor-id="multiplicative-vs-percent-change">Multiplicative vs Percent Change</h2>
+<section id="multiplicative-vs-percent-change" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="multiplicative-vs-percent-change"><span class="header-section-number">6.1</span> Multiplicative vs Percent Change</h2>
 <p>Note that multiplicative changes can be expressed as percent changes and vice-versa.</p>
 <p>If we multiply <span class="math inline">\(X\)</span> by 1.1, the resultant <span class="math inline">\(1.1X\)</span> is 10% larger than <span class="math inline">\(X\)</span>. E.g. 16.5 is 10% larger than 15.</p>
 <p>If we multiply <span class="math inline">\(X\)</span> by .7, the resultant <span class="math inline">\(.7X\)</span> is 30% lower than <span class="math inline">\(X\)</span>. E.g. 7 is 30% smaller than 10.</p>
 </section>
 </section>
-<section id="logged-outcome" class="level1">
-<h1>Logged Outcome</h1>
+<section id="logged-outcome" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Logged Outcome</h1>
 <p>A 1 unit change in a predictor is associated with a <span class="math inline">\(\textrm{exp}(\hat{\beta})\)</span> mulitplicative change in <span class="math inline">\(Y\)</span>, or a <span class="math inline">\(100(\textrm{exp}(\hat{\beta}) - 1)\%\)</span> change in <span class="math inline">\(Y\)</span>.</p>
 <p>Examples:</p>
 <ul>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is .2, a 1 unit increase in <span class="math inline">\(X\)</span> is associated with a <span class="math inline">\(\textrm{exp}(.2)\ \approx 1.22\)</span> multiplicative change in <span class="math inline">\(Y\)</span>, or a 22% increase.</li>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is -.4, a 1 unit increase in <span class="math inline">\(X\)</span> is associated with a a <span class="math inline">\(\textrm{exp}(-.4)\ \approx .67\)</span> multiplicative change in <span class="math inline">\(Y\)</span>, or a 33% decrease.</li>
 </ul>
-<section id="theory" class="level2">
-<h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<section id="theory" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="theory"><span class="header-section-number">7.1</span> Theory</h2>
 <p>Assume our regression equation is</p>
 <p><span class="math display">\[
   E(Y|X = x) = \beta_0 + \beta_1x.
@@ -299,8 +338,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   &amp; = E(Y|X = x)\textrm{exp}(\beta_1)
 \end{align*}\]</span></p>
 </section>
-<section id="example" class="level2">
-<h2 class="anchored" data-anchor-id="example">Example</h2>
+<section id="example" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="example"><span class="header-section-number">7.2</span> Example</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(disp) <span class="sc">~</span> drat, <span class="at">data =</span> mtcars))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -330,16 +369,16 @@ Coefficients:
 </div>
 </section>
 </section>
-<section id="logged-predictor" class="level1">
-<h1>Logged Predictor</h1>
+<section id="logged-predictor" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Logged Predictor</h1>
 <p>A <span class="math inline">\(k\%\)</span> change in a predictor is associated with <span class="math inline">\(\hat{\beta}\log\left(1 + \frac{k}{100}\right)\)</span> change in the outcome.</p>
 <p>Examples:</p>
 <ul>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is 2, a <span class="math inline">\(10\%\)</span> increase in <span class="math inline">\(X\)</span> is associated with a <span class="math inline">\(2\log\left(1 + \frac{10}{100}\right) = 2\log(1.1) \approx 0.19\)</span> increase in <span class="math inline">\(Y\)</span>.</li>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is -1.5, a <span class="math inline">\(20\%\)</span> <strong>de</strong>crease in <span class="math inline">\(X\)</span> is associated with a <span class="math inline">\(-1.5\log\left(1 + \frac{-20}{100}\right) = -1.5\log(.8) \approx 0.15\)</span> increase in <span class="math inline">\(Y\)</span>.</li>
 </ul>
-<section id="theory-1" class="level2">
-<h2 class="anchored" data-anchor-id="theory-1">Theory</h2>
+<section id="theory-1" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="theory-1"><span class="header-section-number">8.1</span> Theory</h2>
 <p>Assume our regression equation is</p>
 <p><span class="math display">\[
   E(Y|X = x) = \beta_0 + \beta_1x.
@@ -356,8 +395,8 @@ Coefficients:
 <p><span class="math display">\[
   E(Y|X = cx) - E(Y|X = x)  = \beta_1(\log(cx) - \log(x)) = \beta_1\log(c).
 \]</span></p>
-<section id="approximation" class="level3">
-<h3 class="anchored" data-anchor-id="approximation">Approximation</h3>
+<section id="approximation" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="approximation"><span class="header-section-number">8.1.1</span> Approximation</h3>
 <p>If your percent change is small (e.g.&nbsp;a few percent) then you can approximate the change. This is because</p>
 <p><span class="math display">\[
   log(1 + x) \approx x,
@@ -365,8 +404,8 @@ Coefficients:
 <p>when <span class="math inline">\(x\)</span> is close to 0. So to approximate what effect a 1% change in <span class="math inline">\(X\)</span>` would have, simply multiple <span class="math inline">\(\hat{\beta}\)</span> by that value; <span class="math inline">\(0.1\hat{\beta}\)</span>. This works reliably well up to <span class="math inline">\(\pm3\%\)</span>, moderately up to <span class="math inline">\(\pm5\%\)</span> and gets much worse beyond that.</p>
 </section>
 </section>
-<section id="example-1" class="level2">
-<h2 class="anchored" data-anchor-id="example-1">Example</h2>
+<section id="example-1" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="example-1"><span class="header-section-number">8.2</span> Example</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">lm</span>(drat <span class="sc">~</span> <span class="fu">log</span>(disp), <span class="at">data =</span> mtcars))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -396,20 +435,20 @@ Coefficients:
 </div>
 </section>
 </section>
-<section id="both-logged" class="level1">
-<h1>Both Logged</h1>
+<section id="both-logged" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> Both Logged</h1>
 <p>A <span class="math inline">\(k\%\)</span> change in a predictor is associated with a <span class="math inline">\(\left(1 + \frac{k}{100}\right)^{\hat{\beta}}\)</span> multiplicative change in the outcome.</p>
 <p>Examples:</p>
 <ul>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is 2, a <span class="math inline">\(10\%\)</span> increase in <span class="math inline">\(X\)</span> is associated with a <span class="math inline">\(\left(1 + \frac{10}{100}\right)^2 = 1.1^2 \approx 1.21 = 21\%\)</span> increaes in <span class="math inline">\(Y\)</span>.</li>
 <li>If <span class="math inline">\(\hat{\beta}\)</span> is -1.5, a <span class="math inline">\(20\%\)</span> <strong>de</strong>crease in <span class="math inline">\(X\)</span> is associated with a <span class="math inline">\(\left(1 + \frac{-20}{100}\right)^{-1.5} = .8^{-1.5} \approx 1.40 = 40\%\)</span> increase in <span class="math inline">\(Y\)</span>.</li>
 </ul>
-<section id="theory-2" class="level2">
-<h2 class="anchored" data-anchor-id="theory-2">Theory</h2>
+<section id="theory-2" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="theory-2"><span class="header-section-number">9.1</span> Theory</h2>
 <p>To-do.</p>
 </section>
-<section id="example-2" class="level2">
-<h2 class="anchored" data-anchor-id="example-2">Example</h2>
+<section id="example-2" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="example-2"><span class="header-section-number">9.2</span> Example</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(m <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(drat) <span class="sc">~</span> <span class="fu">log</span>(disp), <span class="at">data =</span> mtcars))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -463,6 +502,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -676,6 +830,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./logitinterpretation.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./mixedModelsSPSS.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

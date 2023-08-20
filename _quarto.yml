@@ -1,34 +1,30 @@
 project:
-  type: website
+  type: book
   output-dir: docs
 
-website:
+book:
   title: "Statistics Notes"
-  navbar:
-    left:
-      - text: Topics
-        menu:
-          - divideby4.qmd
-          - iccirr.qmd
-          - logitinterpretation.qmd
-          - logtransform.qmd
-          - mixedModelsSPSS.qmd
-          - moderationMediation.qmd
-          - modifying_stata_builtin.qmd
-          - poissonapprox.qmd
-          - randomselection.qmd
-          - responsesurfaceplot.qmd
-          - splinesvsinteraction.qmd
-          - svy_gsem_teffects.qmd
-          - visualizeCollinearity.qmd
-          - vizrandomeffects.qmd
-          - xtsetvsmixed.qmd
-      - href: index.html
-        text: List of Topics
-      - href: https://errickson.net
-        text: Home
+  chapters:
+    - index.qmd
+    - divideby4.qmd
+    - iccirr.qmd
+    - logitinterpretation.qmd
+    - logtransform.qmd
+    - mixedModelsSPSS.qmd
+    - moderationMediation.qmd
+    - modifying_stata_builtin.qmd
+    - poissonapprox.qmd
+    - randomselection.qmd
+    - responsesurfaceplot.qmd
+    - splinesvsinteraction.qmd
+    - svy_gsem_teffects.qmd
+    - visualizeCollinearity.qmd
+    - vizrandomeffects.qmd
+    - xtsetvsmixed.qmd
 
 format:
   html:
-    theme: style.css
+    theme:
+      light: cosmo
+      dark: [cosmo, style.css]
     toc: true

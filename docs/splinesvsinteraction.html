@@ -8,7 +8,7 @@
 
 <meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - Splines vs Interaction models</title>
+<title>Statistics Notes - 12&nbsp; Splines vs Interaction models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,21 +65,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./svy_gsem_teffects.html" rel="next">
+<link href="./responsesurfaceplot.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -98,128 +102,163 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Statistics Notes</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-topics" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Topics</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-topics">    
-        <li>
-    <a class="dropdown-item" href="./divideby4.html" rel="" target="">
- <span class="dropdown-text">The "Divide by 4" Rule</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./iccirr.html" rel="" target="">
- <span class="dropdown-text">Inter-rater Reliability</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./logitinterpretation.html" rel="" target="">
- <span class="dropdown-text">Logistic Models and the Margins Command</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./logtransform.html" rel="" target="">
- <span class="dropdown-text">Log Transform Interpretation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./mixedModelsSPSS.html" rel="" target="">
- <span class="dropdown-text">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./moderationMediation.html" rel="" target="">
- <span class="dropdown-text">Moderation and Mediation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./modifying_stata_builtin.html" rel="" target="">
- <span class="dropdown-text">Modifying a built-in Stata command</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./poissonapprox.html" rel="" target="">
- <span class="dropdown-text">When can Poisson Regression approximate Logistic?</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./randomselection.html" rel="" target="">
- <span class="dropdown-text">Choosing a Random Sample</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./responsesurfaceplot.html" rel="" target="">
- <span class="dropdown-text">Response Surface Plot</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./splinesvsinteraction.html" rel="" target="">
- <span class="dropdown-text">Splines vs Interaction models</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./svy_gsem_teffects.html" rel="" target="">
- <span class="dropdown-text">Mediation with svyset data</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./visualizeCollinearity.html" rel="" target="">
- <span class="dropdown-text">Visualizing the issue with Collinear Predictors</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./vizrandomeffects.html" rel="" target="">
- <span class="dropdown-text">Visualizing Nested and Cross Random Effects</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./xtsetvsmixed.html" rel="" target="">
- <span class="dropdown-text">Stata’s mixed versus xtreg</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
- <span class="menu-text">List of Topics</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="https://errickson.net" rel="" target="">
- <span class="menu-text">Home</span></a>
-  </li>  
-</ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
-          </div> <!-- /navcollapse -->
-      </div> <!-- /container-fluid -->
-    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./splinesvsinteraction.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Statistics Notes</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation">Data generation</a></li>
-  <li><a href="#obtain-pre-and-post-slopes" id="toc-obtain-pre-and-post-slopes" class="nav-link" data-scroll-target="#obtain-pre-and-post-slopes">Obtain pre and post slopes</a></li>
-  <li><a href="#spline-version" id="toc-spline-version" class="nav-link" data-scroll-target="#spline-version">Spline version</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">13</span> Introduction</a></li>
+  <li><a href="#data-generation" id="toc-data-generation" class="nav-link" data-scroll-target="#data-generation"><span class="header-section-number">14</span> Data generation</a></li>
+  <li><a href="#obtain-pre-and-post-slopes" id="toc-obtain-pre-and-post-slopes" class="nav-link" data-scroll-target="#obtain-pre-and-post-slopes"><span class="header-section-number">15</span> Obtain pre and post slopes</a></li>
+  <li><a href="#spline-version" id="toc-spline-version" class="nav-link" data-scroll-target="#spline-version"><span class="header-section-number">16</span> Spline version</a>
   <ul class="collapse">
-  <li><a href="#spline-model-1---continuous-at-intervention" id="toc-spline-model-1---continuous-at-intervention" class="nav-link" data-scroll-target="#spline-model-1---continuous-at-intervention">Spline Model 1 - Continuous at intervention</a></li>
-  <li><a href="#spline-model-2---discontinuous-at-intervention" id="toc-spline-model-2---discontinuous-at-intervention" class="nav-link" data-scroll-target="#spline-model-2---discontinuous-at-intervention">Spline Model 2 - Discontinuous at intervention</a></li>
-  <li><a href="#without-marginal" id="toc-without-marginal" class="nav-link" data-scroll-target="#without-marginal">Without <code>marginal</code></a></li>
+  <li><a href="#spline-model-1---continuous-at-intervention" id="toc-spline-model-1---continuous-at-intervention" class="nav-link" data-scroll-target="#spline-model-1---continuous-at-intervention"><span class="header-section-number">16.1</span> Spline Model 1 - Continuous at intervention</a></li>
+  <li><a href="#spline-model-2---discontinuous-at-intervention" id="toc-spline-model-2---discontinuous-at-intervention" class="nav-link" data-scroll-target="#spline-model-2---discontinuous-at-intervention"><span class="header-section-number">16.2</span> Spline Model 2 - Discontinuous at intervention</a></li>
+  <li><a href="#without-marginal" id="toc-without-marginal" class="nav-link" data-scroll-target="#without-marginal"><span class="header-section-number">16.3</span> Without <code>marginal</code></a></li>
   </ul></li>
-  <li><a href="#interaction-model" id="toc-interaction-model" class="nav-link" data-scroll-target="#interaction-model">Interaction model</a>
+  <li><a href="#interaction-model" id="toc-interaction-model" class="nav-link" data-scroll-target="#interaction-model"><span class="header-section-number">17</span> Interaction model</a>
   <ul class="collapse">
-  <li><a href="#interaction-model-1---continuity-at-intervention" id="toc-interaction-model-1---continuity-at-intervention" class="nav-link" data-scroll-target="#interaction-model-1---continuity-at-intervention">Interaction model 1 - Continuity at intervention</a></li>
-  <li><a href="#interaction-model-2---discontinuous-at-intervention" id="toc-interaction-model-2---discontinuous-at-intervention" class="nav-link" data-scroll-target="#interaction-model-2---discontinuous-at-intervention">Interaction Model 2 - Discontinuous at intervention</a></li>
-  <li><a href="#obtaining-both-slopes" id="toc-obtaining-both-slopes" class="nav-link" data-scroll-target="#obtaining-both-slopes">Obtaining both slopes</a></li>
+  <li><a href="#interaction-model-1---continuity-at-intervention" id="toc-interaction-model-1---continuity-at-intervention" class="nav-link" data-scroll-target="#interaction-model-1---continuity-at-intervention"><span class="header-section-number">17.1</span> Interaction model 1 - Continuity at intervention</a></li>
+  <li><a href="#interaction-model-2---discontinuous-at-intervention" id="toc-interaction-model-2---discontinuous-at-intervention" class="nav-link" data-scroll-target="#interaction-model-2---discontinuous-at-intervention"><span class="header-section-number">17.2</span> Interaction Model 2 - Discontinuous at intervention</a></li>
+  <li><a href="#obtaining-both-slopes" id="toc-obtaining-both-slopes" class="nav-link" data-scroll-target="#obtaining-both-slopes"><span class="header-section-number">17.3</span> Obtaining both slopes</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -229,7 +268,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Splines vs Interaction models</h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></h1>
 </div>
 
 
@@ -250,16 +289,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="introduction" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> Introduction</h1>
 <p>Linear splines are sometimes used when looking at interrupted time series models. For example, consider the scatter plot below.</p>
 <p><img src="graphs/splinesinteractions1.svg" class="img-fluid"></p>
 <p>The slope amongst the red points (<code>x &lt; 5</code>) is clearly different from the slope amongst the blue points (<code>x &gt; 5</code>). The best fit line fails to capture this at all.</p>
 <p>Imagine that <code>x</code> is time, and at <code>x = 5</code>, some intervention took place. The goal is to capture the change in slope that occurs after the intervention. One easy approach would be to fit separate pre and post models, and test for equality of coefficients. However, we can also address this with a single model.</p>
 <p>A linear spline model (as fit by Stata’s <a href="https://www.stata.com/manuals/rmkspline.pdf"><code>mkspline</code></a>) can capture that change in trend. Including an indicator for pre/post even allows a discontinuity at <code>x = 5</code> instead of the typical continuous spline. However, splines can be harder to interpret and more complicated to work with. This document will demonstrate that an interaction model is equivalent to the linear spline model, and with a simple re-scaling, easier to interpret.</p>
 </section>
-<section id="data-generation" class="level1">
-<h1>Data generation</h1>
+<section id="data-generation" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Data generation</h1>
 <p>Let’s create a slightly more general data set where there is a “jump” (discontinuity) at intervention in addition to the change in trend.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">clear</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -278,8 +317,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="graphs/splinesinteractions2.svg"></p>
 <p>Now there’s a drop of around 4 at the intervention addition to a flattening of the slope.</p>
 </section>
-<section id="obtain-pre-and-post-slopes" class="level1">
-<h1>Obtain pre and post slopes</h1>
+<section id="obtain-pre-and-post-slopes" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Obtain pre and post slopes</h1>
 <p>For comparison purposes, let’s obtain the slopes in each time period.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> x <span class="kw">if</span> z == 0</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -318,13 +357,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>. <span class="kw">local</span> postslope = _b[x]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>So the pre slope is 0.998 and the post slope is 0.121. Their difference is -0.877.</p>
 </section>
-<section id="spline-version" class="level1">
-<h1>Spline version</h1>
+<section id="spline-version" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Spline version</h1>
 <p>The “intervention” takes place at <code>x = 5</code>, so let’s create the spline with a knot there.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">mkspline</span> x0 5 x1 = x, marginal</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>With the <code>marginal</code> option, <code>x0</code>’s coefficient will represent the pre-intervention slop and <code>x1</code>’s coefficient the difference between the pre- and post-intervention slopes (similar to an interaction). Without <code>marginal</code>, <code>x1</code>’s coefficient is the post-intervention slope. Note that this will not change the model, but is a simple reparameterization.</p>
-<section id="spline-model-1---continuous-at-intervention" class="level2">
-<h2 class="anchored" data-anchor-id="spline-model-1---continuous-at-intervention">Spline Model 1 - Continuous at intervention</h2>
+<section id="spline-model-1---continuous-at-intervention" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="spline-model-1---continuous-at-intervention"><span class="header-section-number">16.1</span> Spline Model 1 - Continuous at intervention</h2>
 <p>First, we’ll predict <code>y</code> using only the splines. This forces a continuity at intervention.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> x0 x1</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -355,8 +394,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="graphs/splinesinteractions3.svg"></p>
 <p>The continuity<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> at <code>x = 5</code> makes this a poor fit.</p>
 </section>
-<section id="spline-model-2---discontinuous-at-intervention" class="level2">
-<h2 class="anchored" data-anchor-id="spline-model-2---discontinuous-at-intervention">Spline Model 2 - Discontinuous at intervention</h2>
+<section id="spline-model-2---discontinuous-at-intervention" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="spline-model-2---discontinuous-at-intervention"><span class="header-section-number">16.2</span> Spline Model 2 - Discontinuous at intervention</h2>
 <p>Simply adding <code>z</code> to the model will allow a discontinuity.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> x0 x1 z</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -389,8 +428,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We capture the model much better here. Note that the coefficient on <code>x0</code> is the marginal slope we obtained <a href="splinesvsinteraction.html#obtain-pre-and-post-slopes">before</a> and <code>x1</code> is the difference between the slopes.</p>
 <p>Additionally (and one of the major benefits that linear spline proponents point to) is that the coefficient on <code>z</code>, -4.06, captures the drop that occurs at <code>x = 5</code> - in the pre-period, the best fit line is approaching ~5, and in the post-period, the best fit line is approaching ~1.</p>
 </section>
-<section id="without-marginal" class="level2">
-<h2 class="anchored" data-anchor-id="without-marginal">Without <code>marginal</code></h2>
+<section id="without-marginal" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="without-marginal"><span class="header-section-number">16.3</span> Without <code>marginal</code></h2>
 <p>Let’s generate the splines without the <code>marginal</code> option to show the results are the same.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">mkspline</span> x0a 5 x1a = x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> x0a x1a z</span>
@@ -424,8 +463,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The model is identical, but the coefficient on <code>x1a</code> is now the slope in the post period.</p>
 </section>
 </section>
-<section id="interaction-model" class="level1">
-<h1>Interaction model</h1>
+<section id="interaction-model" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> Interaction model</h1>
 <p>If we fit a simple interaction model here, we obtain the same model.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> c.x##c.z</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -456,8 +495,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>&gt;          <span class="bn">legend</span>(<span class="kw">off</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><img src="graphs/splinesinteractions6.svg"></p>
 <p>The coefficient for <code>x</code> and the interaction capture the pre-slope and the change in slope after intervention, but the coefficent on <code>z</code> is capturing the difference in y-intercepts at <code>x = 0</code> - a meaningless value. This greatly harms the interpretability of this model.</p>
-<section id="interaction-model-1---continuity-at-intervention" class="level2">
-<h2 class="anchored" data-anchor-id="interaction-model-1---continuity-at-intervention">Interaction model 1 - Continuity at intervention</h2>
+<section id="interaction-model-1---continuity-at-intervention" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="interaction-model-1---continuity-at-intervention"><span class="header-section-number">17.1</span> Interaction model 1 - Continuity at intervention</h2>
 <p>If we use a version of <code>x</code> which is re-centered around the intervention point (a linear transformation, not affecting the model fit), we can instead obtain a coefficient on the interaction that’s interpretable.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">gen</span> xc = x - 5</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>First we’ll fit the model forcing continuity at the intervention. We fit this model by including a main effect for <code>xc</code>, the interaction of <code>xc</code> and <code>z</code>, but crucially, <em>not</em> a main effect for <code>z</code>.</p>
@@ -507,8 +546,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>----------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>As you can see, we get identical results. (The y-intercept differs - in the spline model, it is the value estimated when <code>x = 0</code>; in the interaction model, it is the value estimated when <code>x</code> approaches 5 from the left.)</p>
 </section>
-<section id="interaction-model-2---discontinuous-at-intervention" class="level2">
-<h2 class="anchored" data-anchor-id="interaction-model-2---discontinuous-at-intervention">Interaction Model 2 - Discontinuous at intervention</h2>
+<section id="interaction-model-2---discontinuous-at-intervention" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="interaction-model-2---discontinuous-at-intervention"><span class="header-section-number">17.2</span> Interaction Model 2 - Discontinuous at intervention</h2>
 <p>Now, relax the continuity assumption.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>. <span class="kw">reg</span> <span class="fu">y</span> c.xc##i.z</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -561,8 +600,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>----------------------------------------</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Again, we get the same results.</p>
 </section>
-<section id="obtaining-both-slopes" class="level2">
-<h2 class="anchored" data-anchor-id="obtaining-both-slopes">Obtaining both slopes</h2>
+<section id="obtaining-both-slopes" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="obtaining-both-slopes"><span class="header-section-number">17.3</span> Obtaining both slopes</h2>
 <p>As mentioned before, the one downside of the interaction model is that we don’t directly get the post-slope, instead obtaining the pre-slope and and the difference in slopes. This is easily remedied:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>. margins z, <span class="kw">dydx</span>(xc)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -586,14 +625,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </section>
 </section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
 <li id="fn1"><p>The visual discontinity is due the way the plot is generated and is not real.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section></div></main> <!-- /main -->
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -614,6 +653,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -827,6 +981,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./responsesurfaceplot.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./svy_gsem_teffects.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

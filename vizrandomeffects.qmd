@@ -201,8 +201,8 @@ in this thread:
 
 With this naming convention, nested and fixed effects will be **different**:
 
-![](https://i.stack.imgur.com/ahXIG.png)
+![](images/sem_different.png)
 
 With this naming convention, nested and fixed effects will be **equivalent**:
 
-![](https://i.stack.imgur.com/PPZsq.png)
+![](images/sem_equivalent.png)

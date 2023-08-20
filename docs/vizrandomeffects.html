@@ -8,7 +8,7 @@
 
 <meta name="author" content="Josh Errickson">
 
-<title>Statistics Notes - Visualizing Nested and Cross Random Effects</title>
+<title>Statistics Notes - 15&nbsp; Visualizing Nested and Cross Random Effects</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,21 +65,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./xtsetvsmixed.html" rel="next">
+<link href="./visualizeCollinearity.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
-  "location": "navbar",
+  "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "end",
-  "type": "overlay",
+  "panel-placement": "start",
+  "type": "textbox",
   "limit": 20,
   "language": {
     "search-no-results-text": "No results",
@@ -98,124 +102,159 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-fixed">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Statistics Notes</span>
-    </a>
-  </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-  <span class="navbar-toggler-icon"></span>
-</button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-topics" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
- <span class="menu-text">Topics</span>
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-topics">    
-        <li>
-    <a class="dropdown-item" href="./divideby4.html" rel="" target="">
- <span class="dropdown-text">The "Divide by 4" Rule</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./iccirr.html" rel="" target="">
- <span class="dropdown-text">Inter-rater Reliability</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./logitinterpretation.html" rel="" target="">
- <span class="dropdown-text">Logistic Models and the Margins Command</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./logtransform.html" rel="" target="">
- <span class="dropdown-text">Log Transform Interpretation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./mixedModelsSPSS.html" rel="" target="">
- <span class="dropdown-text">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./moderationMediation.html" rel="" target="">
- <span class="dropdown-text">Moderation and Mediation</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./modifying_stata_builtin.html" rel="" target="">
- <span class="dropdown-text">Modifying a built-in Stata command</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./poissonapprox.html" rel="" target="">
- <span class="dropdown-text">When can Poisson Regression approximate Logistic?</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./randomselection.html" rel="" target="">
- <span class="dropdown-text">Choosing a Random Sample</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./responsesurfaceplot.html" rel="" target="">
- <span class="dropdown-text">Response Surface Plot</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./splinesvsinteraction.html" rel="" target="">
- <span class="dropdown-text">Splines vs Interaction models</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./svy_gsem_teffects.html" rel="" target="">
- <span class="dropdown-text">Mediation with svyset data</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./visualizeCollinearity.html" rel="" target="">
- <span class="dropdown-text">Visualizing the issue with Collinear Predictors</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./vizrandomeffects.html" rel="" target="">
- <span class="dropdown-text">Visualizing Nested and Cross Random Effects</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./xtsetvsmixed.html" rel="" target="">
- <span class="dropdown-text">Stata’s mixed versus xtreg</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
- <span class="menu-text">List of Topics</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="https://errickson.net" rel="" target="">
- <span class="menu-text">Home</span></a>
-  </li>  
-</ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
-          </div> <!-- /navcollapse -->
-      </div> <!-- /container-fluid -->
-    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./vizrandomeffects.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Statistics Notes</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./divideby4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The “Divide by 4” Rule</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iccirr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Inter-rater Reliability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logitinterpretation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Logistic Models and the Margins Command</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logtransform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Log Transform Interpretation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mixedModelsSPSS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Two Ways of Specifying Random Intercepts in SPSS’s Mixed Model</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./moderationMediation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Moderation and Mediation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modifying_stata_builtin.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Modifying a built-in Stata command</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./poissonapprox.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">When can Poisson Regression approximate Logistic?</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./randomselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Choosing a Random Sample</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./responsesurfaceplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Response Surface Plot</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./splinesvsinteraction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Splines vs Interaction models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svy_gsem_teffects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Mediation with svyset data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./visualizeCollinearity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vizrandomeffects.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./xtsetvsmixed.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#random-effects" id="toc-random-effects" class="nav-link active" data-scroll-target="#random-effects">Random Effects</a>
+  <li><a href="#random-effects" id="toc-random-effects" class="nav-link active" data-scroll-target="#random-effects"><span class="header-section-number">16</span> Random Effects</a>
   <ul class="collapse">
-  <li><a href="#nested-versus-crossed" id="toc-nested-versus-crossed" class="nav-link" data-scroll-target="#nested-versus-crossed">Nested versus Crossed</a></li>
+  <li><a href="#nested-versus-crossed" id="toc-nested-versus-crossed" class="nav-link" data-scroll-target="#nested-versus-crossed"><span class="header-section-number">16.1</span> Nested versus Crossed</a></li>
   </ul></li>
-  <li><a href="#the-visualization-function" id="toc-the-visualization-function" class="nav-link" data-scroll-target="#the-visualization-function">The visualization function</a></li>
-  <li><a href="#single-random-effect" id="toc-single-random-effect" class="nav-link" data-scroll-target="#single-random-effect">Single random effect</a></li>
-  <li><a href="#cross-random-effects" id="toc-cross-random-effects" class="nav-link" data-scroll-target="#cross-random-effects">Cross random effects</a></li>
-  <li><a href="#nested-random-effects" id="toc-nested-random-effects" class="nav-link" data-scroll-target="#nested-random-effects">Nested random effects</a></li>
-  <li><a href="#equivalency-of-cross-and-nested-random-effects" id="toc-equivalency-of-cross-and-nested-random-effects" class="nav-link" data-scroll-target="#equivalency-of-cross-and-nested-random-effects">Equivalency of cross and nested random effects</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#the-visualization-function" id="toc-the-visualization-function" class="nav-link" data-scroll-target="#the-visualization-function"><span class="header-section-number">17</span> The visualization function</a></li>
+  <li><a href="#single-random-effect" id="toc-single-random-effect" class="nav-link" data-scroll-target="#single-random-effect"><span class="header-section-number">18</span> Single random effect</a></li>
+  <li><a href="#cross-random-effects" id="toc-cross-random-effects" class="nav-link" data-scroll-target="#cross-random-effects"><span class="header-section-number">19</span> Cross random effects</a></li>
+  <li><a href="#nested-random-effects" id="toc-nested-random-effects" class="nav-link" data-scroll-target="#nested-random-effects"><span class="header-section-number">20</span> Nested random effects</a></li>
+  <li><a href="#equivalency-of-cross-and-nested-random-effects" id="toc-equivalency-of-cross-and-nested-random-effects" class="nav-link" data-scroll-target="#equivalency-of-cross-and-nested-random-effects"><span class="header-section-number">21</span> Equivalency of cross and nested random effects</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">22</span> Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -224,7 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Visualizing Nested and Cross Random Effects</h1>
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Visualizing Nested and Cross Random Effects</span></h1>
 </div>
 
 
@@ -245,18 +284,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="random-effects" class="level1">
-<h1>Random Effects</h1>
+<section id="random-effects" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Random Effects</h1>
 <p>One way to think about random intercepts in a mixed models is the impact they will have on the residual covariance matrix. Of course, in a model with only fixed effects (e.g.&nbsp;<code>lm</code>), the residual covariance matrix is diagonal as each observation is assumed independent. In mixed models, there is a dependence structure across observations, so the residual covariance matrix will no longer be diagonal.</p>
-<section id="nested-versus-crossed" class="level2">
-<h2 class="anchored" data-anchor-id="nested-versus-crossed">Nested versus Crossed</h2>
+<section id="nested-versus-crossed" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="nested-versus-crossed"><span class="header-section-number">16.1</span> Nested versus Crossed</h2>
 <p>Whether random effects are nested or crossed<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> is a property of the data, not the model. However, when fitting the model, effects can be included as either nested or crossed.</p>
 <p>Nested random effects are when each member of one group is contained entirely within a single unit of another group. The canonical example is students in classrooms; you may have repeated measures per student, but each student belongs to a single classroom (assuming no reassignments).</p>
 <p>Crossed random effects are when this nesting is not true. An example would be different seeds and different fields used for planting crops. Seeds of the same type can be planted in different fields, and each field can have multiple seeds in it.</p>
 </section>
 </section>
-<section id="the-visualization-function" class="level1">
-<h1>The visualization function</h1>
+<section id="the-visualization-function" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> The visualization function</h1>
 <p>This function extracts components of the mixed model and constructs the covariance matrix. From <a href="https://stackoverflow.com/a/45655597/905101" class="uri">https://stackoverflow.com/a/45655597/905101</a></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rescov <span class="ot">&lt;-</span> <span class="cf">function</span>(model, data) {</span>
@@ -270,8 +309,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="single-random-effect" class="level1">
-<h1>Single random effect</h1>
+<section id="single-random-effect" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> Single random effect</h1>
 <p>The data is <code>Penicillin</code> from the “lmer” package.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
@@ -305,8 +344,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>(The data is re-ordered by <code>sample</code> to improve visualization. You generally want the data sorted first by the higher level, then within that level, the next highest level, etc.)</p>
 <p>You see that this is block diagonal, with 6 blocks, each corresponding to one of the samples. This implies that the repeated measurements within each sample is correlated, but between samples are not correlated (as we expect).</p>
 </section>
-<section id="cross-random-effects" class="level1">
-<h1>Cross random effects</h1>
+<section id="cross-random-effects" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> Cross random effects</h1>
 <p>Now let’s refit the above model, including the crossed random effets. In <code>lmer</code>, we simply add a second random intercept.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lmer</span>(diameter <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> sample) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> plate), <span class="at">data =</span> Penicillin)</span>
@@ -344,8 +383,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We see that observations 1 and 7 share the same <code>sample</code> “A”, 2 and 8 share the same <code>sample</code> “B”, etc. These entries are non-zero in the covariance matrix.</p>
 </section>
-<section id="nested-random-effects" class="level1">
-<h1>Nested random effects</h1>
+<section id="nested-random-effects" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Nested random effects</h1>
 <p>Now lets view a nested random effect. We’ll switch to the <code>Oxide</code> data from “nlme”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Oxide, <span class="at">package =</span> <span class="st">"nlme"</span>)</span>
@@ -389,8 +428,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Because the wafers within each lot are named the same, we have spurious correlations.</p>
 </section>
-<section id="equivalency-of-cross-and-nested-random-effects" class="level1">
-<h1>Equivalency of cross and nested random effects</h1>
+<section id="equivalency-of-cross-and-nested-random-effects" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> Equivalency of cross and nested random effects</h1>
 <p>As mentioned above, nested effects are an attribute of the data, not the model. We can include nested random effects using the cross effects syntax. In other words, for a nested structure, there is an equivalent crossed structure. (The reverse is <strong>not</strong> true.)</p>
 <p>The key is that the Wafer levels must be unique <em>in the data</em>, not just within each lot. Let’s generate a unique version of wafer.</p>
 <div class="cell">
@@ -496,24 +535,24 @@ Fixed effects:
 </div>
 </div>
 </section>
-<section id="summary" class="level1">
-<h1>Summary</h1>
+<section id="summary" class="level1" data-number="22">
+<h1 data-number="22"><span class="header-section-number">22</span> Summary</h1>
 <p>As long as the the levels of the nested variable are unique <em>across the data</em> as opposed to unique within each of the nesting variable, nested effects and crossed effects are identical. There’s a very nice visualization of this found in this thread: <a href="https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified" class="uri">https://stats.stackexchange.com/questions/228800/crossed-vs-nested-random-effects-how-do-they-differ-and-how-are-they-specified</a></p>
 <p>With this naming convention, nested and fixed effects will be <strong>different</strong>:</p>
-<p><img src="https://i.stack.imgur.com/ahXIG.png" class="img-fluid"></p>
+<p><img src="images/sem_different.png" class="img-fluid"></p>
 <p>With this naming convention, nested and fixed effects will be <strong>equivalent</strong>:</p>
-<p><img src="https://i.stack.imgur.com/PPZsq.png" class="img-fluid"></p>
+<p><img src="images/sem_equivalent.png" class="img-fluid"></p>
 
 
 </section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
-
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
 <li id="fn1"><p>“Crossed” simply means non-nested.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section></div></main> <!-- /main -->
+</section>
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -534,6 +573,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {
@@ -747,6 +901,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./visualizeCollinearity.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Visualizing the issue with Collinear Predictors</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./xtsetvsmixed.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Stata’s mixed versus xtreg</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
